@@ -19,14 +19,48 @@ public:
         virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
 		void ShowGUI();
-
+		//triangle
 		void CreateTriangle();
 		void DrawTriangle();
 		void DestroyTriangle();
-
+		//square
+		void CreateSquare();
+		void DrawSquare();
+		void DestroySquare();
+		//cube
 		void CreateCube();
 		void DrawCube();
 		void DestroyCube();
+		//box
+		void CreateBox(float xSize, float ySize, float zSize);
+		void DrawBox();
+		void DestroyBox();
+		//triangular-based pyramid
+		void CreateTriangularPyramid(float baseSize, float height);
+		void DrawTriangularPyramid();
+		void DestroyTriangularPyramid();
+		//square-based pyramid
+		void CreateSquarePyramid(float baseSize, float height);
+		void DrawSquarePyramid();
+		void DestroySquarePyramid();
+		/*
+		//pentagonal-based pyramid
+		void CreatePentagonalPyramid(float baseSize, float height);
+		void DrawPentagonalPyramid();
+		void DestroyPentagonalPyramid();
+		//hexagonal-based pyramid
+		void CreateHexagonalPyramid(float baseSize, float height);
+		void DrawHexagonalPyramid();
+		void DestroyHexagonalPyramid();
+		//heptagonal-based pyramid
+		void CreateHeptagonalPyramid(float baseSize, float height);
+		void DrawHeptagonalPyramid();
+		void DestroyHeptagonalPyramid();
+		//octagonal-based pyramid
+		void CreateOctagonalPyramid(float baseSize, float height);
+		void DrawOctagonalPyramid();
+		void DestroyOctagonalPyramid();
+		*/
 
 private:
 
@@ -55,6 +89,10 @@ private:
 
 	//Declara o Vertex Array Object e o Vertex Buffer Object
 	GLuint triangleVAO, triangleVBO;
+	GLuint squareVAO, squareVBO;
 	GLuint cubeVAO, cubeVBO;
+	GLuint boxVAO, boxVBO;
+	GLuint triangularPyramidVAO, triangularPyramidVBO;
+	GLuint squarePyramidVAO, squarePyramidVBO;
 };
 

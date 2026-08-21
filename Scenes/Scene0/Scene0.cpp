@@ -42,19 +42,26 @@ Scene0::Scene0()
 	pTextures = NULL;
 	//pTextures = new CTextures();
 
-	//Inicializar o triangulo
-	//Aloca o triangulo da VRAM
+	//Inicializar as formas geométricas da cena
+	//Aloca as formas da VRAM
 	CreateTriangle();
-
+	CreateSquare();
 	CreateCube();
-	
+	CreateBox(3.0f, 2.0f, 1.0f);
+	//CreateTriangularPyramid(2.0f, 3.0f);
+	//CreateSquarePyramid(2.0f, 3.0f);
+
 }
 
 Scene0::~Scene0()
 {
 	//Desaloca o triangulo da VRAM
 	DestroyTriangle();
+	DestroySquare();
 	DestroyCube();
+	DestroyBox();
+	//DestroyTriangularPyramid();
+	//DestroySquarePyramid();
 
 	if (pCamera)
 	{
@@ -143,12 +150,12 @@ void Scene0::DrawScene(float deltaTime)
 
 	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
-	
-
-
-	//DrawTriangle();
-
-	DrawCube();
+	DrawTriangle();
+	//DrawSquare();
+	//DrawCube();
+	//DrawBox();
+	//DrawTriangularPyramid();
+	//DrawSquarePyramid();
 
 
 
@@ -256,21 +263,9 @@ void Scene0::CreateTriangle()
 {
 	float vertices[] = {
 	//	X		Y		Z		R     G     B
-		-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v0
-		1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, //v1
+		-1.0f,	0.0f,	0.0f,	1.0f, 0.0f, 1.0f, //v0
+		1.0f,	0.0f,	0.0f,	0.0f, 1.0f, 1.0f, //v1
 		0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
-
-		1.0f,	0.0f,	1.0f,	0.0f, 0.0f, 1.0f, //v0
-		1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, //v1
-		0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
-
-		1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v0
-		-1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v1
-		0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
-
-		-1.0f,	0.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v0
-		-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v1
-		0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f //v2
 	};
 
 	//Cria o VAO
@@ -309,7 +304,7 @@ void Scene0::DrawTriangle()
 	glBindVertexArray(triangleVAO);
 
 	//Desenha o objeto
-	glDrawArrays(GL_TRIANGLES, 0, 12);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	//Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
@@ -321,63 +316,123 @@ void Scene0::DestroyTriangle()
 	glDeleteBuffers(1, &triangleVBO);
 }
 
+void Scene0::CreateSquare()
+{
+	float vertices[] = {
+		//	X		Y		Z		R     G     B
+			-1.0f,	1.0f,	0.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	-1.0f,	0.0f,	1.0f, 1.0f, 1.0f, //v1
+			1.0f,	-1.0f,	0.0f,	0.5f, 0.5f, 0.5f, //v2
+
+			1.0f,	-1.0f,	0.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	1.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v1
+			-1.0f,	1.0f,	0.0f,	0.5f, 0.5f, 0.5f, //v2
+	};
+
+	//Cria o VAO
+	glGenVertexArrays(1, &squareVAO);
+	//Cria o VBO
+	glGenBuffers(1, &squareVBO);
+
+	//Ativa o VAO
+	glBindVertexArray(squareVAO);
+
+	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	//Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//Define os atributos de cada vértice(VAO)
+	//Diz para a GPU como interpretar os dados do VBO
+	int stride = 6 * sizeof(float);
+
+	//Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+}
+
+void Scene0::DrawSquare()
+{
+	//Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(squareVAO);
+
+	//Desenha o objeto
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	//Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene0::DestroySquare()
+{
+	glDeleteVertexArrays(1, &squareVAO);
+	glDeleteBuffers(1, &squareVBO);
+}
+
 void Scene0::CreateCube()
 {
 	float vertices[] = {
-	//		X		Y		Z		R     G     B
-	//		Face0
-			-2.0f,	2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v0
-			-2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v1
-			2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v2
+	//	X		Y		Z		R     G     B
+	//	Face0
+		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v0
-			2.0f,	2.0f,	2.0f,	0.0f, 0.0f, 0.0f, //v1
-			-2.0f,	2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v2
+		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+		1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//		Face1
-			2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v0
-			2.0f,	-2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v1
-			2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v2
+	//	Face1
+		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v0
-			2.0f,	2.0f,	2.0f,	0.0f, 0.0f, 0.0f, //v1
-			2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v2
+		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+		1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//		Face2
-			2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v0
-			-2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v1
-			-2.0f,	2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v2
+	//	Face2
+		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			-2.0f,	2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v0
-			2.0f,	2.0f,	2.0f,	0.0f, 0.0f, 0.0f, //v1
-			2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v2
+		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+		1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//		Face3
-			2.0f,	-2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v0
-			-2.0f,	-2.0f,	-2.0f,	1.0f, 1.0f, 1.0f, //v1
-			-2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v2
+	//	Face3
+		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+		-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			-2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v0
-			2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v1
-			2.0f,	-2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v2
+		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//		Face4
-			-2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v0
-			-2.0f,	-2.0f,	-2.0f,	1.0f, 1.0f, 1.0f, //v1
-			-2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v2
+	//	Face4
+		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+		-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			-2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v0
-			-2.0f,	2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v1
-			-2.0f,	2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v2
+		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//		Face5
-			-2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v0
-			-2.0f,	-2.0f,	-2.0f,	1.0f, 1.0f, 1.0f, //v1
-			2.0f,	-2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v2
+	//	Face5
+		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+		-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			2.0f,	-2.0f,	-2.0f,	0.5f, 0.5f, 0.5f, //v0
-			2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v1
-			-2.0f,	-2.0f,	2.0f,	0.5f, 0.5f, 0.5f, //v2
+		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 	};
 
 	//Cria o VAO
@@ -426,3 +481,249 @@ void Scene0::DestroyCube()
 	glDeleteVertexArrays(1, &cubeVAO);
 	glDeleteBuffers(1, &cubeVBO);
 }
+
+void Scene0::CreateBox(float xSize, float ySize, float zSize)
+{
+	float vertices[] = {
+	//	X		Y		Z		R     G     B
+	//	Face0
+		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+
+		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+		xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+
+	//	Face1
+		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+
+		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+		xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+
+	//	Face2
+		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+
+		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+		xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+
+	//	Face3
+		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+		-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+
+		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+
+	//	Face4
+		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+		-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+
+		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+
+	//	Face5
+		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+		-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+
+		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+	};
+
+	//Cria o VAO
+	glGenVertexArrays(1, &boxVAO);
+	//Cria o VBO
+	glGenBuffers(1, &boxVBO);
+
+	//Ativa o VAO
+	glBindVertexArray(boxVAO);
+
+	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	//Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, boxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//Define os atributos de cada vértice(VAO)
+	//Diz para a GPU como interpretar os dados do VBO
+	int stride = 6 * sizeof(float);
+
+	//Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+}
+
+void Scene0::DrawBox()
+{
+	//Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(boxVAO);
+
+	//Desenha o objeto
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	//Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene0::DestroyBox()
+{
+	glDeleteVertexArrays(1, &boxVAO);
+	glDeleteBuffers(1, &boxVBO);
+}
+/*
+void Scene0::CreateTriangularPyramid()
+{
+	float vertices[] = {
+		//	X		Y		Z		R     G     B
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v0
+			1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+
+			1.0f,	0.0f,	1.0f,	0.0f, 0.0f, 1.0f, //v0
+			1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+
+			1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v0
+			-1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+
+			-1.0f,	0.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v0
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f //v2
+	};
+
+	//Cria o VAO
+	glGenVertexArrays(1, &triangularPyramidVAO);
+	//Cria o VBO
+	glGenBuffers(1, &triangularPyramidVBO);
+
+	//Ativa o VAO
+	glBindVertexArray(triangularPyramidVAO);
+
+	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	//Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, triangularPyramidVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//Define os atributos de cada vértice(VAO)
+	//Diz para a GPU como interpretar os dados do VBO
+	int stride = 6 * sizeof(float);
+
+	//Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+
+}
+
+void Scene0::DrawTriangularPyramid()
+{
+	//Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(triangularPyramidVAO);
+
+	//Desenha o objeto
+	glDrawArrays(GL_TRIANGLES, 0, 12);
+
+	//Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene0::DestroyTriangularPyramid()
+{
+	glDeleteVertexArrays(1, &triangularPyramidVAO);
+	glDeleteBuffers(1, &triangularPyramidVBO);
+}
+*/
+/*
+void Scene0::CreateSquarePyramid()
+{
+	float vertices[] = {
+		//	X		Y		Z		R     G     B
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v0
+			1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+
+			1.0f,	0.0f,	1.0f,	0.0f, 0.0f, 1.0f, //v0
+			1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+
+			1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v0
+			-1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+
+			-1.0f,	0.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v0
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f //v2
+	};
+
+	//Cria o VAO
+	glGenVertexArrays(1, &squarePyramidVAO);
+	//Cria o VBO
+	glGenBuffers(1, &squarePyramidVBO);
+
+	//Ativa o VAO
+	glBindVertexArray(squarePyramidVAO);
+
+	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	//Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, squarePyramidVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//Define os atributos de cada vértice(VAO)
+	//Diz para a GPU como interpretar os dados do VBO
+	int stride = 6 * sizeof(float);
+
+	//Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+
+}
+
+void Scene0::DrawSquarePyramid()
+{
+	//Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(squarePyramidVAO);
+
+	//Desenha o objeto
+	glDrawArrays(GL_TRIANGLES, 0, 12);
+
+	//Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene0::DestroySquarePyramid()
+{
+	glDeleteVertexArrays(1, &squarePyramidVAO);
+	glDeleteBuffers(1, &squarePyramidVBO);
+}
+*/
