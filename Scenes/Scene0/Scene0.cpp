@@ -330,6 +330,10 @@ void Scene0::ShowGUI()
 	if (ImGui::Button("Reset Cube")) {
 		vScale = glm::vec3(1.0f, 1.0f, 1.0f);
 		bCubeColor = false;
+		fPosX = 0.0f;
+		fPosY = 0.0f;
+		fPosZ = 0.0f;
+		fSpeed = 10.0f;
 	}
 
 	ImGui::End();
