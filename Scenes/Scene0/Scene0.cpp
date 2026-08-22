@@ -24,7 +24,7 @@ Scene0::Scene0()
 	pShader->LoadShader("Grid", "Scenes/Common/grid.vert", "Scenes/Common/grid.frag");
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
-	
+
 	pShader->LoadShader("SolidColor", "Scenes/Scene0/Solid.vert", "Scenes/Scene0/Solid.frag");
 
 
@@ -49,8 +49,20 @@ Scene0::Scene0()
 	CreateCube();
 	CreateBox(3.0f, 2.0f, 1.0f);
 	//CreateTriangularPyramid(2.0f, 3.0f);
-	//CreateSquarePyramid(2.0f, 3.0f);
+	CreateSquarePyramid(2.0f, 3.0f);
 
+	fPosX = 0.0f;
+	fPosY = 0.0f;
+	fPosZ = 0.0f;
+	fSpeed = 10.0f;
+
+	vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	fRotSpeed = 50.0f;
+	bRot = true;
+
+	vCubeColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	bCubeColor = false;
 }
 
 Scene0::~Scene0()
@@ -61,7 +73,7 @@ Scene0::~Scene0()
 	DestroyCube();
 	DestroyBox();
 	//DestroyTriangularPyramid();
-	//DestroySquarePyramid();
+	DestroySquarePyramid();
 
 	if (pCamera)
 	{
@@ -107,7 +119,7 @@ void Scene0::DrawScene(float deltaTime)
 	// Update timer (must be called at start of frame)
 	pTimer->Update();
 
-	
+
 
 	// Clear the color and depth buffers
 	glClearColor(vFramebufferColor.r, vFramebufferColor.g, vFramebufferColor.b, 1.0f);
@@ -140,22 +152,51 @@ void Scene0::DrawScene(float deltaTime)
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Desenha o triangulo
-	//pShader->Use("SolidColor"); // Habilitar o shader para o objeto
+	// Desenha o cubo
+	pShader->Use("SolidColor"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
-	
+
 	model = glm::mat4(1.0);
+
+	model = glm::translate(model, glm::vec3(fPosX, fPosY, fPosZ));
+	model = glm::scale(model, vScale);
+
 	pShader->SetMat4("model", model);
+
+	if (bCubeColor == true) {
+		pShader->SetVec4("vCubeColor", vCubeColor);
+	}
+
+	pShader->SetBool("bSolidColor", bCubeColor);
+	pShader->SetVec4("vCubeColor", vCubeColor);
+
+	DrawCube();
 
 	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
-	DrawTriangle();
+	//DrawTriangle();
 	//DrawSquare();
-	//DrawCube();
 	//DrawBox();
 	//DrawTriangularPyramid();
-	//DrawSquarePyramid();
+
+	// Desenha o triangulo
+	pShader->Use("SolidColor"); // Habilitar o shader para o objeto
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+	model = glm::translate(model, glm::vec3(-5.0f, 0.0f, 0.0f));
+	if (bRot == true) {
+		model = glm::rotate(model, glm::radians((float)glfwGetTime() * fRotSpeed), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+	pShader->SetMat4("model", model);
+
+	pShader->SetBool("bSolidColor", false);
+
+	DrawSquarePyramid();
+
+	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
 
 
@@ -201,7 +242,7 @@ void Scene0::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 	if (input.IsKeyJustPressed(GLFW_KEY_ENTER))
 	{
 		bActiveGUI = !bActiveGUI;
-		input.SetCursorMode(bActiveGUI ?  GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+		input.SetCursorMode(bActiveGUI ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 
 		std::cout << "GUI mode: '" << bActiveGUI << "'" << std::endl;
 	}
@@ -221,6 +262,20 @@ void Scene0::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 			pCamera->ProcessKeyboard(UP, deltaTime);
 		if (input.IsKeyPressed(GLFW_KEY_Q))
 			pCamera->ProcessKeyboard(DOWN, deltaTime);
+
+		//Teclas de controle interativo de posição do cubo
+		if (input.IsKeyPressed(GLFW_KEY_UP))
+			fPosZ -= fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_DOWN))
+			fPosZ += fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_LEFT))
+			fPosX -= fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_RIGHT))
+			fPosX += fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_PAGE_DOWN))
+			fPosY -= fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_PAGE_UP))
+			fPosY += fSpeed * deltaTime;
 
 		// Increase/decrease movement speed
 		if (input.IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
@@ -251,21 +306,55 @@ void Scene0::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 
 void Scene0::ShowGUI()
 {
+	std::string sRot = bRot ? "Rotation ON" : "Rotation OFF";
+	std::string sColor = bCubeColor ? "Solid Color ON" : "Solid Color OFF";
+
 	ImGui::Begin("Scene Options:");
 	ImGui::Text("Framebuffer Color:");
 	ImGui::ColorEdit4(" ", (float*)&vFramebufferColor);
 	if (ImGui::Button("Reset Color"))
 		vFramebufferColor = glm::vec4(0.1f, 0.1f, 0.15f, 1.0f);
+
+	ImGui::End();
+
+	ImGui::Begin("Cube Options:");
+
+	ImGui::SliderFloat3("Scale", (float*)&vScale, 0.01f, 10.0f, "%.2f");
+
+	ImGuiColorEditFlags flags = ImGuiColorEditFlags_Float;
+	ImGui::ColorEdit4("Cube Color", (float*)&vCubeColor, flags);
+
+	if (ImGui::Button(sColor.c_str()))
+		bCubeColor = !bCubeColor;
+
+	if (ImGui::Button("Reset Cube")) {
+		vScale = glm::vec3(1.0f, 1.0f, 1.0f);
+		bCubeColor = false;
+	}
+
+	ImGui::End();
+
+	ImGui::Begin("Triangle Options:");
+
+	ImGui::InputFloat("Rotation Velocity:", &fRotSpeed, 0.0f, 100.0f, "%.2f");
+
+	if (ImGui::Button(sRot.c_str()))
+		bRot = !bRot;
+	if (ImGui::Button("Reset Triangle")) {
+		fRotSpeed = 10.0;
+		bRot = false;
+	}
+
 	ImGui::End();
 }
 
 void Scene0::CreateTriangle()
 {
 	float vertices[] = {
-	//	X		Y		Z		R     G     B
-		-1.0f,	0.0f,	0.0f,	1.0f, 0.0f, 1.0f, //v0
-		1.0f,	0.0f,	0.0f,	0.0f, 1.0f, 1.0f, //v1
-		0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+		//	X		Y		Z		R     G     B
+			-1.0f,	0.0f,	0.0f,	1.0f, 0.0f, 1.0f, //v0
+			1.0f,	0.0f,	0.0f,	0.0f, 1.0f, 1.0f, //v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
 	};
 
 	//Cria o VAO
@@ -379,60 +468,60 @@ void Scene0::DestroySquare()
 void Scene0::CreateCube()
 {
 	float vertices[] = {
-	//	X		Y		Z		R     G     B
-	//	Face0
-		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+		//	X		Y		Z		R     G     B
+		//	Face0
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-		1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face1
-		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			//	Face1
+				1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+				1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+				1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-		1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+				1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+				1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+				1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face2
-		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+				//	Face2
+					1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+					-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+					-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-		1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+					-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+					1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+					1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face3
-		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-		-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+					//	Face3
+						1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+						-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+						-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-		1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+						-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+						1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+						1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face4
-		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-		-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+						//	Face4
+							-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+							-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+							-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-		-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-		-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+							-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+							-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+							-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face5
-		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-		-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+							//	Face5
+								-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+								-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+								1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-		1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-		1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-		-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+								1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+								1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+								-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 	};
 
 	//Cria o VAO
@@ -485,60 +574,60 @@ void Scene0::DestroyCube()
 void Scene0::CreateBox(float xSize, float ySize, float zSize)
 {
 	float vertices[] = {
-	//	X		Y		Z		R     G     B
-	//	Face0
-		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
-		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+		//	X		Y		Z		R     G     B
+		//	Face0
+			-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+			-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+			xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-		xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
-		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+			xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+			xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+			-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face1
-		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
-		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+			//	Face1
+				xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+				xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+				xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-		xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
-		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+				xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+				xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+				xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face2
-		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
-		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+				//	Face2
+					xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+					-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+					-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-		xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
-		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+					-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+					xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+					xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face3
-		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-		-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
-		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+					//	Face3
+						xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+						-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+						-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-		xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
-		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+						-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+						xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+						xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face4
-		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-		-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
-		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+						//	Face4
+							-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+							-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+							-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-		-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
-		-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+							-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+							-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+							-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-	//	Face5
-		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-		-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
-		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+							//	Face5
+								-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+								-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+								xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-		xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-		xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
-		-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+								xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+								xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+								-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 	};
 
 	//Cria o VAO
@@ -657,8 +746,8 @@ void Scene0::DestroyTriangularPyramid()
 	glDeleteBuffers(1, &triangularPyramidVBO);
 }
 */
-/*
-void Scene0::CreateSquarePyramid()
+
+void Scene0::CreateSquarePyramid(float baseSize, float height)
 {
 	float vertices[] = {
 		//	X		Y		Z		R     G     B
@@ -726,4 +815,3 @@ void Scene0::DestroySquarePyramid()
 	glDeleteVertexArrays(1, &squarePyramidVAO);
 	glDeleteBuffers(1, &squarePyramidVBO);
 }
-*/

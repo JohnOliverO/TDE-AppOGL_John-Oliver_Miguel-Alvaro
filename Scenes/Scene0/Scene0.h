@@ -12,55 +12,55 @@
 class Scene0 : public CSceneBase
 {
 public:
-		Scene0();
-		~Scene0();
+	Scene0();
+	~Scene0();
 
-		virtual void DrawScene(float deltaTime);
-        virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
+	virtual void DrawScene(float deltaTime);
+	virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
-		void ShowGUI();
-		//triangle
-		void CreateTriangle();
-		void DrawTriangle();
-		void DestroyTriangle();
-		//square
-		void CreateSquare();
-		void DrawSquare();
-		void DestroySquare();
-		//cube
-		void CreateCube();
-		void DrawCube();
-		void DestroyCube();
-		//box
-		void CreateBox(float xSize, float ySize, float zSize);
-		void DrawBox();
-		void DestroyBox();
-		//triangular-based pyramid
-		void CreateTriangularPyramid(float baseSize, float height);
-		void DrawTriangularPyramid();
-		void DestroyTriangularPyramid();
-		//square-based pyramid
-		void CreateSquarePyramid(float baseSize, float height);
-		void DrawSquarePyramid();
-		void DestroySquarePyramid();
-		/*
-		//pentagonal-based pyramid
-		void CreatePentagonalPyramid(float baseSize, float height);
-		void DrawPentagonalPyramid();
-		void DestroyPentagonalPyramid();
-		//hexagonal-based pyramid
-		void CreateHexagonalPyramid(float baseSize, float height);
-		void DrawHexagonalPyramid();
-		void DestroyHexagonalPyramid();
-		//heptagonal-based pyramid
-		void CreateHeptagonalPyramid(float baseSize, float height);
-		void DrawHeptagonalPyramid();
-		void DestroyHeptagonalPyramid();
-		//octagonal-based pyramid
-		void CreateOctagonalPyramid(float baseSize, float height);
-		void DrawOctagonalPyramid();
-		void DestroyOctagonalPyramid();
-		*/
+	void ShowGUI();
+	//triangle
+	void CreateTriangle();
+	void DrawTriangle();
+	void DestroyTriangle();
+	//square
+	void CreateSquare();
+	void DrawSquare();
+	void DestroySquare();
+	//cube
+	void CreateCube();
+	void DrawCube();
+	void DestroyCube();
+	//box
+	void CreateBox(float xSize, float ySize, float zSize);
+	void DrawBox();
+	void DestroyBox();
+	//triangular-based pyramid
+	void CreateTriangularPyramid(float baseSize, float height);
+	void DrawTriangularPyramid();
+	void DestroyTriangularPyramid();
+	//square-based pyramid
+	void CreateSquarePyramid(float baseSize, float height);
+	void DrawSquarePyramid();
+	void DestroySquarePyramid();
+	/*
+	//pentagonal-based pyramid
+	void CreatePentagonalPyramid(float baseSize, float height);
+	void DrawPentagonalPyramid();
+	void DestroyPentagonalPyramid();
+	//hexagonal-based pyramid
+	void CreateHexagonalPyramid(float baseSize, float height);
+	void DrawHexagonalPyramid();
+	void DestroyHexagonalPyramid();
+	//heptagonal-based pyramid
+	void CreateHeptagonalPyramid(float baseSize, float height);
+	void DrawHeptagonalPyramid();
+	void DestroyHeptagonalPyramid();
+	//octagonal-based pyramid
+	void CreateOctagonalPyramid(float baseSize, float height);
+	void DrawOctagonalPyramid();
+	void DestroyOctagonalPyramid();
+	*/
 
 private:
 
@@ -77,10 +77,10 @@ private:
 	CTextures* pTextures;
 
 	// Timer
-	CTimer* pTimer;			
+	CTimer* pTimer;
 
 	// Texto
-	CText* pText;			
+	CText* pText;
 
 	// Cor do Framebuffer
 	glm::vec4 vFramebufferColor;
@@ -94,5 +94,23 @@ private:
 	GLuint boxVAO, boxVBO;
 	GLuint triangularPyramidVAO, triangularPyramidVBO;
 	GLuint squarePyramidVAO, squarePyramidVBO;
+
+	// Variáveis que controlam a translação do cubo atraves das setas do teclado.
+	float fPosX, fPosY, fPosZ, fSpeed;
+
+	//Vetor que controla a escala do Cubo
+	glm::vec3 vScale;
+
+	//Controla a velocidade de rotação da pirâmide
+	float fRotSpeed;
+
+	//Habilita ou Desabilita a rotação da pirâmide
+	bool bRot;
+
+	//Cor sólida para o cubo
+	glm::vec4 vCubeColor;
+
+	//Habilita ou Desabilita cor sólida
+	bool bCubeColor;
 };
 

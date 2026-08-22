@@ -4,7 +4,14 @@ out vec4 FragColor;
 
 in vec3 vertexColor;
 
+uniform bool bSolidColor = false;
+uniform vec4 vCubeColor = vec4(1.0,1.0,1.0,1.0);
+
 void main()
 {
-	FragColor = vec4(vertexColor, 1.0);
+	if(bSolidColor){
+		FragColor = vCubeColor;
+	}else{
+		FragColor = vec4(vertexColor, 1.0);
+	}
 }
