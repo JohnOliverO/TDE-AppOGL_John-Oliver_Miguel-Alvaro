@@ -94,6 +94,8 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(ProjectDir)OpenGL.Local.props"
+          Condition="Exists('$(ProjectDir)OpenGL.Local.props')" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
@@ -115,54 +117,6 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>
-      </SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OpenGL_Libs;C:\OpenGL_Libs\glew-2.3.1\include;C:\OpenGL_Libs\glfw\include;C:\Program Files\Assimp\include;C:\OpenGL_Libs\freetype\include;$(OpenGL_SDK)\GLFW\include;$(OpenGL_SDK)\glew\include;$(OpenGL_SDK)\GLM;$(OpenGL_SDK)\Assimp\include;$(ProjectDir);$(OpenGL_SDK)\freetype\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <StringPooling>
-      </StringPooling>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL_Libs\glew-2.3.1\bin\Release\x64;C:\OpenGL_Libs\glfw\lib-vc2026;C:\OpenGL_Libs\freetype\release static\vs2026\x64;C:\Program Files\Assimp\lib\x64;C:\OpenGL_Libs\glew-2.3.1\lib\Release\x64;$(OpenGL_SDK)\glfw\lib;$(OpenGL_SDK)\glew\lib;$(OpenGL_SDK)\assimp\lib;$(OpenGL_SDK)\glm\lib;$(OpenGL_SDK)\freetype\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib
-;opengl32.lib;glfw3.lib;freetype.lib;assimp-vc145-mt.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OpenGL_Libs;C:\OpenGL_Libs\glew-2.3.1\include;C:\OpenGL_Libs\glfw\include;C:\Program Files\Assimp\include;C:\OpenGL_Libs\freetype\include;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL_Libs\glfw\lib-vc2026;C:\OpenGL_Libs\freetype\release static\vs2026\x64;C:\Program Files\Assimp\lib\x64;C:\OpenGL_Libs\glew-2.3.1\lib\Release\x64;$(SolutionDir)dependencies\GLFW\lib-vc2022;$(SolutionDir)dependencies\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib
-;opengl32.lib;glfw3.lib;freetype.lib;assimp-vc145-mt.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

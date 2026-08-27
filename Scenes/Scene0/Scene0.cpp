@@ -482,50 +482,50 @@ void Scene0::CreateCube()
 			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
 			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-			//	Face1
-				1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-				1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-				1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+		//	Face1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-				1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-				1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-				1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-				//	Face2
-					1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-					-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-					-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+		//	Face2
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-					-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-					1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-					1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-					//	Face3
-						1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-						-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-						-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+		//	Face3
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-						-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-						1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-						1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-						//	Face4
-							-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-							-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-							-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+		//	Face4
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-							-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-							-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-							-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-							//	Face5
-								-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-								-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-								1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+		//	Face5
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
 
-								1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-								1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-								-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
 	};
 
 	//Cria o VAO
@@ -588,50 +588,50 @@ void Scene0::CreateBox(float xSize, float ySize, float zSize)
 			xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
 			-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-			//	Face1
-				xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-				xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
-				xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+		//	Face1
+			xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+			xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+			xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-				xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-				xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
-				xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+			xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+			xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+			xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-				//	Face2
-					xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-					-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
-					-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+		//	Face2
+			xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+			-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+			-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-					-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-					xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
-					xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+			-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+			xSize,	ySize,	zSize,	0.0f, 0.0f, 0.0f, //v1
+			xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-					//	Face3
-						xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-						-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
-						-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+		//	Face3
+			xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+			-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+			-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-						-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-						xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
-						xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+			-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+			xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v1
+			xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-						//	Face4
-							-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-							-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
-							-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+		//	Face4
+			-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+			-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+			-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 
-							-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-							-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
-							-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+			-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+			-xSize,	ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+			-xSize,	ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-							//	Face5
-								-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
-								-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
-								xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
+		//	Face5
+			-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v0
+			-xSize,	-ySize,	-zSize,	1.0f, 1.0f, 1.0f, //v1
+			xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v2
 
-								xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
-								xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
-								-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
+			xSize,	-ySize,	-zSize,	0.5f, 0.5f, 0.5f, //v0
+			xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v1
+			-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 	};
 
 	//Cria o VAO

@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 BaseAppOGL.vcxproj
 OpenGL_Info.txt
+OpenGL.Local.props

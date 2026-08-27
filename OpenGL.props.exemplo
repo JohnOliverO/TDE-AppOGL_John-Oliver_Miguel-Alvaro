@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+    TEMPLATE para uma NOVA máquina.
+
+    COMO USAR:
+    1. Copie este arquivo.
+    2. Renomeie a cópia para:
+           OpenGL.Local.props
+    3. Ajuste os caminhos abaixo para as bibliotecas
+       instaladas na nova máquina.
+    4. Mantenha este arquivo como referência/documentação.
+
+    O projeto deve importar OpenGL.Local.props.
+  -->
+
+  <PropertyGroup>
+    <!-- Raiz opcional do conjunto de bibliotecas -->
+    <OpenGL_SDK>C:\CAMINHO\DO\OPENGL_SDK</OpenGL_SDK>
+
+    <!-- Ajuste individualmente quando as estruturas forem diferentes -->
+    <GLFW_DIR>$(OpenGL_SDK)\glfw</GLFW_DIR>
+    <GLEW_DIR>$(OpenGL_SDK)\glew</GLEW_DIR>
+    <GLM_DIR>$(OpenGL_SDK)\glm</GLM_DIR>
+    <ASSIMP_DIR>$(OpenGL_SDK)\assimp</ASSIMP_DIR>
+    <FREETYPE_DIR>$(OpenGL_SDK)\freetype</FREETYPE_DIR>
+  </PropertyGroup>
+
+  <!--
+    Copie as configurações de Debug/Release do arquivo do
+    computador que mais se aproxima da nova instalação.
+
+    Principais propriedades:
+      $(GLFW_DIR)
+      $(GLEW_DIR)
+      $(GLM_DIR)
+      $(ASSIMP_DIR)
+      $(FREETYPE_DIR)
+
+    Exemplo de include:
+      $(GLFW_DIR)\include
+
+    Exemplo de lib:
+      $(GLFW_DIR)\lib
+  -->
+
+</Project>
