@@ -27,6 +27,8 @@ Scene0::Scene0()
 
 	pShader->LoadShader("SolidColor", "Scenes/Scene0/Solid.vert", "Scenes/Scene0/Solid.frag");
 
+	pShader->LoadShader("Texture", "Scenes/Scene0/Texture.vert", "Scenes/Scene0/Texture.frag");
+
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -40,7 +42,9 @@ Scene0::Scene0()
 
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
-	//pTextures = new CTextures();
+	pTextures = new CTextures();
+	pTextures->LoadTextureAnisotropic(0, "Scenes/Textures/cx2.BMP");
+	pTextures->LoadTextureAnisotropic(1, "Scenes/Textures/grass.BMP");
 
 	//Inicializar as formas geométricas da cena
 	//Aloca as formas da VRAM
@@ -50,6 +54,7 @@ Scene0::Scene0()
 	CreateBox(3.0f, 2.0f, 1.0f);
 	//CreateTriangularPyramid(2.0f, 3.0f);
 	CreateSquarePyramid(2.0f, 3.0f);
+	CreatePlane();
 
 	fPosX = 0.0f;
 	fPosY = 0.0f;
@@ -74,6 +79,7 @@ Scene0::~Scene0()
 	DestroyBox();
 	//DestroyTriangularPyramid();
 	DestroySquarePyramid();
+	DestroyPlane();
 
 	if (pCamera)
 	{
@@ -133,7 +139,7 @@ void Scene0::DrawScene(float deltaTime)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Draw the 3D grid
+	/*// Draw the 3D grid
 	pShader->Use("Grid");
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
@@ -147,13 +153,13 @@ void Scene0::DrawScene(float deltaTime)
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
 	pGridAxis->DrawAxis();
-
+	*/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Desenha o cubo
-	pShader->Use("SolidColor"); // Habilitar o shader para o objeto
+	pShader->Use("Texture"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
@@ -168,8 +174,13 @@ void Scene0::DrawScene(float deltaTime)
 		pShader->SetVec4("vCubeColor", vCubeColor);
 	}
 
-	pShader->SetBool("bSolidColor", bCubeColor);
-	pShader->SetVec4("vCubeColor", vCubeColor);
+	//Seta a textura a ser aplicada
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(0);
+	pShader->SetInt("Texture0",0);
+
+	//pShader->SetBool("bSolidColor", bCubeColor);
+	//pShader->SetVec4("vCubeColor", vCubeColor);
 
 	DrawCube();
 
@@ -197,6 +208,22 @@ void Scene0::DrawScene(float deltaTime)
 	DrawSquarePyramid();
 
 	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
+
+	// Desenha o Plane
+	pShader->Use("Texture"); // Habilitar o shader para o objeto
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+	
+	pShader->SetMat4("model", model);
+
+	//Seta a textura a ser aplicada no Plane
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(1);
+	pShader->SetInt("Texture0", 0);
+
+	DrawPlane();
 
 
 
@@ -472,60 +499,61 @@ void Scene0::DestroySquare()
 void Scene0::CreateCube()
 {
 	float vertices[] = {
-		//	X		Y		Z		R     G     B
+		//positions					//colors			//Coord. Text
+		//	  X		 Y		 Z		 R     G     B       S	   T
 		//	Face0
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
-
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
+			
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,//v1
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
 
 		//	Face1
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v0
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v1
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v2
 
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,//v1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v2
 
 		//	Face2
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v0
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v1
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v2
 
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f, //v1
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,//v1
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v2
 
 		//	Face3
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	1.0f, 0.0f,//v1
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v2
 
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v1
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v0
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v1
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v2
 
 		//	Face4
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.0f, 0.0f,//v1
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
 
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v1
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
 
 		//	Face5
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v0
-			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v1
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v2
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.0f, 0.0f,//v1
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
 
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f, //v0
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v1
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f, //v2
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v1
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
 	};
 
 	//Cria o VAO
@@ -543,7 +571,7 @@ void Scene0::CreateCube()
 
 	//Define os atributos de cada vértice(VAO)
 	//Diz para a GPU como interpretar os dados do VBO
-	int stride = 6 * sizeof(float);
+	int stride = 8 * sizeof(float);
 
 	//Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
@@ -552,6 +580,10 @@ void Scene0::CreateCube()
 	//Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	//Cor do vértice (ID=2)
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	//Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
@@ -818,4 +850,70 @@ void Scene0::DestroySquarePyramid()
 {
 	glDeleteVertexArrays(1, &squarePyramidVAO);
 	glDeleteBuffers(1, &squarePyramidVBO);
+}
+
+void Scene0::CreatePlane()
+{
+	float vertices[] = {
+		//positions					//colors			//Coord. Text
+		//	  X		 Y		 Z		 R     G     B       S	   T
+		//	Face0
+			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 5.0f,//v0
+			-50.0f,	0.0f,	50.0f,	1.0f, 1.0f, 1.0f,	0.0f, 0.0f,//v1
+			50.0f,	0.0f,	50.0f,	0.5f, 0.5f, 0.5f,	5.0f, 0.0f,//v2
+
+			50.0f,	0.0f,	50.0f,	0.5f, 0.5f, 0.5f,	5.0f, 0.0f,//v0
+			50.0f,	0.0f,	-50.0f,	0.0f, 0.0f, 0.0f,	5.0f, 5.0f,//v1
+			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 5.0f,//v2
+	};
+
+	//Cria o VAO
+	glGenVertexArrays(1, &planeVAO);
+	//Cria o VBO
+	glGenBuffers(1, &planeVBO);
+
+	//Ativa o VAO
+	glBindVertexArray(planeVAO);
+
+	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	//Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//Define os atributos de cada vértice(VAO)
+	//Diz para a GPU como interpretar os dados do VBO
+	int stride = 8 * sizeof(float);
+
+	//Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Cor do vértice (ID=2)
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	//Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+}
+
+void Scene0::DrawPlane()
+{
+	//Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(planeVAO);
+
+	//Desenha o objeto
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	//Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene0::DestroyPlane()
+{
+	glDeleteVertexArrays(1, &planeVAO);
+	glDeleteBuffers(1, &planeVBO);
 }

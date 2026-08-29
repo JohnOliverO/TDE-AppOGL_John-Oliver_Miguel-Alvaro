@@ -173,6 +173,12 @@
     <None Include="Scenes\Scene0\Solid.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
+    <None Include="Scenes\Scene0\Texture.frag">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\Texture.vert">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

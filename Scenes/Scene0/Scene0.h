@@ -62,6 +62,11 @@ public:
 	void DestroyOctagonalPyramid();
 	*/
 
+	//Plane
+	void CreatePlane();
+	void DrawPlane();
+	void DestroyPlane();
+
 private:
 
 	// Camera
@@ -94,6 +99,7 @@ private:
 	GLuint boxVAO, boxVBO;
 	GLuint triangularPyramidVAO, triangularPyramidVBO;
 	GLuint squarePyramidVAO, squarePyramidVBO;
+	GLuint planeVAO, planeVBO;
 
 	// Variáveis que controlam a translação do cubo atraves das setas do teclado.
 	float fPosX, fPosY, fPosZ, fSpeed;

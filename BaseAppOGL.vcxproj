@@ -71,6 +71,8 @@
     <None Include="Scenes\Common\Text2D.vert" />
     <None Include="Scenes\Scene0\Solid.frag" />
     <None Include="Scenes\Scene0\Solid.vert" />
+    <None Include="Scenes\Scene0\Texture.frag" />
+    <None Include="Scenes\Scene0\Texture.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -94,8 +96,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <Import Project="$(ProjectDir)OpenGL.Local.props"
-          Condition="Exists('$(ProjectDir)OpenGL.Local.props')" />
+  <Import Project="$(ProjectDir)OpenGL.Local.props" Condition="Exists('$(ProjectDir)OpenGL.Local.props')" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
