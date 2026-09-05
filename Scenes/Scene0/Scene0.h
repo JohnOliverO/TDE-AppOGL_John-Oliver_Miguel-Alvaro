@@ -118,5 +118,8 @@ private:
 
 	//Habilita ou Desabilita cor sólida
 	bool bCubeColor;
+
+	//
+	glm::vec2 Tile;
 };
 

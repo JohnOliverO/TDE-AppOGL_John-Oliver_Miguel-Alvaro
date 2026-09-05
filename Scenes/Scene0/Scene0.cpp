@@ -28,6 +28,7 @@ Scene0::Scene0()
 	pShader->LoadShader("SolidColor", "Scenes/Scene0/Solid.vert", "Scenes/Scene0/Solid.frag");
 
 	pShader->LoadShader("Texture", "Scenes/Scene0/Texture.vert", "Scenes/Scene0/Texture.frag");
+	pShader->LoadShader("TextureTriangle", "Scenes/Scene0/TextureTriangle.vert", "Scenes/Scene0/TextureTriangle.frag");
 
 
 	// Cria o gerenciador de grid e axis
@@ -45,6 +46,8 @@ Scene0::Scene0()
 	pTextures = new CTextures();
 	pTextures->LoadTextureAnisotropic(0, "Scenes/Textures/cx2.BMP");
 	pTextures->LoadTextureAnisotropic(1, "Scenes/Textures/grass.BMP");
+	pTextures->LoadTextureAnisotropic(2, "Scenes/Textures/diceD.png");
+	pTextures->LoadTextureAnisotropic(3, "Scenes/Textures/TriangleFaces.bmp");
 
 	//Inicializar as formas geométricas da cena
 	//Aloca as formas da VRAM
@@ -68,6 +71,9 @@ Scene0::Scene0()
 
 	vCubeColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	bCubeColor = false;
+
+	Tile.s = 1.0f;
+	Tile.t = 1.0f;
 }
 
 Scene0::~Scene0()
@@ -176,7 +182,7 @@ void Scene0::DrawScene(float deltaTime)
 
 	//Seta a textura a ser aplicada
 	glActiveTexture(GL_TEXTURE0);
-	pTextures->ApplyTexture(0);
+	pTextures->ApplyTexture(2);
 	pShader->SetInt("Texture0",0);
 
 	//pShader->SetBool("bSolidColor", bCubeColor);
@@ -192,7 +198,7 @@ void Scene0::DrawScene(float deltaTime)
 	//DrawTriangularPyramid();
 
 	// Desenha o triangulo
-	pShader->Use("SolidColor"); // Habilitar o shader para o objeto
+	pShader->Use("TextureTriangle"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
@@ -204,6 +210,10 @@ void Scene0::DrawScene(float deltaTime)
 	pShader->SetMat4("model", model);
 
 	pShader->SetBool("bSolidColor", false);
+
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(3);
+	pShader->SetInt("Texture0", 0);
 
 	DrawSquarePyramid();
 
@@ -222,6 +232,8 @@ void Scene0::DrawScene(float deltaTime)
 	glActiveTexture(GL_TEXTURE0);
 	pTextures->ApplyTexture(1);
 	pShader->SetInt("Texture0", 0);
+
+	pShader->SetVec2("Tile", Tile);
 
 	DrawPlane();
 
@@ -377,6 +389,13 @@ void Scene0::ShowGUI()
 	}
 
 	ImGui::End();
+
+	ImGui::Begin("Tile:");
+
+	ImGui::InputFloat("Tiles S", &Tile.s, 1.0f, 10.0f, "%.0f");
+	ImGui::InputFloat("Tiles T", &Tile.t, 1.0f, 10.0f, "%.0f");
+
+	ImGui::End();
 }
 
 void Scene0::CreateTriangle()
@@ -502,58 +521,58 @@ void Scene0::CreateCube()
 		//positions					//colors			//Coord. Text
 		//	  X		 Y		 Z		 R     G     B       S	   T
 		//	Face0
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v1
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.50f,//v0
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.25f,//v1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.25f, 0.25f,//v2
 			
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
-			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,//v1
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.25f, 0.25f,//v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	0.25f, 0.50f,//v1
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.50f,//v2
 
 		//	Face1
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v0
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v1
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v2
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.25f, 0.25f,//v0
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.25f,//v1
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.50f,//v2
 
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v0
-			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	0.0f, 1.0f,//v1
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v2
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.50f,//v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	0.25f, 0.50f,//v1
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.25f, 0.25f,//v2
 
 		//	Face2
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v0
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v1
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v2
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.50f,//v0
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.50f,//v1
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.25f,//v2
 
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v0
-			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	1.0f, 0.0f,//v1
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v2
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.25f,//v0
+			1.0f,	1.0f,	1.0f,	0.0f, 0.0f, 0.0f,	0.75f, 0.25f,//v1
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.50f,//v2
 
 		//	Face3
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v0
-			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	1.0f, 0.0f,//v1
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v2
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.50f,//v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.75f, 0.50f,//v1
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.75f,//v2
 
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v0
-			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v1
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.0f,//v2
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.75f,//v0
+			1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.75f,//v1
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.50f,//v2
 
 		//	Face4
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
-			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.0f, 0.0f,//v1
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.25f,//v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.50f, 0.0f,//v1
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.0f,//v2
 
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
-			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v1
-			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.0f,//v0
+			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.25f,//v1
+			-1.0f,	1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	0.50f, 0.25f,//v2
 
 		//	Face5
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
-			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.0f, 0.0f,//v1
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.50f,//v0
+			-1.0f,	-1.0f,	-1.0f,	1.0f, 1.0f, 1.0f,	0.75f, 0.25f,//v1
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.25f,//v2
 
-			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
-			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 1.0f,//v1
-			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
+			1.0f,	-1.0f,	-1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.25f,//v0
+			1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.50f,//v1
+			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.50f,//v2
 	};
 
 	//Cria o VAO
@@ -786,22 +805,23 @@ void Scene0::DestroyTriangularPyramid()
 void Scene0::CreateSquarePyramid(float baseSize, float height)
 {
 	float vertices[] = {
-		//	X		Y		Z		R     G     B
-			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v0
-			1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, //v1
-			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+		//positions					//colors			//Coord. Text
+		//	  X		 Y		 Z		 R     G     B       S	   T
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, 0.020f,0.56f,//v0
+			1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, 0.435f,0.56f,//v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.230f,0.90f,//v2
 
-			1.0f,	0.0f,	1.0f,	0.0f, 0.0f, 1.0f, //v0
-			1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, //v1
-			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+			1.0f,	0.0f,	1.0f,	0.0f, 0.0f, 1.0f, 0.530f,0.56f,//v0
+			1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, 0.930f,0.56f,//v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.730f,0.90f,//v2
 
-			1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v0
-			-1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, //v1
-			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
+			1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, 0.020f,0.1f,//v0
+			-1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, 0.435f,0.1f,//v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.230f,0.45f,//v2
 
-			-1.0f,	0.0f,	-1.0f,	1.0f, 1.0f, 1.0f, //v0
-			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, //v1
-			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f //v2
+			-1.0f,	0.0f,	-1.0f,	1.0f, 1.0f, 1.0f, 0.520f,0.1f,//v0
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, 0.940f,0.1f,//v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.730f,0.45f//v2
 	};
 
 	//Cria o VAO
@@ -819,7 +839,7 @@ void Scene0::CreateSquarePyramid(float baseSize, float height)
 
 	//Define os atributos de cada vértice(VAO)
 	//Diz para a GPU como interpretar os dados do VBO
-	int stride = 6 * sizeof(float);
+	int stride = 8 * sizeof(float);
 
 	//Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
@@ -828,6 +848,10 @@ void Scene0::CreateSquarePyramid(float baseSize, float height)
 	//Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	//Cor do vértice (ID=2)
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	//Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
@@ -858,13 +882,13 @@ void Scene0::CreatePlane()
 		//positions					//colors			//Coord. Text
 		//	  X		 Y		 Z		 R     G     B       S	   T
 		//	Face0
-			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 5.0f,//v0
+			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
 			-50.0f,	0.0f,	50.0f,	1.0f, 1.0f, 1.0f,	0.0f, 0.0f,//v1
-			50.0f,	0.0f,	50.0f,	0.5f, 0.5f, 0.5f,	5.0f, 0.0f,//v2
+			50.0f,	0.0f,	50.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v2
 
-			50.0f,	0.0f,	50.0f,	0.5f, 0.5f, 0.5f,	5.0f, 0.0f,//v0
-			50.0f,	0.0f,	-50.0f,	0.0f, 0.0f, 0.0f,	5.0f, 5.0f,//v1
-			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 5.0f,//v2
+			50.0f,	0.0f,	50.0f,	0.5f, 0.5f, 0.5f,	1.0f, 0.0f,//v0
+			50.0f,	0.0f,	-50.0f,	0.0f, 0.0f, 0.0f,	1.0f, 1.0f,//v1
+			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
 	};
 
 	//Cria o VAO

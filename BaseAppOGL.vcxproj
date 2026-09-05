@@ -73,6 +73,8 @@
     <None Include="Scenes\Scene0\Solid.vert" />
     <None Include="Scenes\Scene0\Texture.frag" />
     <None Include="Scenes\Scene0\Texture.vert" />
+    <None Include="Scenes\Scene0\TextureTriangle.frag" />
+    <None Include="Scenes\Scene0\TextureTriangle.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
