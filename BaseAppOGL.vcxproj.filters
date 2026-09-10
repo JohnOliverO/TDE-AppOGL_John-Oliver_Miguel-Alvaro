@@ -185,6 +185,18 @@
     <None Include="Scenes\Scene0\TextureTriangle.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
+    <None Include="Scenes\Scene0\TextureCube.frag">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TextureCube.vert">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TexturePlane.frag">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TexturePlane.vert">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

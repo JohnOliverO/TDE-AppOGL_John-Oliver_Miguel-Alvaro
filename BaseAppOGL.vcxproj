@@ -73,6 +73,10 @@
     <None Include="Scenes\Scene0\Solid.vert" />
     <None Include="Scenes\Scene0\Texture.frag" />
     <None Include="Scenes\Scene0\Texture.vert" />
+    <None Include="Scenes\Scene0\TextureCube.frag" />
+    <None Include="Scenes\Scene0\TextureCube.vert" />
+    <None Include="Scenes\Scene0\TexturePlane.frag" />
+    <None Include="Scenes\Scene0\TexturePlane.vert" />
     <None Include="Scenes\Scene0\TextureTriangle.frag" />
     <None Include="Scenes\Scene0\TextureTriangle.vert" />
   </ItemGroup>

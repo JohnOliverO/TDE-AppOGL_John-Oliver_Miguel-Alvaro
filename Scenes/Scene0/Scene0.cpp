@@ -29,6 +29,8 @@ Scene0::Scene0()
 
 	pShader->LoadShader("Texture", "Scenes/Scene0/Texture.vert", "Scenes/Scene0/Texture.frag");
 	pShader->LoadShader("TextureTriangle", "Scenes/Scene0/TextureTriangle.vert", "Scenes/Scene0/TextureTriangle.frag");
+	pShader->LoadShader("TextureCube", "Scenes/Scene0/TextureCube.vert", "Scenes/Scene0/TextureCube.frag");
+	pShader->LoadShader("TexturePlane", "Scenes/Scene0/TexturePlane.vert", "Scenes/Scene0/TexturePlane.frag");
 
 
 	// Cria o gerenciador de grid e axis
@@ -48,6 +50,9 @@ Scene0::Scene0()
 	pTextures->LoadTextureAnisotropic(1, "Scenes/Textures/grass.BMP");
 	pTextures->LoadTextureAnisotropic(2, "Scenes/Textures/diceD.png");
 	pTextures->LoadTextureAnisotropic(3, "Scenes/Textures/TriangleFaces.bmp");
+	pTextures->LoadTextureAnisotropic(4, "Scenes/Textures/grass.BMP");
+	pTextures->LoadTextureAnisotropic(5, "Scenes/Textures/Mask.BMP");
+	pTextures->LoadTextureAnisotropic(6, "Scenes/Textures/mud.BMP");
 
 	//Inicializar as formas geométricas da cena
 	//Aloca as formas da VRAM
@@ -165,7 +170,7 @@ void Scene0::DrawScene(float deltaTime)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Desenha o cubo
-	pShader->Use("Texture"); // Habilitar o shader para o objeto
+	pShader->Use("TextureCube"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
@@ -220,7 +225,7 @@ void Scene0::DrawScene(float deltaTime)
 	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
 	// Desenha o Plane
-	pShader->Use("Texture"); // Habilitar o shader para o objeto
+	pShader->Use("TexturePlane"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
@@ -229,12 +234,26 @@ void Scene0::DrawScene(float deltaTime)
 	pShader->SetMat4("model", model);
 
 	//Seta a textura a ser aplicada no Plane
+	// Texture0: Base layer (cor base)
 	glActiveTexture(GL_TEXTURE0);
-	pTextures->ApplyTexture(1);
+	pTextures->ApplyTexture(4);
 	pShader->SetInt("Texture0", 0);
+
+	// Texture1: Mask (camada de mascara para definir onde a textura de detalhes será aplicada)
+	glActiveTexture(GL_TEXTURE1);
+	pTextures->ApplyTexture(5);
+	pShader->SetInt("Texture1", 1);
+
+	// Texture1: Detal layer (camada de detalhes)
+	glActiveTexture(GL_TEXTURE2);
+	pTextures->ApplyTexture(6);
+	pShader->SetInt("Texture2", 2);
+
+	// Nota: O TextureTriangle vai usar a mascara para misturar Texture0 e Texture2 
 
 	pShader->SetVec2("Tile", Tile);
 
+	// Desenha o objeto
 	DrawPlane();
 
 
@@ -807,21 +826,21 @@ void Scene0::CreateSquarePyramid(float baseSize, float height)
 	float vertices[] = {
 		//positions					//colors			//Coord. Text
 		//	  X		 Y		 Z		 R     G     B       S	   T
-			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, 0.020f,0.56f,//v0
+			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, 0.030f,0.56f,//v0
 			1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, 0.435f,0.56f,//v1
 			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.230f,0.90f,//v2
 
 			1.0f,	0.0f,	1.0f,	0.0f, 0.0f, 1.0f, 0.530f,0.56f,//v0
-			1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, 0.930f,0.56f,//v1
-			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.730f,0.90f,//v2
+			1.0f,	0.0f,	-1.0f,	0.0f, 0.0f, 1.0f, 0.940f,0.56f,//v1
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.736f,0.90f,//v2
 
-			1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, 0.020f,0.1f,//v0
+			1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, 0.030f,0.1f,//v0
 			-1.0f,	0.0f,	-1.0f,	0.0f, 1.0f, 0.0f, 0.435f,0.1f,//v1
 			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.230f,0.45f,//v2
 
 			-1.0f,	0.0f,	-1.0f,	1.0f, 1.0f, 1.0f, 0.520f,0.1f,//v0
 			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, 0.940f,0.1f,//v1
-			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.730f,0.45f//v2
+			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.736f,0.45f//v2
 	};
 
 	//Cria o VAO
