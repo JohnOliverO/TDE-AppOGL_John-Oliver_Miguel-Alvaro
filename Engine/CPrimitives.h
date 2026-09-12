@@ -15,7 +15,7 @@ struct PrimVertex
     float normal[3];
 };
 
-class CPrimitives 
+class CPrimitives
 {
 
 public:
@@ -29,6 +29,8 @@ public:
     void generateCylinder(float radius = 1.0f, float height = 2.0f, int sectors = 36);
     void generatePlane(float width = 2.0f, float height = 2.0f, int widthSegments = 1, int heightSegments = 1);
     void generatePyramid(float baseSize, float height);
+    void generateCone(float radius = 1.0f, float height = 2.0f, int sectors = 36);
+    void generateTorus(float majorRadius = 1.0f, float minorRadius = 0.3f, int majorSegments = 36, int minorSegments = 18);
 
 
     // OpenGL buffer management

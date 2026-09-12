@@ -1,6 +1,7 @@
 #pragma once
 #include "CSceneBase.h"
 #include "Scenes/Scene0/Scene0.h"
+#include "Scenes/Scene1/Scene1.h"
 
 
 

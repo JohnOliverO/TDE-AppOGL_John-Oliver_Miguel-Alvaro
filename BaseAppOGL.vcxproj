@@ -37,6 +37,7 @@
     <ClInclude Include="Engine\CSceneManager.h" />
     <ClInclude Include="Engine\stb_image.h" />
     <ClInclude Include="Scenes\Scene0\Scene0.h" />
+    <ClInclude Include="Scenes\Scene1\Scene1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\CGridAxis.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="Engine\main.cpp" />
     <ClCompile Include="Engine\CSceneManager.cpp" />
     <ClCompile Include="Scenes\Scene0\Scene0.cpp" />
+    <ClCompile Include="Scenes\Scene1\Scene1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scenes\Common\Assets.frag" />
@@ -79,6 +81,10 @@
     <None Include="Scenes\Scene0\TexturePlane.vert" />
     <None Include="Scenes\Scene0\TextureTriangle.frag" />
     <None Include="Scenes\Scene0\TextureTriangle.vert" />
+    <None Include="Scenes\Scene1\TextureCubeP.frag" />
+    <None Include="Scenes\Scene1\TextureCubeP.vert" />
+    <None Include="Scenes\Scene1\TextureSphereP.frag" />
+    <None Include="Scenes\Scene1\TextureSphereP.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

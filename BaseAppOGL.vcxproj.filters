@@ -61,6 +61,9 @@
     <ClCompile Include="Scenes\Scene0\Scene0.cpp">
       <Filter>Scenes\Scene0</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Scene1\Scene1.cpp">
+      <Filter>Scenes\Scene1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CCamera.h">
@@ -141,6 +144,9 @@
     <ClInclude Include="Scenes\Scene0\Scene0.h">
       <Filter>Scenes\Scene0</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\Scene1\Scene1.h">
+      <Filter>Scenes\Scene1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scenes\Common\Text2D.frag">
@@ -197,6 +203,18 @@
     <None Include="Scenes\Scene0\TexturePlane.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
+    <None Include="Scenes\Scene1\TextureCubeP.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\TextureCubeP.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\TextureSphereP.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\TextureSphereP.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -216,6 +234,9 @@
     </Filter>
     <Filter Include="Engine\stb_image">
       <UniqueIdentifier>{f265e2ac-3cc4-40d4-9abb-47c708d4901d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene1">
+      <UniqueIdentifier>{04938085-2a61-4e91-9ca4-c6a9b942435a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
