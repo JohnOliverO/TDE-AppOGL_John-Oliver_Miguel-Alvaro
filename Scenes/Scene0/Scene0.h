@@ -7,6 +7,9 @@
 #include "Engine/CTimer.h"
 #include "Engine/CText.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 
 class Scene0 : public CSceneBase
@@ -27,6 +30,10 @@ public:
 	void CreateSquare();
 	void DrawSquare();
 	void DestroySquare();
+	//circle
+	void CreateCircle(float radius, int segments);
+	void DrawCircle();
+	void DestroyCircle();
 	//cube
 	void CreateCube();
 	void DrawCube();
@@ -95,6 +102,7 @@ private:
 	//Declara o Vertex Array Object e o Vertex Buffer Object
 	GLuint triangleVAO, triangleVBO;
 	GLuint squareVAO, squareVBO;
+	GLuint circleVAO, circleVBO;
 	GLuint cubeVAO, cubeVBO;
 	GLuint boxVAO, boxVBO;
 	GLuint triangularPyramidVAO, triangularPyramidVBO;
@@ -104,22 +112,25 @@ private:
 	// Variáveis que controlam a translação do cubo atraves das setas do teclado.
 	float fPosX, fPosY, fPosZ, fSpeed;
 
-	//Vetor que controla a escala do Cubo
+	// Vetor que controla a escala do Cubo
 	glm::vec3 vScale;
 
-	//Controla a velocidade de rotação da pirâmide
+	// Controla a velocidade de rotação da pirâmide
 	float fRotSpeed;
 
 	//Habilita ou Desabilita a rotação da pirâmide
 	bool bRot;
 
-	//Cor sólida para o cubo
+	// Cor sólida para o cubo
 	glm::vec4 vCubeColor;
 
-	//Habilita ou Desabilita cor sólida
+	// Habilita ou Desabilita cor sólida
 	bool bCubeColor;
 
-	//
+	// 
 	glm::vec2 Tile;
+
+	// numero de segmentos do círculo
+	int numSegments;
 };
 

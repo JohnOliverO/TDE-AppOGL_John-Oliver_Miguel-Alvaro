@@ -29,8 +29,10 @@ Scene0::Scene0()
 
 	pShader->LoadShader("Texture", "Scenes/Scene0/Texture.vert", "Scenes/Scene0/Texture.frag");
 	pShader->LoadShader("TextureTriangle", "Scenes/Scene0/TextureTriangle.vert", "Scenes/Scene0/TextureTriangle.frag");
+	pShader->LoadShader("TextureCircle", "Scenes/Scene0/TextureCircle.vert", "Scenes/Scene0/TextureCircle.frag");
 	pShader->LoadShader("TextureCube", "Scenes/Scene0/TextureCube.vert", "Scenes/Scene0/TextureCube.frag");
 	pShader->LoadShader("TexturePlane", "Scenes/Scene0/TexturePlane.vert", "Scenes/Scene0/TexturePlane.frag");
+	pShader->LoadShader("TextureSquarePyramid", "Scenes/Scene0/TextureSquarePyramid.vert", "Scenes/Scene0/TextureSquarePyramid.frag");
 
 
 	// Cria o gerenciador de grid e axis
@@ -58,6 +60,7 @@ Scene0::Scene0()
 	//Aloca as formas da VRAM
 	CreateTriangle();
 	CreateSquare();
+	CreateCircle(1.0f, 16);
 	CreateCube();
 	CreateBox(3.0f, 2.0f, 1.0f);
 	//CreateTriangularPyramid(2.0f, 3.0f);
@@ -86,6 +89,7 @@ Scene0::~Scene0()
 	//Desaloca o triangulo da VRAM
 	DestroyTriangle();
 	DestroySquare();
+	DestroyCircle();
 	DestroyCube();
 	DestroyBox();
 	//DestroyTriangularPyramid();
@@ -169,6 +173,32 @@ void Scene0::DrawScene(float deltaTime)
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Desenha o triângulo
+	pShader->Use("TextureTriangle"); // Habilitar o shader para o objeto
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+
+	model = glm::translate(model, glm::vec3(2.0f, 3.0f, 0.0f));
+
+	pShader->SetMat4("model", model);
+
+	DrawTriangle();
+
+	// Desenha o circulo
+	pShader->Use("TextureCircle"); // Habilitar o shader para o objeto
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+
+	model = glm::translate(model, glm::vec3(0.0f, 4.0f, 0.0f));
+
+	pShader->SetMat4("model", model);
+
+	DrawCircle();
+
 	// Desenha o cubo
 	pShader->Use("TextureCube"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
@@ -197,13 +227,11 @@ void Scene0::DrawScene(float deltaTime)
 
 	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
-	//DrawTriangle();
-	//DrawSquare();
 	//DrawBox();
 	//DrawTriangularPyramid();
 
-	// Desenha o triangulo
-	pShader->Use("TextureTriangle"); // Habilitar o shader para o objeto
+	// Desenha a pirâmide de base quadrada
+	pShader->Use("TextureSquarePyramid"); // Habilitar o shader para o objeto
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
@@ -249,7 +277,7 @@ void Scene0::DrawScene(float deltaTime)
 	pTextures->ApplyTexture(6);
 	pShader->SetInt("Texture2", 2);
 
-	// Nota: O TextureTriangle vai usar a mascara para misturar Texture0 e Texture2 
+	// Nota: O TextureSquarePyramid vai usar a mascara para misturar Texture0 e Texture2 
 
 	pShader->SetVec2("Tile", Tile);
 
@@ -291,7 +319,6 @@ void Scene0::DrawScene(float deltaTime)
 	pText->RenderText(std::format("FPS: {0:.0f}\tDeltatime: {1:.2f}ms\tTimer: {2:.2f}s", pTimer->GetFPS(), pTimer->GetDeltaTime(), pTimer->GetTime() / 1000), 5.0f, 10.0f, 0.3f);
 	glEnable(GL_DEPTH_TEST);
 }
-
 
 void Scene0::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 {
@@ -532,6 +559,86 @@ void Scene0::DestroySquare()
 {
 	glDeleteVertexArrays(1, &squareVAO);
 	glDeleteBuffers(1, &squareVBO);
+}
+
+void Scene0::CreateCircle(float radius, int segments)
+{
+	// Aloca o número de segmentos do círculo ao cabesalho da classe para uso posterior
+	this->numSegments = segments;
+
+	std::vector<float> vertices;
+
+	// Calcula o angulo entre cada segmento do círculo
+	float angle = 2.0f * M_PI / segments;
+
+	// Adiciona o centro do círculo como o primeiro vértice
+	vertices.push_back(0.0f);
+	vertices.push_back(0.0f);
+	vertices.push_back(0.0f);
+	vertices.push_back(0.5f);
+	vertices.push_back(0.5f);
+	vertices.push_back(0.5f);
+
+	// Adiciona os vértices ao redor do círculo
+	for (int i = 0; i <= segments; i++)
+	{
+		float x = radius * cos(i * angle);
+		float y = radius * sin(i * angle);
+
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(0.0f);
+		vertices.push_back(0.5f);
+		vertices.push_back(0.5f);
+		vertices.push_back(0.5f);
+	}
+
+	//Cria o VAO
+	glGenVertexArrays(1, &circleVAO);
+	//Cria o VBO
+	glGenBuffers(1, &circleVBO);
+
+	//Ativa o VAO
+	glBindVertexArray(circleVAO);
+
+	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	//Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+	//Define os atributos de cada vértice(VAO)
+	//Diz para a GPU como interpretar os dados do VBO
+	int stride = 6 * sizeof(float);
+
+	//Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+}
+void Scene0::DrawCircle()
+{
+	// Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(circleVAO);
+
+	// Desenha o objeto
+	// Renderizamos o centro + todos os vértices dos segmentos + o ponto final para fechar o círculo
+	// Usamos GL_TRIANGLE_FAN para conectar todos ao redor do centro
+	glDrawArrays(GL_TRIANGLE_FAN, 0, numSegments + 2);
+
+	// Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene0::DestroyCircle()
+{
+	glDeleteVertexArrays(1, &circleVAO);
+	glDeleteBuffers(1, &circleVBO);
 }
 
 void Scene0::CreateCube()

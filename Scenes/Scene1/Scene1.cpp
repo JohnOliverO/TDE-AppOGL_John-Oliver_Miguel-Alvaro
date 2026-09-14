@@ -26,6 +26,8 @@ Scene1::Scene1()
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
 	pShader->LoadShader("TextureCubeP", "Scenes/Scene1/TextureCubeP.vert", "Scenes/Scene1/TextureCubeP.frag");
 	pShader->LoadShader("TextureSphereP", "Scenes/Scene1/TextureSphereP.vert", "Scenes/Scene1/TextureSphereP.frag");
+	pShader->LoadShader("SnowMen", "Scenes/Scene1/SnowMen.vert", "Scenes/Scene1/SnowMen.frag");
+	pShader->LoadShader("Tree", "Scenes/Scene1/Tree.vert", "Scenes/Scene1/Tree.frag");
 
 
 	// Cria o gerenciador de grid e axis
@@ -163,12 +165,11 @@ void Scene1::DrawScene(float deltaTime)
 	sphere.render();
 	*/
 	// Renderiza a Arvore
-	// Renderiza Tronco (Cilindro)
 	pShader->Use("TextureSphereP");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
-	DrawTree(glm::vec3(0.0, 0.0, -5.0), glm::vec3(-1.0, -1.0, -1.0));
+	DrawTree(glm::vec3(0.0, 0.0, -5.0), glm::vec3(1.0, 1.0, 1.0));
 	DrawTree(glm::vec3(-2.0, 0.0, -5.0), glm::vec3(1.0, 2.0, 1.0));
 	DrawTree(glm::vec3(5.0, 0.0, 5.0), glm::vec3(2.0, 3.0, 2.0));
 

@@ -75,16 +75,22 @@
     <None Include="Scenes\Scene0\Solid.vert" />
     <None Include="Scenes\Scene0\Texture.frag" />
     <None Include="Scenes\Scene0\Texture.vert" />
+    <None Include="Scenes\Scene0\TextureCircle.frag" />
+    <None Include="Scenes\Scene0\TextureCircle.vert" />
     <None Include="Scenes\Scene0\TextureCube.frag" />
     <None Include="Scenes\Scene0\TextureCube.vert" />
     <None Include="Scenes\Scene0\TexturePlane.frag" />
     <None Include="Scenes\Scene0\TexturePlane.vert" />
     <None Include="Scenes\Scene0\TextureTriangle.frag" />
     <None Include="Scenes\Scene0\TextureTriangle.vert" />
+    <None Include="Scenes\Scene1\SnowMen.frag" />
+    <None Include="Scenes\Scene1\SnowMen.vert" />
     <None Include="Scenes\Scene1\TextureCubeP.frag" />
     <None Include="Scenes\Scene1\TextureCubeP.vert" />
     <None Include="Scenes\Scene1\TextureSphereP.frag" />
     <None Include="Scenes\Scene1\TextureSphereP.vert" />
+    <None Include="Scenes\Scene1\Tree.frag" />
+    <None Include="Scenes\Scene1\Tree.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

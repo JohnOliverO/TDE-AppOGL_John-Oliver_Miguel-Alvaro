@@ -215,6 +215,24 @@
     <None Include="Scenes\Scene1\TextureSphereP.vert">
       <Filter>Scenes\Scene1</Filter>
     </None>
+    <None Include="Scenes\Scene1\SnowMen.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\SnowMen.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\Tree.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\Tree.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TextureCircle.frag">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TextureCircle.vert">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
