@@ -22,54 +22,54 @@ public:
 	virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
 	void ShowGUI();
-	//triangle
+	// triangle
 	void CreateTriangle();
 	void DrawTriangle();
 	void DestroyTriangle();
-	//square
+	// square
 	void CreateSquare();
 	void DrawSquare();
 	void DestroySquare();
-	//circle
+	// circle
 	void CreateCircle(float radius, int segments);
 	void DrawCircle();
 	void DestroyCircle();
-	//cube
+	// cube
 	void CreateCube();
 	void DrawCube();
 	void DestroyCube();
-	//box
+	// box
 	void CreateBox(float xSize, float ySize, float zSize);
 	void DrawBox();
 	void DestroyBox();
-	//triangular-based pyramid
+	// triangular-based pyramid
 	void CreateTriangularPyramid(float baseSize, float height);
 	void DrawTriangularPyramid();
 	void DestroyTriangularPyramid();
-	//square-based pyramid
+	// square-based pyramid
 	void CreateSquarePyramid(float baseSize, float height);
 	void DrawSquarePyramid();
 	void DestroySquarePyramid();
 	/*
-	//pentagonal-based pyramid
+	// pentagonal-based pyramid
 	void CreatePentagonalPyramid(float baseSize, float height);
 	void DrawPentagonalPyramid();
 	void DestroyPentagonalPyramid();
-	//hexagonal-based pyramid
+	// hexagonal-based pyramid
 	void CreateHexagonalPyramid(float baseSize, float height);
 	void DrawHexagonalPyramid();
 	void DestroyHexagonalPyramid();
-	//heptagonal-based pyramid
+	// heptagonal-based pyramid
 	void CreateHeptagonalPyramid(float baseSize, float height);
 	void DrawHeptagonalPyramid();
 	void DestroyHeptagonalPyramid();
-	//octagonal-based pyramid
+	// octagonal-based pyramid
 	void CreateOctagonalPyramid(float baseSize, float height);
 	void DrawOctagonalPyramid();
 	void DestroyOctagonalPyramid();
 	*/
 
-	//Plane
+	// Plane
 	void CreatePlane();
 	void DrawPlane();
 	void DestroyPlane();
@@ -99,7 +99,7 @@ private:
 
 	bool bActiveGUI;
 
-	//Declara o Vertex Array Object e o Vertex Buffer Object
+	// Declara o Vertex Array Object e o Vertex Buffer Object
 	GLuint triangleVAO, triangleVBO;
 	GLuint squareVAO, squareVBO;
 	GLuint circleVAO, circleVBO;
@@ -118,7 +118,7 @@ private:
 	// Controla a velocidade de rotação da pirâmide
 	float fRotSpeed;
 
-	//Habilita ou Desabilita a rotação da pirâmide
+	// Habilita ou Desabilita a rotação da pirâmide
 	bool bRot;
 
 	// Cor sólida para o cubo
@@ -127,7 +127,7 @@ private:
 	// Habilita ou Desabilita cor sólida
 	bool bCubeColor;
 
-	// 
+	// Variável que controla a quantidade de tiles da textura aplicada ao plano
 	glm::vec2 Tile;
 
 	// numero de segmentos do círculo

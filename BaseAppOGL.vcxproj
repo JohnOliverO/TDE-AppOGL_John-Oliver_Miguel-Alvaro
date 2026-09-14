@@ -83,6 +83,8 @@
     <None Include="Scenes\Scene0\TexturePlane.vert" />
     <None Include="Scenes\Scene0\TextureTriangle.frag" />
     <None Include="Scenes\Scene0\TextureTriangle.vert" />
+    <None Include="Scenes\Scene1\Circle.frag" />
+    <None Include="Scenes\Scene1\Circle.vert" />
     <None Include="Scenes\Scene1\SnowMen.frag" />
     <None Include="Scenes\Scene1\SnowMen.vert" />
     <None Include="Scenes\Scene1\TextureCubeP.frag" />

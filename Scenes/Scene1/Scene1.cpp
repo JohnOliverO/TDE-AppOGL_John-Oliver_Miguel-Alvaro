@@ -28,6 +28,7 @@ Scene1::Scene1()
 	pShader->LoadShader("TextureSphereP", "Scenes/Scene1/TextureSphereP.vert", "Scenes/Scene1/TextureSphereP.frag");
 	pShader->LoadShader("SnowMen", "Scenes/Scene1/SnowMen.vert", "Scenes/Scene1/SnowMen.frag");
 	pShader->LoadShader("Tree", "Scenes/Scene1/Tree.vert", "Scenes/Scene1/Tree.frag");
+	pShader->LoadShader("Circle", "Scenes/Scene1/Circle.vert", "Scenes/Scene1/Circle.frag");
 
 
 	// Cria o gerenciador de grid e axis
@@ -36,7 +37,7 @@ Scene1::Scene1()
 
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
-	//pTextures = new CTextures();
+	// pTextures = new CTextures();
 
 	// Cria as primitivas
 	cube.generateCube(2.0);
@@ -164,7 +165,7 @@ void Scene1::DrawScene(float deltaTime)
 
 	sphere.render();
 	*/
-	// Renderiza a Arvore
+	// Renderiza as Arvore
 	pShader->Use("TextureSphereP");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
@@ -276,4 +277,85 @@ void Scene1::DrawTree(glm::vec3 pos, glm::vec3 size)
 	pShader->SetVec4("Color", glm::vec4(0.0, 0.5, 0.0, 1.0));
 
 	cone.render();
+}
+
+// forma adicional para entrega de trabalho
+void Scene1::CreateCircle(float radius, int segments)
+{
+	// Aloca o número de segmentos do círculo ao cabesalho da classe para uso posterior
+	this->numSegments = segments;
+
+	std::vector<float> vertices;
+
+	// Calcula o angulo entre cada segmento do círculo
+	float angle = 2.0f * M_PI / segments;
+
+	// Adiciona o centro do círculo como o primeiro vértice
+	vertices.push_back(0.0f);
+	vertices.push_back(0.0f);
+	vertices.push_back(0.0f);
+	vertices.push_back(0.5f);
+	vertices.push_back(0.5f);
+	vertices.push_back(0.5f);
+
+	// Adiciona os vértices ao redor do círculo
+	for (int i = 0; i <= segments; i++)
+	{
+		float x = radius * cos(i * angle);
+		float y = radius * sin(i * angle);
+
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(0.0f);
+		vertices.push_back(0.5f);
+		vertices.push_back(0.5f);
+		vertices.push_back(0.5f);
+	}
+
+	// Cria o VAO
+	glGenVertexArrays(1, &circleVAO);
+	// Cria o VBO
+	glGenBuffers(1, &circleVBO);
+
+	// Ativa o VAO
+	glBindVertexArray(circleVAO);
+
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
+	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
+	int stride = 6 * sizeof(float);
+
+	// Posição do vértice (ID=0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// Cor do vértice (ID=1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// Desativa o VAO (evita conflito com outros VAOs)
+	glBindVertexArray(0);
+}
+void Scene1::DrawCircle()
+{
+	// Ativa o VAO que representa o objeto a ser desenhado
+	glBindVertexArray(circleVAO);
+
+	// Desenha o objeto
+	// Renderizamos o centro + todos os vértices dos segmentos + o ponto final para fechar o círculo
+	// Usamos GL_TRIANGLE_FAN para conectar todos ao redor do centro
+	glDrawArrays(GL_TRIANGLE_FAN, 0, numSegments + 2);
+
+	// Desativa o VAO depois da renderização do objeto
+	glBindVertexArray(0);
+}
+
+void Scene1::DestroyCircle()
+{
+	glDeleteVertexArrays(1, &circleVAO);
+	glDeleteBuffers(1, &circleVBO);
 }

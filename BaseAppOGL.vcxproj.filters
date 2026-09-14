@@ -233,6 +233,12 @@
     <None Include="Scenes\Scene0\TextureCircle.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
+    <None Include="Scenes\Scene1\Circle.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\Circle.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

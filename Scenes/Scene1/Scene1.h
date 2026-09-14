@@ -21,6 +21,12 @@ public:
 
 		void DrawTree(glm::vec3 pos, glm::vec3 size = glm::vec3(1.0, 1.0, 1.0));
 
+		// forma adicional para entrega de trabalho
+		// circle
+		void CreateCircle(float radius, int segments);
+		void DrawCircle();
+		void DestroyCircle();
+
 private:
 
 	// Camera
@@ -41,8 +47,12 @@ private:
 	// Texto
 	CText* pText;			
 
-	//Primitivas
+	// Primitivas
 	CPrimitives cube, sphere, cylinder, cone;
 
+	// forma adicional para entrega de trabalho
+	GLuint circleVAO, circleVBO;
+	// numero de segmentos do círculo
+	int numSegments;
 };
 

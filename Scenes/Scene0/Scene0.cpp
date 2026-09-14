@@ -56,14 +56,14 @@ Scene0::Scene0()
 	pTextures->LoadTextureAnisotropic(5, "Scenes/Textures/Mask.BMP");
 	pTextures->LoadTextureAnisotropic(6, "Scenes/Textures/mud.BMP");
 
-	//Inicializar as formas geométricas da cena
-	//Aloca as formas da VRAM
+	// Inicializar as formas geométricas da cena
+	// Aloca as formas da VRAM
 	CreateTriangle();
 	CreateSquare();
 	CreateCircle(1.0f, 16);
 	CreateCube();
 	CreateBox(3.0f, 2.0f, 1.0f);
-	//CreateTriangularPyramid(2.0f, 3.0f);
+	// CreateTriangularPyramid(2.0f, 3.0f);
 	CreateSquarePyramid(2.0f, 3.0f);
 	CreatePlane();
 
@@ -86,13 +86,13 @@ Scene0::Scene0()
 
 Scene0::~Scene0()
 {
-	//Desaloca o triangulo da VRAM
+	// Desaloca o triangulo da VRAM
 	DestroyTriangle();
 	DestroySquare();
 	DestroyCircle();
 	DestroyCube();
 	DestroyBox();
-	//DestroyTriangularPyramid();
+	// DestroyTriangularPyramid();
 	DestroySquarePyramid();
 	DestroyPlane();
 
@@ -215,20 +215,20 @@ void Scene0::DrawScene(float deltaTime)
 		pShader->SetVec4("vCubeColor", vCubeColor);
 	}
 
-	//Seta a textura a ser aplicada
+	// Seta a textura a ser aplicada
 	glActiveTexture(GL_TEXTURE0);
 	pTextures->ApplyTexture(2);
 	pShader->SetInt("Texture0",0);
 
-	//pShader->SetBool("bSolidColor", bCubeColor);
-	//pShader->SetVec4("vCubeColor", vCubeColor);
+	// pShader->SetBool("bSolidColor", bCubeColor);
+	// pShader->SetVec4("vCubeColor", vCubeColor);
 
 	DrawCube();
 
-	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
+	// pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
-	//DrawBox();
-	//DrawTriangularPyramid();
+	// DrawBox();
+	// DrawTriangularPyramid();
 
 	// Desenha a pirâmide de base quadrada
 	pShader->Use("TextureSquarePyramid"); // Habilitar o shader para o objeto
@@ -250,7 +250,7 @@ void Scene0::DrawScene(float deltaTime)
 
 	DrawSquarePyramid();
 
-	//pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
+	// pShader->SetVec3("solidColor", glm::vec3(1.0, 0.0, 1.0)); // Define cor
 
 	// Desenha o Plane
 	pShader->Use("TexturePlane"); // Habilitar o shader para o objeto
@@ -261,7 +261,7 @@ void Scene0::DrawScene(float deltaTime)
 	
 	pShader->SetMat4("model", model);
 
-	//Seta a textura a ser aplicada no Plane
+	// Seta a textura a ser aplicada no Plane
 	// Texture0: Base layer (cor base)
 	glActiveTexture(GL_TEXTURE0);
 	pTextures->ApplyTexture(4);
@@ -348,7 +348,7 @@ void Scene0::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 		if (input.IsKeyPressed(GLFW_KEY_Q))
 			pCamera->ProcessKeyboard(DOWN, deltaTime);
 
-		//Teclas de controle interativo de posição do cubo
+		// Teclas de controle interativo de posição do cubo
 		if (input.IsKeyPressed(GLFW_KEY_UP))
 			fPosZ -= fSpeed * deltaTime;
 		if (input.IsKeyPressed(GLFW_KEY_DOWN))
@@ -453,45 +453,45 @@ void Scene0::CreateTriangle()
 			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, //v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &triangleVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &triangleVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(triangleVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 6 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 
 }
 
 void Scene0::DrawTriangle()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(triangleVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
@@ -514,44 +514,44 @@ void Scene0::CreateSquare()
 			-1.0f,	1.0f,	0.0f,	0.5f, 0.5f, 0.5f, //v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &squareVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &squareVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(squareVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 6 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 }
 
 void Scene0::DrawSquare()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(squareVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
@@ -593,32 +593,32 @@ void Scene0::CreateCircle(float radius, int segments)
 		vertices.push_back(0.5f);
 	}
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &circleVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &circleVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(circleVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 6 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 }
 void Scene0::DrawCircle()
@@ -644,7 +644,7 @@ void Scene0::DestroyCircle()
 void Scene0::CreateCube()
 {
 	float vertices[] = {
-		//positions					//colors			//Coord. Text
+		// positions				// colors			// Coord. Text
 		//	  X		 Y		 Z		 R     G     B       S	   T
 		//	Face0
 			-1.0f,	1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.0f, 0.50f,//v0
@@ -701,48 +701,48 @@ void Scene0::CreateCube()
 			-1.0f,	-1.0f,	1.0f,	0.5f, 0.5f, 0.5f,	0.75f, 0.50f,//v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &cubeVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &cubeVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(cubeVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 8 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Cor do vértice (ID=2)
+	// Cor do vértice (ID=2)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 }
 
 void Scene0::DrawCube()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(cubeVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
@@ -811,44 +811,44 @@ void Scene0::CreateBox(float xSize, float ySize, float zSize)
 			-xSize,	-ySize,	zSize,	0.5f, 0.5f, 0.5f, //v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &boxVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &boxVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(boxVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, boxVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 6 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 }
 
 void Scene0::DrawBox()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(boxVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
@@ -879,45 +879,45 @@ void Scene0::CreateTriangularPyramid()
 			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f //v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &triangularPyramidVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &triangularPyramidVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(triangularPyramidVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, triangularPyramidVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 6 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 
 }
 
 void Scene0::DrawTriangularPyramid()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(triangularPyramidVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 12);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
@@ -931,7 +931,7 @@ void Scene0::DestroyTriangularPyramid()
 void Scene0::CreateSquarePyramid(float baseSize, float height)
 {
 	float vertices[] = {
-		//positions					//colors			//Coord. Text
+		//	positions				// colors		  // Coord. Text
 		//	  X		 Y		 Z		 R     G     B       S	   T
 			-1.0f,	0.0f,	1.0f,	1.0f, 0.0f, 1.0f, 0.030f,0.56f,//v0
 			1.0f,	0.0f,	1.0f,	0.0f, 1.0f, 1.0f, 0.435f,0.56f,//v1
@@ -950,49 +950,49 @@ void Scene0::CreateSquarePyramid(float baseSize, float height)
 			0.0f,	2.0f,	0.0f,	0.0f, 0.0f, 0.0f, 0.736f,0.45f//v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &squarePyramidVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &squarePyramidVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(squarePyramidVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, squarePyramidVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 8 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Cor do vértice (ID=2)
+	// Cor do vértice (ID=2)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 
 }
 
 void Scene0::DrawSquarePyramid()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(squarePyramidVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 12);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
@@ -1005,7 +1005,7 @@ void Scene0::DestroySquarePyramid()
 void Scene0::CreatePlane()
 {
 	float vertices[] = {
-		//positions					//colors			//Coord. Text
+		//	positions				// colors			// Coord. Text
 		//	  X		 Y		 Z		 R     G     B       S	   T
 		//	Face0
 			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v0
@@ -1017,48 +1017,48 @@ void Scene0::CreatePlane()
 			-50.0f,	0.0f,	-50.0f,	0.5f, 0.5f, 0.5f,	0.0f, 1.0f,//v2
 	};
 
-	//Cria o VAO
+	// Cria o VAO
 	glGenVertexArrays(1, &planeVAO);
-	//Cria o VBO
+	// Cria o VBO
 	glGenBuffers(1, &planeVBO);
 
-	//Ativa o VAO
+	// Ativa o VAO
 	glBindVertexArray(planeVAO);
 
-	//Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	//Esse VBO está ligado com o VAO
+	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
+	// Esse VBO está ligado com o VAO
 	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//Define os atributos de cada vértice(VAO)
-	//Diz para a GPU como interpretar os dados do VBO
+	// Define os atributos de cada vértice(VAO)
+	// Diz para a GPU como interpretar os dados do VBO
 	int stride = 8 * sizeof(float);
 
-	//Posição do vértice (ID=0)
+	// Posição do vértice (ID=0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//Cor do vértice (ID=1)
+	// Cor do vértice (ID=1)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Cor do vértice (ID=2)
+	// Cor do vértice (ID=2)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	//Desativa o VAO (evita conflito com outros VAOs)
+	// Desativa o VAO (evita conflito com outros VAOs)
 	glBindVertexArray(0);
 }
 
 void Scene0::DrawPlane()
 {
-	//Ativa o VAO que representa o objeto a ser desenhado
+	// Ativa o VAO que representa o objeto a ser desenhado
 	glBindVertexArray(planeVAO);
 
-	//Desenha o objeto
+	// Desenha o objeto
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	//Desativa o VAO depois da renderização do objeto
+	// Desativa o VAO depois da renderização do objeto
 	glBindVertexArray(0);
 }
 
