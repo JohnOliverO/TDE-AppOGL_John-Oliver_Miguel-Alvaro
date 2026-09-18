@@ -20,6 +20,10 @@ public:
         virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
 		void DrawTree(glm::vec3 pos, glm::vec3 size = glm::vec3(1.0, 1.0, 1.0));
+		void DrawSnowMan(glm::vec3 pos, glm::vec3 size = glm::vec3(1.0, 1.0, 1.0));
+		void DrawSnowManBodyDitals(glm::mat4 model);
+		void DrawSnowManHeadDitals(glm::mat4 model);
+		void DrawSnowManHat(glm::mat4 model);
 
 		// forma adicional para entrega de trabalho
 		// circle

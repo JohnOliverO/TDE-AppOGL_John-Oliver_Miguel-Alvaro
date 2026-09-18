@@ -215,10 +215,10 @@
     <None Include="Scenes\Scene1\TextureSphereP.vert">
       <Filter>Scenes\Scene1</Filter>
     </None>
-    <None Include="Scenes\Scene1\SnowMen.frag">
+    <None Include="Scenes\Scene1\SnowMan.frag">
       <Filter>Scenes\Scene1</Filter>
     </None>
-    <None Include="Scenes\Scene1\SnowMen.vert">
+    <None Include="Scenes\Scene1\SnowMan.vert">
       <Filter>Scenes\Scene1</Filter>
     </None>
     <None Include="Scenes\Scene1\Tree.frag">

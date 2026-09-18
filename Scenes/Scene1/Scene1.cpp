@@ -26,7 +26,7 @@ Scene1::Scene1()
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
 	pShader->LoadShader("TextureCubeP", "Scenes/Scene1/TextureCubeP.vert", "Scenes/Scene1/TextureCubeP.frag");
 	pShader->LoadShader("TextureSphereP", "Scenes/Scene1/TextureSphereP.vert", "Scenes/Scene1/TextureSphereP.frag");
-	pShader->LoadShader("SnowMen", "Scenes/Scene1/SnowMen.vert", "Scenes/Scene1/SnowMen.frag");
+	pShader->LoadShader("SnowMan", "Scenes/Scene1/SnowMan.vert", "Scenes/Scene1/SnowMan.frag");
 	pShader->LoadShader("Tree", "Scenes/Scene1/Tree.vert", "Scenes/Scene1/Tree.frag");
 	pShader->LoadShader("Circle", "Scenes/Scene1/Circle.vert", "Scenes/Scene1/Circle.frag");
 
@@ -166,7 +166,7 @@ void Scene1::DrawScene(float deltaTime)
 	sphere.render();
 	*/
 	// Renderiza as Arvore
-	pShader->Use("TextureSphereP");
+	pShader->Use("Tree");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
@@ -174,7 +174,12 @@ void Scene1::DrawScene(float deltaTime)
 	DrawTree(glm::vec3(-2.0, 0.0, -5.0), glm::vec3(1.0, 2.0, 1.0));
 	DrawTree(glm::vec3(5.0, 0.0, 5.0), glm::vec3(2.0, 3.0, 2.0));
 
+	// Renderiza o Boneco de Neve
+	pShader->Use("SnowMan");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
 
+	DrawSnowMan(glm::vec3(0.0, 0.0, 5.0), glm::vec3(1.0, 1.0, 1.0));
 
 
 
@@ -277,6 +282,74 @@ void Scene1::DrawTree(glm::vec3 pos, glm::vec3 size)
 	pShader->SetVec4("Color", glm::vec4(0.0, 0.5, 0.0, 1.0));
 
 	cone.render();
+}
+
+void Scene1::DrawSnowMan(glm::vec3 pos, glm::vec3 size)
+{
+	glm::mat4 model = glm::mat4(1.0);
+
+	model = glm::translate(model, pos);
+	model = glm::scale(model, size);
+
+	// Renderiza Base (Esfera)
+	model = glm::translate(model, glm::vec3(0.0, 1.0, 0.0));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(1.0, 1.0, 1.0, 1.0));
+	sphere.render();
+
+	// Renderiza Corpo (Esfera)
+	model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.75f, 0.75f, 0.75f));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(1.0, 1.0, 1.0, 1.0));
+	sphere.render();
+	DrawSnowManBodyDitals(model);
+
+	// Renderiza Cabeça (Esfera)
+	model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.75f, 0.75f, 0.75f));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(1.0, 1.0, 1.0, 1.0));
+	sphere.render();
+	DrawSnowManHeadDitals(model);
+	DrawSnowManHat(model);
+}
+
+void Scene1::DrawSnowManBodyDitals(glm::mat4 model)
+{
+	model = glm::translate(model, glm::vec3(0.0, -0.25, 0.9));
+	model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(0.0, 0.0, 0.0, 1.0));
+	sphere.render();
+	model = glm::translate(model, glm::vec3(0.0, 4.0, 0.0));
+	pShader->SetMat4("model", model);
+	sphere.render();
+}
+
+void Scene1::DrawSnowManHeadDitals(glm::mat4 model)
+{
+	model = glm::translate(model, glm::vec3(0.0, -0.25, 0.9));
+	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(0.0, 0.0, 0.0, 1.0));
+	sphere.render();
+	model = glm::translate(model, glm::vec3(0.5, 2.5, 0.0));
+	pShader->SetMat4("model", model);
+	sphere.render();
+}
+
+void Scene1::DrawSnowManHat(glm::mat4 model)
+{
+	model = glm::translate(model, glm::vec3(0.0, 0.5, 0.0));
+	model = glm::scale(model, glm::vec3(1.5f, 1.0f, 1.5f));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(0.5, 0.20, 1.0, 1.0));
+	cylinder.render();
+	model = glm::translate(model, glm::vec3(0.0, 0.25, 0.0));
+	model = glm::scale(model, glm::vec3(1.5f, 0.20f, 1.5f));
+	pShader->SetMat4("model", model);
+	cylinder.render();
 }
 
 // forma adicional para entrega de trabalho
