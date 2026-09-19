@@ -26,6 +26,7 @@ Scene1::Scene1()
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
 	pShader->LoadShader("TextureCubeP", "Scenes/Scene1/TextureCubeP.vert", "Scenes/Scene1/TextureCubeP.frag");
 	pShader->LoadShader("TextureSphereP", "Scenes/Scene1/TextureSphereP.vert", "Scenes/Scene1/TextureSphereP.frag");
+	pShader->LoadShader("SnowPlane", "Scenes/Scene1/SnowPlane.vert", "Scenes/Scene1/SnowPlane.frag");
 	pShader->LoadShader("SnowMan", "Scenes/Scene1/SnowMan.vert", "Scenes/Scene1/SnowMan.frag");
 	pShader->LoadShader("Tree", "Scenes/Scene1/Tree.vert", "Scenes/Scene1/Tree.frag");
 	pShader->LoadShader("Circle", "Scenes/Scene1/Circle.vert", "Scenes/Scene1/Circle.frag");
@@ -37,7 +38,8 @@ Scene1::Scene1()
 
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
-	// pTextures = new CTextures();
+	pTextures = new CTextures();
+	pTextures->LoadTextureAnisotropic(0, "Scenes/Textures/snow.jpg");
 
 	// Cria as primitivas
 	cube.generateCube(2.0);
@@ -51,8 +53,10 @@ Scene1::Scene1()
 
 	cone.generateCone(2.0f, 3.0f);
 	cone.setupBuffers();
-	
 
+	plane.generatePlane(50.0f,50.0f);
+	plane.setupBuffers();
+	
 }
 
 Scene1::~Scene1()
@@ -61,6 +65,7 @@ Scene1::~Scene1()
 	sphere.cleanup();
 	cylinder.cleanup();
 	cone.cleanup();
+	plane.cleanup();
 
 	if (pCamera)
 	{
@@ -118,6 +123,7 @@ void Scene1::DrawScene(float deltaTime)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
 	// Draw the 3D grid
 	pShader->Use("Grid");
 	pShader->SetMat4("uProj", projection);
@@ -132,7 +138,7 @@ void Scene1::DrawScene(float deltaTime)
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
 	pGridAxis->DrawAxis();
-
+	*/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,6 +171,20 @@ void Scene1::DrawScene(float deltaTime)
 
 	sphere.render();
 	*/
+	// Renderiza o Solo de Neve
+	pShader->Use("SnowPlane");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+	pShader->SetMat4("model", model);
+
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(0);
+	pShader->SetInt("Texture0", 0);
+
+	plane.render();
+
 	// Renderiza as Arvore
 	pShader->Use("Tree");
 	pShader->SetMat4("projection", projection);
@@ -179,7 +199,19 @@ void Scene1::DrawScene(float deltaTime)
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
-	DrawSnowMan(glm::vec3(0.0, 0.0, 5.0), glm::vec3(1.0, 1.0, 1.0));
+	if(danceDirection){
+		danceAngle += 10 * deltaTime;
+		if (danceAngle > 90) {
+			danceDirection = !danceDirection;
+		}
+	} else {
+		danceAngle -= 10 * deltaTime;
+		if (danceAngle < 0) {
+			danceDirection = !danceDirection;
+		}
+	}
+
+	DrawSnowMan(glm::vec3(0.0, 0.0, 5.0), glm::vec3(1.0, 1.0, 1.0), danceAngle);
 
 
 
@@ -284,12 +316,13 @@ void Scene1::DrawTree(glm::vec3 pos, glm::vec3 size)
 	cone.render();
 }
 
-void Scene1::DrawSnowMan(glm::vec3 pos, glm::vec3 size)
+void Scene1::DrawSnowMan(glm::vec3 pos, glm::vec3 size, float danceAngle)
 {
 	glm::mat4 model = glm::mat4(1.0);
 
 	model = glm::translate(model, pos);
 	model = glm::scale(model, size);
+	model = glm::rotate(model, glm::radians(danceAngle-45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Renderiza Base (Esfera)
 	model = glm::translate(model, glm::vec3(0.0, 1.0, 0.0));
@@ -329,14 +362,20 @@ void Scene1::DrawSnowManBodyDitals(glm::mat4 model)
 
 void Scene1::DrawSnowManHeadDitals(glm::mat4 model)
 {
-	model = glm::translate(model, glm::vec3(0.0, -0.25, 0.9));
-	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+	model = glm::translate(model, glm::vec3(-0.4, 0.25, 0.9));
+	model = glm::scale(model, glm::vec3(0.20f, 0.20f, 0.20f));
 	pShader->SetMat4("model", model);
 	pShader->SetVec4("Color", glm::vec4(0.0, 0.0, 0.0, 1.0));
 	sphere.render();
-	model = glm::translate(model, glm::vec3(0.5, 2.5, 0.0));
+	model = glm::translate(model, glm::vec3(4.0, 0.0, 0.0));
 	pShader->SetMat4("model", model);
 	sphere.render();
+	model = glm::translate(model, glm::vec3(-2.0, -2.0, 2.0));
+	model = glm::scale(model, glm::vec3(0.50f, 0.50f, 2.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pShader->SetVec4("Color", glm::vec4(1.0, 0.5, 0.0, 1.0));
+	cone.render();
 }
 
 void Scene1::DrawSnowManHat(glm::mat4 model)

@@ -201,9 +201,9 @@ void CPrimitives::generateCylinder(float radius, float height, int sectors) {
 
     // Bottom cap indices
     for (int i = 0; i < sectors; ++i) {
-        indices.push_back(baseIndex);
-        indices.push_back(baseIndex + i + 2);
         indices.push_back(baseIndex + i + 1);
+        indices.push_back(baseIndex + i + 2);
+        indices.push_back(baseIndex);
     }
 
     // Top cap center
@@ -222,9 +222,9 @@ void CPrimitives::generateCylinder(float radius, float height, int sectors) {
 
     // Top cap indices
     for (int i = 0; i < sectors; ++i) {
-        indices.push_back(topBaseIndex);
-        indices.push_back(topBaseIndex + i + 1);
         indices.push_back(topBaseIndex + i + 2);
+        indices.push_back(topBaseIndex + i + 1);
+        indices.push_back(topBaseIndex);
     }
 }
 
@@ -358,9 +358,9 @@ void CPrimitives::generateCone(float radius, float height, int sectors) {
         normalizeVector(n);
 
         PrimVertex vBase;
-        vBase.position[0] = radius * cosA;
+        vBase.position[2] = radius * cosA;
         vBase.position[1] = -halfHeight;
-        vBase.position[2] = radius * sinA;
+        vBase.position[0] = radius * sinA;
         vBase.texCoord[0] = (float)j / sectors;
         vBase.texCoord[1] = 0.0f;
         vBase.normal[0] = n[0]; vBase.normal[1] = n[1]; vBase.normal[2] = n[2];
@@ -401,9 +401,9 @@ void CPrimitives::generateCone(float radius, float height, int sectors) {
     }
 
     for (int j = 0; j < sectors; ++j) {
-        indices.push_back(baseIndex);
-        indices.push_back(baseIndex + j + 2);
         indices.push_back(baseIndex + j + 1);
+        indices.push_back(baseIndex + j + 2);
+        indices.push_back(baseIndex );
     }
 }
 

@@ -1,11 +1,11 @@
 OpenGL Vendor: NVIDIA Corporation
 OpenGL Renderer: NVIDIA GeForce RTX 3060/PCIe/SSE2
-OpenGL Version: 4.6.0 NVIDIA 591.86
+OpenGL Version: 4.6.0 NVIDIA 616.92
 Major OpenGL Version: 4
 Minor OpenGL Version: 6
 GLSL Version: 4.60 NVIDIA
 
-Number of Supported Extensions : 403
+Number of Supported Extensions : 404
 List of Supported Extensions:
 GL_AMD_multi_draw_indirect
 GL_AMD_seamless_cubemap_per_texture
@@ -101,6 +101,7 @@ GL_ARB_shader_atomic_counters
 GL_ARB_shader_ballot
 GL_ARB_shader_bit_encoding
 GL_ARB_shader_clock
+GL_EXT_shader_realtime_clock
 GL_ARB_shader_draw_parameters
 GL_ARB_shader_group_vote
 GL_ARB_shader_image_load_store
