@@ -14,123 +14,123 @@
 
 class Scene0 : public CSceneBase
 {
-public:
-	Scene0();
-	~Scene0();
+	public:
+		Scene0();
+		~Scene0();
 
-	virtual void DrawScene(float deltaTime);
-	virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
+		virtual void DrawScene(float deltaTime);
+		virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
-	void ShowGUI();
-	// triangle
-	void CreateTriangle();
-	void DrawTriangle();
-	void DestroyTriangle();
-	// square
-	void CreateSquare();
-	void DrawSquare();
-	void DestroySquare();
-	// circle
-	void CreateCircle(float radius, int segments);
-	void DrawCircle();
-	void DestroyCircle();
-	// cube
-	void CreateCube();
-	void DrawCube();
-	void DestroyCube();
-	// box
-	void CreateBox(float xSize, float ySize, float zSize);
-	void DrawBox();
-	void DestroyBox();
-	// triangular-based pyramid
-	void CreateTriangularPyramid(float baseSize, float height);
-	void DrawTriangularPyramid();
-	void DestroyTriangularPyramid();
-	// square-based pyramid
-	void CreateSquarePyramid(float baseSize, float height);
-	void DrawSquarePyramid();
-	void DestroySquarePyramid();
-	/*
-	// pentagonal-based pyramid
-	void CreatePentagonalPyramid(float baseSize, float height);
-	void DrawPentagonalPyramid();
-	void DestroyPentagonalPyramid();
-	// hexagonal-based pyramid
-	void CreateHexagonalPyramid(float baseSize, float height);
-	void DrawHexagonalPyramid();
-	void DestroyHexagonalPyramid();
-	// heptagonal-based pyramid
-	void CreateHeptagonalPyramid(float baseSize, float height);
-	void DrawHeptagonalPyramid();
-	void DestroyHeptagonalPyramid();
-	// octagonal-based pyramid
-	void CreateOctagonalPyramid(float baseSize, float height);
-	void DrawOctagonalPyramid();
-	void DestroyOctagonalPyramid();
-	*/
+		void ShowGUI();
+		// triangle
+		void CreateTriangle();
+		void DrawTriangle();
+		void DestroyTriangle();
+		// square
+		void CreateSquare();
+		void DrawSquare();
+		void DestroySquare();
+		// circle
+		void CreateCircle(float radius, int segments);
+		void DrawCircle();
+		void DestroyCircle();
+		// cube
+		void CreateCube();
+		void DrawCube();
+		void DestroyCube();
+		// box
+		void CreateBox(float xSize, float ySize, float zSize);
+		void DrawBox();
+		void DestroyBox();
+		// triangular-based pyramid
+		void CreateTriangularPyramid(float baseSize, float height);
+		void DrawTriangularPyramid();
+		void DestroyTriangularPyramid();
+		// square-based pyramid
+		void CreateSquarePyramid(float baseSize, float height);
+		void DrawSquarePyramid();
+		void DestroySquarePyramid();
+		/*
+		// pentagonal-based pyramid
+		void CreatePentagonalPyramid(float baseSize, float height);
+		void DrawPentagonalPyramid();
+		void DestroyPentagonalPyramid();
+		// hexagonal-based pyramid
+		void CreateHexagonalPyramid(float baseSize, float height);
+		void DrawHexagonalPyramid();
+		void DestroyHexagonalPyramid();
+		// heptagonal-based pyramid
+		void CreateHeptagonalPyramid(float baseSize, float height);
+		void DrawHeptagonalPyramid();
+		void DestroyHeptagonalPyramid();
+		// octagonal-based pyramid
+		void CreateOctagonalPyramid(float baseSize, float height);
+		void DrawOctagonalPyramid();
+		void DestroyOctagonalPyramid();
+		*/
 
-	// Plane
-	void CreatePlane();
-	void DrawPlane();
-	void DestroyPlane();
+		// Plane
+		void CreatePlane();
+		void DrawPlane();
+		void DestroyPlane();
 
-private:
+	private:
 
-	// Camera
-	CCamera* pCamera;
+		// Camera
+		CCamera* pCamera;
 
-	// Axis
-	CGridAxis* pGridAxis;
+		// Axis
+		CGridAxis* pGridAxis;
 
-	// Shader
-	CShader* pShader;
+		// Shader
+		CShader* pShader;
 
-	// Textures
-	CTextures* pTextures;
+		// Textures
+		CTextures* pTextures;
 
-	// Timer
-	CTimer* pTimer;
+		// Timer
+		CTimer* pTimer;
 
-	// Texto
-	CText* pText;
+		// Texto
+		CText* pText;
 
-	// Cor do Framebuffer
-	glm::vec4 vFramebufferColor;
+		// Cor do Framebuffer
+		glm::vec4 vFramebufferColor;
 
-	bool bActiveGUI;
+		bool bActiveGUI;
 
-	// Declara o Vertex Array Object e o Vertex Buffer Object
-	GLuint triangleVAO, triangleVBO;
-	GLuint squareVAO, squareVBO;
-	GLuint circleVAO, circleVBO;
-	GLuint cubeVAO, cubeVBO;
-	GLuint boxVAO, boxVBO;
-	GLuint triangularPyramidVAO, triangularPyramidVBO;
-	GLuint squarePyramidVAO, squarePyramidVBO;
-	GLuint planeVAO, planeVBO;
+		// Declara o Vertex Array Object e o Vertex Buffer Object
+		GLuint triangleVAO, triangleVBO;
+		GLuint squareVAO, squareVBO;
+		GLuint circleVAO, circleVBO;
+		GLuint cubeVAO, cubeVBO;
+		GLuint boxVAO, boxVBO;
+		GLuint triangularPyramidVAO, triangularPyramidVBO;
+		GLuint squarePyramidVAO, squarePyramidVBO;
+		GLuint planeVAO, planeVBO;
 
-	// Variáveis que controlam a translação do cubo atraves das setas do teclado.
-	float fPosX, fPosY, fPosZ, fSpeed;
+		// Variáveis que controlam a translação do cubo atraves das setas do teclado.
+		float fPosX, fPosY, fPosZ, fSpeed;
 
-	// Vetor que controla a escala do Cubo
-	glm::vec3 vScale;
+		// Vetor que controla a escala do Cubo
+		glm::vec3 vScale;
 
-	// Controla a velocidade de rotação da pirâmide
-	float fRotSpeed;
+		// Controla a velocidade de rotação da pirâmide
+		float fRotSpeed;
 
-	// Habilita ou Desabilita a rotação da pirâmide
-	bool bRot;
+		// Habilita ou Desabilita a rotação da pirâmide
+		bool bRot;
 
-	// Cor sólida para o cubo
-	glm::vec4 vCubeColor;
+		// Cor sólida para o cubo
+		glm::vec4 vCubeColor;
 
-	// Habilita ou Desabilita cor sólida
-	bool bCubeColor;
+		// Habilita ou Desabilita cor sólida
+		bool bCubeColor;
 
-	// Variável que controla a quantidade de tiles da textura aplicada ao plano
-	glm::vec2 Tile;
+		// Variável que controla a quantidade de tiles da textura aplicada ao plano
+		glm::vec2 Tile;
 
-	// numero de segmentos do círculo
-	int numSegments;
+		// numero de segmentos do círculo
+		int numSegments;
 };
 

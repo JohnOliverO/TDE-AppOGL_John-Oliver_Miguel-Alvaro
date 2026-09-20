@@ -64,6 +64,15 @@
     <ClCompile Include="Scenes\Scene1\Scene1.cpp">
       <Filter>Scenes\Scene1</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Scene2\Scene2.cpp">
+      <Filter>Scenes\Scene2</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene3\Scene3.cpp">
+      <Filter>Scenes\Scene3</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene4\Scene4.cpp">
+      <Filter>Scenes\Scene4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CCamera.h">
@@ -146,6 +155,15 @@
     </ClInclude>
     <ClInclude Include="Scenes\Scene1\Scene1.h">
       <Filter>Scenes\Scene1</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene2\Scene2.h">
+      <Filter>Scenes\Scene2</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene3\Scene3.h">
+      <Filter>Scenes\Scene3</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene4\Scene4.h">
+      <Filter>Scenes\Scene4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +285,15 @@
     </Filter>
     <Filter Include="Scenes\Scene1">
       <UniqueIdentifier>{04938085-2a61-4e91-9ca4-c6a9b942435a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene2">
+      <UniqueIdentifier>{2b4ef3a4-d059-4695-b428-689dbac908ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene3">
+      <UniqueIdentifier>{3ac28bfc-869a-4b9a-9b95-5531c894e810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene4">
+      <UniqueIdentifier>{672d7e36-ef1e-4751-96c7-bfef5d9eba39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

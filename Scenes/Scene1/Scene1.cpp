@@ -190,9 +190,24 @@ void Scene1::DrawScene(float deltaTime)
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
-	DrawTree(glm::vec3(0.0, 0.0, -5.0), glm::vec3(1.0, 1.0, 1.0));
-	DrawTree(glm::vec3(-2.0, 0.0, -5.0), glm::vec3(1.0, 2.0, 1.0));
-	DrawTree(glm::vec3(5.0, 0.0, 5.0), glm::vec3(2.0, 3.0, 2.0));
+	DrawTree1(glm::vec3(23.5, 0.0, -22.0), glm::vec3(1.0, 1.5, 1.0));
+	DrawTree1(glm::vec3(-24.0, 0.0, -24.5), glm::vec3(1.0, 1.0, 1.0));
+	DrawTree1(glm::vec3(-3.0, 0.0, -5.0), glm::vec3(1.0, 2.0, 1.0));
+	DrawTree1(glm::vec3(23.0, 0.0, 9.0), glm::vec3(2.5, 3.5, 2.5));
+	DrawTree1(glm::vec3(-7.0, 0.0, -19.0), glm::vec3(2.0, 3.0, 2.0));
+	DrawTree1(glm::vec3(8.0, 0.0, 14.0), glm::vec3(2.0, 2.0, 2.0));
+	DrawTree1(glm::vec3(9.0, 0.0, -14.0), glm::vec3(2.0, 2.5, 2.0));
+	DrawTree1(glm::vec3(11.5, 0.0, 7.5), glm::vec3(1.5, 2.0, 1.5));
+	DrawTree2(glm::vec3(11.5, 0.0, 7.5), glm::vec3(1.5, 3.0, 1.5));
+	DrawTree2(glm::vec3(22.5, 0.0, 0.5), glm::vec3(1.0, 1.5, 1.0));
+	DrawTree2(glm::vec3(-13.0, 0.0, -5.0), glm::vec3(1.0, 1.0, 1.0));
+	DrawTree2(glm::vec3(-13.0, 0.0, -13.0), glm::vec3(1.5, 2.0, 1.5));
+	DrawTree2(glm::vec3(18.0, 0.0, 16.0), glm::vec3(1.5, 2.5, 1.5));
+	DrawTree2(glm::vec3(-19.0, 0.0, 15.0), glm::vec3(1.0, 2.5, 1.0));
+	DrawTree2(glm::vec3(15.0, 0.0, -4.5), glm::vec3(1.0, 1.0, 1.0));
+	DrawTree2(glm::vec3(-17.0, 0.0, 2.0), glm::vec3(1.0, 2.0, 1.0));
+	DrawTree2(glm::vec3(22.0, 0.0, 22.5), glm::vec3(1.0, 2.0, 1.0));
+	DrawTree2(glm::vec3(4.0, 0.0, 0.0), glm::vec3(2.0, 3.0, 2.0));
 
 	// Renderiza o Boneco de Neve
 	pShader->Use("SnowMan");
@@ -211,7 +226,7 @@ void Scene1::DrawScene(float deltaTime)
 		}
 	}
 
-	DrawSnowMan(glm::vec3(0.0, 0.0, 5.0), glm::vec3(1.0, 1.0, 1.0), danceAngle);
+	DrawSnowMan(glm::vec3(1.0, 0.0, 8.0), glm::vec3(1.0, 1.0, 1.0), danceAngle);
 
 
 
@@ -285,7 +300,7 @@ void Scene1::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 	}
 }
 
-void Scene1::DrawTree(glm::vec3 pos, glm::vec3 size)
+void Scene1::DrawTree1(glm::vec3 pos, glm::vec3 size)
 {
 	glm::mat4 model = glm::mat4(1.0);
 	model = glm::translate(model, pos);
@@ -309,6 +324,47 @@ void Scene1::DrawTree(glm::vec3 pos, glm::vec3 size)
 
 	// Renderiza Folha2 (Cone)
 	model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetVec4("Color", glm::vec4(0.0, 0.5, 0.0, 1.0));
+
+	cone.render();
+}
+void Scene1::DrawTree2(glm::vec3 pos, glm::vec3 size)
+{
+	glm::mat4 model = glm::mat4(1.0);
+	model = glm::translate(model, pos);
+	model = glm::scale(model, size);
+
+	// Renderiza Tronco (Cilindro)
+	model = glm::translate(model, glm::vec3(0.0, 1.5, 0.0));
+	pShader->SetMat4("model", model);
+
+	pShader->SetVec4("Color", glm::vec4(0.58, 0.39, 0.17, 1.0));
+
+	cylinder.render();
+
+	// Renderiza Folha1 (Cone)
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.00f, 0.50f, 1.00f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetVec4("Color", glm::vec4(0.0, 0.5, 0.0, 1.0));
+
+	cone.render();
+
+	// Renderiza Folha2 (Cone)
+	model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.75f, 1.00f, 0.75f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetVec4("Color", glm::vec4(0.0, 0.5, 0.0, 1.0));
+
+	cone.render();
+
+	// Renderiza Folha3 (Cone)
+	model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.75f, 1.00f, 0.75f));
 	pShader->SetMat4("model", model);
 
 	pShader->SetVec4("Color", glm::vec4(0.0, 0.5, 0.0, 1.0));
@@ -389,85 +445,4 @@ void Scene1::DrawSnowManHat(glm::mat4 model)
 	model = glm::scale(model, glm::vec3(1.5f, 0.20f, 1.5f));
 	pShader->SetMat4("model", model);
 	cylinder.render();
-}
-
-// forma adicional para entrega de trabalho
-void Scene1::CreateCircle(float radius, int segments)
-{
-	// Aloca o número de segmentos do círculo ao cabesalho da classe para uso posterior
-	this->numSegments = segments;
-
-	std::vector<float> vertices;
-
-	// Calcula o angulo entre cada segmento do círculo
-	float angle = 2.0f * M_PI / segments;
-
-	// Adiciona o centro do círculo como o primeiro vértice
-	vertices.push_back(0.0f);
-	vertices.push_back(0.0f);
-	vertices.push_back(0.0f);
-	vertices.push_back(0.5f);
-	vertices.push_back(0.5f);
-	vertices.push_back(0.5f);
-
-	// Adiciona os vértices ao redor do círculo
-	for (int i = 0; i <= segments; i++)
-	{
-		float x = radius * cos(i * angle);
-		float y = radius * sin(i * angle);
-
-		vertices.push_back(x);
-		vertices.push_back(y);
-		vertices.push_back(0.0f);
-		vertices.push_back(0.5f);
-		vertices.push_back(0.5f);
-		vertices.push_back(0.5f);
-	}
-
-	// Cria o VAO
-	glGenVertexArrays(1, &circleVAO);
-	// Cria o VBO
-	glGenBuffers(1, &circleVBO);
-
-	// Ativa o VAO
-	glBindVertexArray(circleVAO);
-
-	// Ativa o VBO e aloca os dados do objeto nele(vai para a GPU)
-	// Esse VBO está ligado com o VAO
-	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-	// Define os atributos de cada vértice(VAO)
-	// Diz para a GPU como interpretar os dados do VBO
-	int stride = 6 * sizeof(float);
-
-	// Posição do vértice (ID=0)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// Cor do vértice (ID=1)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// Desativa o VAO (evita conflito com outros VAOs)
-	glBindVertexArray(0);
-}
-void Scene1::DrawCircle()
-{
-	// Ativa o VAO que representa o objeto a ser desenhado
-	glBindVertexArray(circleVAO);
-
-	// Desenha o objeto
-	// Renderizamos o centro + todos os vértices dos segmentos + o ponto final para fechar o círculo
-	// Usamos GL_TRIANGLE_FAN para conectar todos ao redor do centro
-	glDrawArrays(GL_TRIANGLE_FAN, 0, numSegments + 2);
-
-	// Desativa o VAO depois da renderização do objeto
-	glBindVertexArray(0);
-}
-
-void Scene1::DestroyCircle()
-{
-	glDeleteVertexArrays(1, &circleVAO);
-	glDeleteBuffers(1, &circleVBO);
 }
