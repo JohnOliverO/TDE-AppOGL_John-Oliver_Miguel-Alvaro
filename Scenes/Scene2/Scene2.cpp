@@ -1,4 +1,5 @@
 ﻿#include "Scene2.h"
+#include <stack>
 
 
 Scene2::Scene2()
@@ -24,7 +25,7 @@ Scene2::Scene2()
 	pShader->LoadShader("Grid", "Scenes/Common/grid.vert", "Scenes/Common/grid.frag");
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
-
+	pShader->LoadShader("StackP", "Scenes/Common/StackP.vert", "Scenes/Common/StackP.frag");
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -33,12 +34,37 @@ Scene2::Scene2()
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
 	//pTextures = new CTextures();
-	
 
+	cube.generateCube(1.0);
+	cube.setupBuffers();
+
+	std::vector<glm::vec4> initialColors = {
+		glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), // Red
+		glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), // Green
+		glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), // Blue
+		glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), // Yellow
+		glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)  // Orange
+	};
+
+	stackInfo0.Shape = cube;
+	stackInfo0.positions = glm::vec3(-2.0f, 0.0f, 0.0f);
+
+	stackInfo1.Shape = cube;
+	stackInfo1.positions = glm::vec3(-1.0f, 0.0f, 0.0f);
+
+	stackInfo2.Shape = cube;
+	stackInfo2.positions = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	stackInfo3.Shape = cube;
+	stackInfo3.positions = glm::vec3(1.0f, 0.0f, 0.0f);
+
+	stackInfo4.Shape = cube;
+	stackInfo4.positions = glm::vec3(2.0f, 0.0f, 0.0f);
 }
 
 Scene2::~Scene2()
 {
+	cube.cleanup();
 
 	if (pCamera)
 	{
@@ -115,14 +141,68 @@ void Scene2::DrawScene(float deltaTime)
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Logica para acrescentar cubos nas pilhas
+	if (stackInfo0.cubeColors.size() == stackInfo0.stackHeight)
+		fullStacks[0] = true;
+	if (stackInfo1.cubeColors.size() == stackInfo1.stackHeight)
+		fullStacks[1] = true;
+	if (stackInfo2.cubeColors.size() == stackInfo2.stackHeight)
+		fullStacks[2] = true;
+	if (stackInfo3.cubeColors.size() == stackInfo3.stackHeight)
+		fullStacks[3] = true;
+	if (stackInfo4.cubeColors.size() == stackInfo4.stackHeight)
+		fullStacks[4] = true;
+
+	if (fullStacks[0] == true && fullStacks[1] == true && fullStacks[2] == true && fullStacks[3] == true && fullStacks[4] == true)
+	{
+		// Todas as stacks estão cheias.
+		// Logica para resetar a pilha de cubos
+	}
+	else
+	{
+		// Gera uma cor aleatória para o cubo
+		glm::vec4 cubeColor(rand() % 256 / 255.0f, rand() % 256 / 255.0f, rand() % 256 / 255.0f, 1.0f);
+
+		bool addedCube = false;
+		while(!addedCube){
+
+			int randomStack = rand() % 5; // Randomly select a stack (0 to 4)
+			if (!fullStacks[randomStack])
+			{
+				// Add a cube to the selected stack
+				switch (randomStack)
+				{
+				case 0:
+					stackInfo0.cubeColors.push_back(cubeColor);
+					break;
+				case 1:
+					stackInfo1.cubeColors.push_back(cubeColor);
+					break;
+				case 2:
+					stackInfo2.cubeColors.push_back(cubeColor);
+					break;
+				case 3:
+					stackInfo3.cubeColors.push_back(cubeColor);
+					break;
+				case 4:
+					stackInfo4.cubeColors.push_back(cubeColor);
+					break;
+				}
+				addedCube = true;
+			}
+		}
+	}
 
 
 
 
+	// Renderiza a pilha de cubos
+	pShader->Use("StackP");
+	pShader->SetMat4("Proj", projection);
+	pShader->SetMat4("View", view);
 
 
-
-
+	
 
 
 
@@ -191,4 +271,18 @@ void Scene2::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 		pCamera->ProcessMouseScroll(scrollOffset);
 	}
 }
+
+void DrawStackOfCubes(const StackInfo& stackInfo)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+	for (int i = 0; i < stackInfo.stackHeight; ++i)
+	{
+		model = glm::translate(glm::mat4(1.0f), stackInfo.positions[i]);
+		pShader->SetMat4("model", model);
+		pShader->SetVec4("Color", stackInfo.colors[i]);
+		stackInfo.Shape.render();
+	}
+}
+
+
 

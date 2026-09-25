@@ -190,24 +190,24 @@ void Scene1::DrawScene(float deltaTime)
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
-	DrawTree1(glm::vec3(23.5, 0.0, -22.0), glm::vec3(1.0, 1.5, 1.0));
-	DrawTree1(glm::vec3(-24.0, 0.0, -24.5), glm::vec3(1.0, 1.0, 1.0));
-	DrawTree1(glm::vec3(-3.0, 0.0, -5.0), glm::vec3(1.0, 2.0, 1.0));
-	DrawTree1(glm::vec3(23.0, 0.0, 9.0), glm::vec3(2.5, 3.5, 2.5));
-	DrawTree1(glm::vec3(-7.0, 0.0, -19.0), glm::vec3(2.0, 3.0, 2.0));
-	DrawTree1(glm::vec3(8.0, 0.0, 14.0), glm::vec3(2.0, 2.0, 2.0));
-	DrawTree1(glm::vec3(9.0, 0.0, -14.0), glm::vec3(2.0, 2.5, 2.0));
-	DrawTree1(glm::vec3(11.5, 0.0, 7.5), glm::vec3(1.5, 2.0, 1.5));
-	DrawTree2(glm::vec3(11.5, 0.0, 7.5), glm::vec3(1.5, 3.0, 1.5));
-	DrawTree2(glm::vec3(22.5, 0.0, 0.5), glm::vec3(1.0, 1.5, 1.0));
-	DrawTree2(glm::vec3(-13.0, 0.0, -5.0), glm::vec3(1.0, 1.0, 1.0));
-	DrawTree2(glm::vec3(-13.0, 0.0, -13.0), glm::vec3(1.5, 2.0, 1.5));
-	DrawTree2(glm::vec3(18.0, 0.0, 16.0), glm::vec3(1.5, 2.5, 1.5));
-	DrawTree2(glm::vec3(-19.0, 0.0, 15.0), glm::vec3(1.0, 2.5, 1.0));
-	DrawTree2(glm::vec3(15.0, 0.0, -4.5), glm::vec3(1.0, 1.0, 1.0));
-	DrawTree2(glm::vec3(-17.0, 0.0, 2.0), glm::vec3(1.0, 2.0, 1.0));
-	DrawTree2(glm::vec3(22.0, 0.0, 22.5), glm::vec3(1.0, 2.0, 1.0));
-	DrawTree2(glm::vec3(4.0, 0.0, 0.0), glm::vec3(2.0, 3.0, 2.0));
+	DrawTree1(glm::vec3(23.5, 0.0, -22.0),	 glm::vec3(1.0, 1.5, 1.0));
+	DrawTree1(glm::vec3(-24.0, 0.0, -24.5),	 glm::vec3(1.0, 1.0, 1.0));
+	DrawTree1(glm::vec3(-3.0, 0.0, -5.0),	 glm::vec3(1.0, 2.0, 1.0));
+	DrawTree1(glm::vec3(23.0, 0.0, 9.0),	 glm::vec3(2.5, 3.5, 2.5));
+	DrawTree1(glm::vec3(-7.0, 0.0, -19.0),	 glm::vec3(2.0, 3.0, 2.0));
+	DrawTree1(glm::vec3(8.0, 0.0, 14.0),	 glm::vec3(2.0, 2.0, 2.0));
+	DrawTree1(glm::vec3(9.0, 0.0, -14.0),	 glm::vec3(2.0, 2.5, 2.0));
+	DrawTree1(glm::vec3(11.5, 0.0, 7.5),	 glm::vec3(1.5, 2.0, 1.5));
+	DrawTree2(glm::vec3(11.5, 0.0, 7.5),	 glm::vec3(1.5, 3.0, 1.5));
+	DrawTree2(glm::vec3(22.5, 0.0, 0.5),	 glm::vec3(1.0, 1.5, 1.0));
+	DrawTree2(glm::vec3(-13.0, 0.0, -5.0),	 glm::vec3(1.0, 1.0, 1.0));
+	DrawTree2(glm::vec3(-13.0, 0.0, -13.0),	 glm::vec3(1.5, 2.0, 1.5));
+	DrawTree2(glm::vec3(18.0, 0.0, 16.0),	 glm::vec3(1.5, 2.5, 1.5));
+	DrawTree2(glm::vec3(-19.0, 0.0, 15.0),	 glm::vec3(1.0, 2.5, 1.0));
+	DrawTree2(glm::vec3(15.0, 0.0, -4.5),	 glm::vec3(1.0, 1.0, 1.0));
+	DrawTree2(glm::vec3(-17.0, 0.0, 2.0),	 glm::vec3(1.0, 2.0, 1.0));
+	DrawTree2(glm::vec3(22.0, 0.0, 22.5),	 glm::vec3(1.0, 2.0, 1.0));
+	DrawTree2(glm::vec3(4.0, 0.0, 0.0),		 glm::vec3(2.0, 3.0, 2.0));
 
 	// Renderiza o Boneco de Neve
 	pShader->Use("SnowMan");
@@ -226,7 +226,7 @@ void Scene1::DrawScene(float deltaTime)
 		}
 	}
 
-	DrawSnowMan(glm::vec3(1.0, 0.0, 8.0), glm::vec3(1.0, 1.0, 1.0), danceAngle);
+	DrawSnowMan(glm::vec3(1.0, 0.0, 3.0), glm::vec3(1.0, 1.0, 1.0), danceAngle);
 
 
 

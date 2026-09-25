@@ -6,6 +6,8 @@
 #include "Engine/CTextures.h"
 #include "Engine/CTimer.h"
 #include "Engine/CText.h"
+#include "Engine/CPrimitives.h"
+#include <stack>
 
 
 
@@ -38,5 +40,18 @@ class Scene2 : public CSceneBase
 
 		// Texto
 		CText* pText;	
+
+		CPrimitives cube;
+
+		StackInfo stackInfo0, stackInfo1, stackInfo2, stackInfo3, stackInfo4;
+
+		std::vector<bool> fullStacks = {false, false, false, false, false};
 };
 
+struct StackInfo
+{
+	CPrimitives Shape;
+	glm::vec3 positions = glm::vec3(-2.0f, 0.0f, 0.0f);
+	std::stack<glm::vec4> cubeColors;
+	int stackHeight = 10;
+};
