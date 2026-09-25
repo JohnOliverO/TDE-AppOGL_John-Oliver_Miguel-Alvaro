@@ -263,6 +263,12 @@
     <None Include="Scenes\Scene1\SnowPlane.vert">
       <Filter>Scenes\Scene1</Filter>
     </None>
+    <None Include="Scenes\Scene2\StackP.frag">
+      <Filter>Scenes\Scene2</Filter>
+    </None>
+    <None Include="Scenes\Scene2\StackP.vert">
+      <Filter>Scenes\Scene2</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

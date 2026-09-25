@@ -101,6 +101,8 @@
     <None Include="Scenes\Scene1\TextureSphereP.vert" />
     <None Include="Scenes\Scene1\Tree.frag" />
     <None Include="Scenes\Scene1\Tree.vert" />
+    <None Include="Scenes\Scene2\StackP.frag" />
+    <None Include="Scenes\Scene2\StackP.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
