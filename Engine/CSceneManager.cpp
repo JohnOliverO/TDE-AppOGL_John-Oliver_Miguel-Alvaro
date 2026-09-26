@@ -75,6 +75,8 @@ void CSceneManager::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 		ChangeScene(3);
 	if (input.IsKeyJustPressed(GLFW_KEY_4))
 		ChangeScene(4);
+	if (input.IsKeyJustPressed(GLFW_KEY_5))
+		ChangeScene(5);
 	
 	// Processa input da cena atual
 	Scene->ProcessSceneInput(window, deltaTime);
@@ -114,6 +116,9 @@ void CSceneManager::ChangeScene(unsigned int _uiCurrentScene)
 		break;
 	case 4:
 		this->Scene = new Scene4();
+		break;
+	case 5:
+		this->Scene = new Scene5();
 		break;
 	}
 }

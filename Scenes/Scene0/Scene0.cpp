@@ -60,7 +60,7 @@ Scene0::Scene0()
 	// Aloca as formas da VRAM
 	CreateTriangle();
 	CreateSquare();
-	CreateCircle(1.0f, 16);
+	CreateCircle(1.0f, 3);
 	CreateCube();
 	CreateBox(3.0f, 2.0f, 1.0f);
 	// CreateTriangularPyramid(2.0f, 3.0f);
@@ -272,7 +272,7 @@ void Scene0::DrawScene(float deltaTime)
 	pTextures->ApplyTexture(5);
 	pShader->SetInt("Texture1", 1);
 
-	// Texture1: Detal layer (camada de detalhes)
+	// Texture2: Detal layer (camada de detalhes)
 	glActiveTexture(GL_TEXTURE2);
 	pTextures->ApplyTexture(6);
 	pShader->SetInt("Texture2", 2);

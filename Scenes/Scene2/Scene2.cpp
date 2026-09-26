@@ -173,19 +173,19 @@ void Scene2::DrawScene(float deltaTime)
 				switch (randomStack)
 				{
 				case 0:
-					stackInfo0.cubeColors.push_back(cubeColor);
+					//stackInfo0.cubeColors.push_back(cubeColor);
 					break;
 				case 1:
-					stackInfo1.cubeColors.push_back(cubeColor);
+					//stackInfo1.cubeColors.push_back(cubeColor);
 					break;
 				case 2:
-					stackInfo2.cubeColors.push_back(cubeColor);
+					//stackInfo2.cubeColors.push_back(cubeColor);
 					break;
 				case 3:
-					stackInfo3.cubeColors.push_back(cubeColor);
+					//stackInfo3.cubeColors.push_back(cubeColor);
 					break;
 				case 4:
-					stackInfo4.cubeColors.push_back(cubeColor);
+					//stackInfo4.cubeColors.push_back(cubeColor);
 					break;
 				}
 				addedCube = true;
@@ -277,10 +277,10 @@ void DrawStackOfCubes(const StackInfo& stackInfo)
 	glm::mat4 model = glm::mat4(1.0f);
 	for (int i = 0; i < stackInfo.stackHeight; ++i)
 	{
-		model = glm::translate(glm::mat4(1.0f), stackInfo.positions[i]);
-		pShader->SetMat4("model", model);
-		pShader->SetVec4("Color", stackInfo.colors[i]);
-		stackInfo.Shape.render();
+		//model = glm::translate(glm::mat4(1.0f), stackInfo.positions[i]);
+		//pShader->SetMat4("model", model);
+		//pShader->SetVec4("Color", stackInfo.colors[i]);
+		//stackInfo.Shape.render();
 	}
 }
 

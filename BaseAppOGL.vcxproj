@@ -41,6 +41,7 @@
     <ClInclude Include="Scenes\Scene2\Scene2.h" />
     <ClInclude Include="Scenes\Scene3\Scene3.h" />
     <ClInclude Include="Scenes\Scene4\Scene4.h" />
+    <ClInclude Include="Scenes\Scene5\Scene5.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\CGridAxis.cpp" />
@@ -67,6 +68,7 @@
     <ClCompile Include="Scenes\Scene2\Scene2.cpp" />
     <ClCompile Include="Scenes\Scene3\Scene3.cpp" />
     <ClCompile Include="Scenes\Scene4\Scene4.cpp" />
+    <ClCompile Include="Scenes\Scene5\Scene5.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scenes\Common\Assets.frag" />
@@ -103,6 +105,8 @@
     <None Include="Scenes\Scene1\Tree.vert" />
     <None Include="Scenes\Scene2\StackP.frag" />
     <None Include="Scenes\Scene2\StackP.vert" />
+    <None Include="Scenes\Scene5\BaseShader.frag" />
+    <None Include="Scenes\Scene5\BaseShader.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

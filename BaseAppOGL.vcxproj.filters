@@ -73,6 +73,9 @@
     <ClCompile Include="Scenes\Scene4\Scene4.cpp">
       <Filter>Scenes\Scene4</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Scene5\Scene5.cpp">
+      <Filter>Scenes\Scene5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CCamera.h">
@@ -164,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="Scenes\Scene4\Scene4.h">
       <Filter>Scenes\Scene4</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene5\Scene5.h">
+      <Filter>Scenes\Scene5</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,6 +275,12 @@
     <None Include="Scenes\Scene2\StackP.vert">
       <Filter>Scenes\Scene2</Filter>
     </None>
+    <None Include="Scenes\Scene5\BaseShader.frag">
+      <Filter>Scenes\Scene5</Filter>
+    </None>
+    <None Include="Scenes\Scene5\BaseShader.vert">
+      <Filter>Scenes\Scene5</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -300,6 +312,9 @@
     </Filter>
     <Filter Include="Scenes\Scene4">
       <UniqueIdentifier>{672d7e36-ef1e-4751-96c7-bfef5d9eba39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene5">
+      <UniqueIdentifier>{f8380467-00e7-4a9e-bbbd-890b34cd60d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

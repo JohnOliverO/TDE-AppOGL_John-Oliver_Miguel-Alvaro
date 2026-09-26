@@ -5,6 +5,7 @@
 #include "Scenes/Scene2/Scene2.h"
 #include "Scenes/Scene3/Scene3.h"
 #include "Scenes/Scene4/Scene4.h"
+#include "Scenes/Scene5/Scene5.h"
 
 
 
