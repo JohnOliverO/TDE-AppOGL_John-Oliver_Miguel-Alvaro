@@ -27,6 +27,8 @@ class Scene2 : public CSceneBase
 		virtual void DrawScene(float deltaTime);
 		virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
+		void DrawStackOfCubes(StackInfo& stackInfo);
+
 
 	private:
 
@@ -46,9 +48,10 @@ class Scene2 : public CSceneBase
 		CTimer* pTimer;			
 
 		// Texto
-		CText* pText;	
+		CText* pText;
 
-		CPrimitives cube;
+		// Controle de tempo para a criação de cubos
+		float cubeSpawnTimer = 0.0f;
 
 		StackInfo stackInfo0, stackInfo1, stackInfo2, stackInfo3, stackInfo4;
 
