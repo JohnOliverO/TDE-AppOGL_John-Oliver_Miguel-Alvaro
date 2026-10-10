@@ -8,8 +8,6 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform vec2 Tile = vec2(1.0, 1.0);
-
 out vec3 Normal;
 out vec2 TexCoord;
 

@@ -25,7 +25,7 @@ Scene2::Scene2()
 	pShader->LoadShader("Grid", "Scenes/Common/grid.vert", "Scenes/Common/grid.frag");
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
-	pShader->LoadShader("StackP", "Scenes/Common/StackP.vert", "Scenes/Common/StackP.frag");
+	pShader->LoadShader("StackP", "Scenes/Scene2/StackP.vert", "Scenes/Scene2/StackP.frag");
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -35,9 +35,6 @@ Scene2::Scene2()
 	pTextures = NULL;
 	//pTextures = new CTextures();
 
-	cube.generateCube(1.0);
-	cube.setupBuffers();
-
 	std::vector<glm::vec4> initialColors = {
 		glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), // Red
 		glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), // Green
@@ -46,25 +43,34 @@ Scene2::Scene2()
 		glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)  // Orange
 	};
 
-	stackInfo0.Shape = cube;
+	stackInfo0.Shape.generateCube(1.0);
+	stackInfo0.Shape.setupBuffers();
 	stackInfo0.positions = glm::vec3(-2.0f, 0.0f, 0.0f);
 
-	stackInfo1.Shape = cube;
+	stackInfo1.Shape.generateCube(1.0);
+	stackInfo1.Shape.setupBuffers();
 	stackInfo1.positions = glm::vec3(-1.0f, 0.0f, 0.0f);
 
-	stackInfo2.Shape = cube;
+	stackInfo2.Shape.generateCube(1.0);
+	stackInfo2.Shape.setupBuffers();
 	stackInfo2.positions = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	stackInfo3.Shape = cube;
+	stackInfo3.Shape.generateCube(1.0);
+	stackInfo3.Shape.setupBuffers();
 	stackInfo3.positions = glm::vec3(1.0f, 0.0f, 0.0f);
 
-	stackInfo4.Shape = cube;
+	stackInfo4.Shape.generateCube(1.0);
+	stackInfo4.Shape.setupBuffers();
 	stackInfo4.positions = glm::vec3(2.0f, 0.0f, 0.0f);
 }
 
 Scene2::~Scene2()
 {
-	cube.cleanup();
+	stackInfo0.Shape.cleanup();
+	stackInfo1.Shape.cleanup();
+	stackInfo2.Shape.cleanup();
+	stackInfo3.Shape.cleanup();
+	stackInfo4.Shape.cleanup();
 
 	if (pCamera)
 	{
@@ -157,38 +163,52 @@ void Scene2::DrawScene(float deltaTime)
 	{
 		// Todas as stacks estão cheias.
 		// Logica para resetar a pilha de cubos
+
+		// Acumula o tempo que passou desde o último frame (convertendo ms para segundos)
+		cubeSpawnTimer += (pTimer->GetDeltaTime() / 1000.0f);
+
+		// Se passou 1 segundo ou mais
+		if (cubeSpawnTimer >= 1.0f)
+		{
+			cubeSpawnTimer -= 1.0f; // Mantém o resto para não perder precisão técnica
+
+			stackInfo0.cubeColors = std::stack<glm::vec4>();
+			stackInfo1.cubeColors = std::stack<glm::vec4>();
+			stackInfo2.cubeColors = std::stack<glm::vec4>();
+			stackInfo3.cubeColors = std::stack<glm::vec4>();
+			stackInfo4.cubeColors = std::stack<glm::vec4>();
+
+			fullStacks = { false, false, false, false, false };
+		}
 	}
 	else
 	{
-		// Gera uma cor aleatória para o cubo
-		glm::vec4 cubeColor(rand() % 256 / 255.0f, rand() % 256 / 255.0f, rand() % 256 / 255.0f, 1.0f);
+		// Acumula o tempo que passou desde o último frame (convertendo ms para segundos)
+		cubeSpawnTimer += (pTimer->GetDeltaTime() / 1000.0f);
 
-		bool addedCube = false;
-		while(!addedCube){
+		// Se passou 1 segundo ou mais, adiciona o cubo e desconta 1.0s do temporizador
+		if (cubeSpawnTimer >= 1.0f)
+		{
+			cubeSpawnTimer -= 1.0f; // Mantém o resto para não perder precisão técnica
 
-			int randomStack = rand() % 5; // Randomly select a stack (0 to 4)
-			if (!fullStacks[randomStack])
-			{
-				// Add a cube to the selected stack
-				switch (randomStack)
+			// Gera uma cor aleatória para o cubo
+			glm::vec4 cubeColor(rand() % 256 / 255.0f, rand() % 256 / 255.0f, rand() % 256 / 255.0f, 1.0f);
+
+			bool addedCube = false;
+			while (!addedCube) {
+				int randomStack = rand() % 5; // Seleciona pilha aleatória de 0 a 4
+				if (!fullStacks[randomStack])
 				{
-				case 0:
-					//stackInfo0.cubeColors.push_back(cubeColor);
-					break;
-				case 1:
-					//stackInfo1.cubeColors.push_back(cubeColor);
-					break;
-				case 2:
-					//stackInfo2.cubeColors.push_back(cubeColor);
-					break;
-				case 3:
-					//stackInfo3.cubeColors.push_back(cubeColor);
-					break;
-				case 4:
-					//stackInfo4.cubeColors.push_back(cubeColor);
-					break;
+					switch (randomStack)
+					{
+					case 0: stackInfo0.cubeColors.push(cubeColor); break;
+					case 1: stackInfo1.cubeColors.push(cubeColor); break;
+					case 2: stackInfo2.cubeColors.push(cubeColor); break;
+					case 3: stackInfo3.cubeColors.push(cubeColor); break;
+					case 4: stackInfo4.cubeColors.push(cubeColor); break;
+					}
+					addedCube = true;
 				}
-				addedCube = true;
 			}
 		}
 	}
@@ -198,10 +218,14 @@ void Scene2::DrawScene(float deltaTime)
 
 	// Renderiza a pilha de cubos
 	pShader->Use("StackP");
-	pShader->SetMat4("Proj", projection);
-	pShader->SetMat4("View", view);
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
 
-
+	DrawStackOfCubes(stackInfo0);
+	DrawStackOfCubes(stackInfo1);
+	DrawStackOfCubes(stackInfo2);
+	DrawStackOfCubes(stackInfo3);
+	DrawStackOfCubes(stackInfo4);
 	
 
 
@@ -272,17 +296,29 @@ void Scene2::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 	}
 }
 
-void DrawStackOfCubes(const StackInfo& stackInfo)
+void Scene2::DrawStackOfCubes(StackInfo& stackInfo)
 {
 	glm::mat4 model = glm::mat4(1.0f);
-	for (int i = 0; i < stackInfo.stackHeight; ++i)
+
+	// Fazemos uma cópia da pilha de cores para poder desempilhar sem perder os dados originais
+	std::stack<glm::vec4> tempColors = stackInfo.cubeColors;
+	int totalCubes = tempColors.size();
+
+	// Loop para desenhar cada cubo da pilha atual
+	for (int i = 0; i < totalCubes; ++i)
 	{
-		//model = glm::translate(glm::mat4(1.0f), stackInfo.positions[i]);
-		//pShader->SetMat4("model", model);
-		//pShader->SetVec4("Color", stackInfo.colors[i]);
-		//stackInfo.Shape.render();
+		// Calcula a posição de cada bloco empilhado no eixo Y (i * 1.0f pressupõe cubos de tamanho 1.0)
+		glm::vec3 cubePosition = stackInfo.positions + glm::vec3(0.0f, i * 1.0f, 0.0f);
+
+		model = glm::translate(glm::mat4(1.0f), cubePosition);
+		pShader->SetMat4("model", model);
+
+		// Pega a cor do topo da pilha temporária e passa para o shader
+		glm::vec4 color = tempColors.top();
+		pShader->SetVec4("Color", color);
+		tempColors.pop();
+
+		// Renderiza o cubo
+		stackInfo.Shape.render();
 	}
 }
-
-
-
