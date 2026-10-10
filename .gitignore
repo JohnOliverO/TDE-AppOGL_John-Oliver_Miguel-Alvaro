@@ -361,6 +361,22 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-BaseAppOGL.vcxproj
+
+# ==============================
+# REGRAS DE EXCEÇÃO PARA ASSETS
+# ==============================
+
+# Libera o acesso do Git pasta por pasta na hierarquia (obrigatório se algo acima bloquear)
+!BaseAppOGL/
+!BaseAppOGL/Scenes/
+!BaseAppOGL/Scenes/Assets/
+
+# Remove o bloqueio de qualquer arquivo .obj vindo desta árvore de diretórios
+!BaseAppOGL/Scenes/Assets/**/*.obj
+
+# =====================================================================
+# Arquivos de configuração do projeto que você adicionou no final
+# =====================================================================
 OpenGL_Info.txt
 OpenGL.Local.props
+*.vcxproj.filters

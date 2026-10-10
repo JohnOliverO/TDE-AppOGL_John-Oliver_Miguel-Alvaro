@@ -6,6 +6,7 @@
 #include "Engine/CTextures.h"
 #include "Engine/CTimer.h"
 #include "Engine/CText.h"
+#include "Engine/CPrimitives.h"
 
 
 
@@ -18,6 +19,7 @@ class Scene3 : public CSceneBase
 		virtual void DrawScene(float deltaTime);
 		virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
+		void DrawHouse(glm::vec3 position = glm::vec3(0.0f), float rotationAngle = 0.0f, glm::vec3 scale = glm::vec3(1.0f));
 
 	private:
 
@@ -38,6 +40,8 @@ class Scene3 : public CSceneBase
 
 		// Texto
 		CText* pText;
+
+		CPrimitives pPlane, pBox, pHouse;
 
 };
 

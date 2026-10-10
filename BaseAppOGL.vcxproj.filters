@@ -4,34 +4,34 @@
     <ClCompile Include="Engine\CAsset.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\CGridAxis.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\CPrimitives.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\CSceneBase.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\main.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\CSceneManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CTextures.cpp">
+    <ClCompile Include="Engine\CScreenQuad.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CText.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CTimer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CGridAxis.cpp">
+    <ClCompile Include="Engine\CSkybox.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\CTerrain.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CSkybox.cpp">
+    <ClCompile Include="Engine\CText.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CTextures.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CTimer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\imgui\imgui.cpp">
@@ -55,14 +55,14 @@
     <ClCompile Include="Engine\imgui\imgui_widgets.cpp">
       <Filter>Engine\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CScreenQuad.cpp">
+    <ClCompile Include="Engine\main.cpp">
       <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\Scene0\Scene0.cpp">
-      <Filter>Scenes\Scene0</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\Scene1\Scene1.cpp">
       <Filter>Scenes\Scene1</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Scene0\Scene0.cpp">
+      <Filter>Scenes\Scene0</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\Scene2\Scene2.cpp">
       <Filter>Scenes\Scene2</Filter>
@@ -81,10 +81,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\CCamera.h">
+    <ClInclude Include="Engine\CInputManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\CAsset.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CCamera.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CGridAxis.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\CPrimitives.h">
@@ -93,34 +99,28 @@
     <ClInclude Include="Engine\CSceneBase.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\CShader.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Defines.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\CInputManager.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\CSceneManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\CTextures.h">
+    <ClInclude Include="Engine\CScreenQuad.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\CText.h">
+    <ClInclude Include="Engine\CShader.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\CTimer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\CGridAxis.h">
+    <ClInclude Include="Engine\CSkybox.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\CTerrain.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\CSkybox.h">
+    <ClInclude Include="Engine\CText.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CTextures.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\CTimer.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\imgui\imconfig.h">
@@ -141,26 +141,26 @@
     <ClInclude Include="Engine\imgui\imgui_internal.h">
       <Filter>Engine\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Defines.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\stb_image.h">
+      <Filter>Engine\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\imgui\imstb_truetype.h">
+      <Filter>Engine\imgui</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\imgui\imstb_rectpack.h">
       <Filter>Engine\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Engine\imgui\imstb_textedit.h">
       <Filter>Engine\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\imgui\imstb_truetype.h">
-      <Filter>Engine\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\CScreenQuad.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\stb_image.h">
-      <Filter>Engine\stb_image</Filter>
+    <ClInclude Include="Scenes\Scene1\Scene1.h">
+      <Filter>Scenes\Scene1</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\Scene0\Scene0.h">
       <Filter>Scenes\Scene0</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\Scene1\Scene1.h">
-      <Filter>Scenes\Scene1</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\Scene2\Scene2.h">
       <Filter>Scenes\Scene2</Filter>
@@ -179,16 +179,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scenes\Common\Text2D.frag">
+    <None Include="Scenes\Common\axis.vert">
       <Filter>Scenes\Common</Filter>
     </None>
-    <None Include="Scenes\Common\Text2D.vert">
+    <None Include="Scenes\Common\Assets.frag">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\Assets.vert">
       <Filter>Scenes\Common</Filter>
     </None>
     <None Include="Scenes\Common\axis.frag">
-      <Filter>Scenes\Common</Filter>
-    </None>
-    <None Include="Scenes\Common\axis.vert">
       <Filter>Scenes\Common</Filter>
     </None>
     <None Include="Scenes\Common\grid.frag">
@@ -197,10 +197,16 @@
     <None Include="Scenes\Common\grid.vert">
       <Filter>Scenes\Common</Filter>
     </None>
-    <None Include="Scenes\Common\Assets.frag">
+    <None Include="Scenes\Common\Skybox.frag">
       <Filter>Scenes\Common</Filter>
     </None>
-    <None Include="Scenes\Common\Assets.vert">
+    <None Include="Scenes\Common\Skybox.vert">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\Text2D.frag">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\Text2D.vert">
       <Filter>Scenes\Common</Filter>
     </None>
     <None Include="Scenes\Scene0\Solid.frag">
@@ -215,10 +221,10 @@
     <None Include="Scenes\Scene0\Texture.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
-    <None Include="Scenes\Scene0\TextureTriangle.frag">
+    <None Include="Scenes\Scene0\TextureCircle.frag">
       <Filter>Scenes\Scene0</Filter>
     </None>
-    <None Include="Scenes\Scene0\TextureTriangle.vert">
+    <None Include="Scenes\Scene0\TextureCircle.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
     <None Include="Scenes\Scene0\TextureCube.frag">
@@ -233,6 +239,36 @@
     <None Include="Scenes\Scene0\TexturePlane.vert">
       <Filter>Scenes\Scene0</Filter>
     </None>
+    <None Include="Scenes\Scene0\TextureSquarePyramid.frag">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TextureSquarePyramid.vert">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TextureTriangle.frag">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene0\TextureTriangle.vert">
+      <Filter>Scenes\Scene0</Filter>
+    </None>
+    <None Include="Scenes\Scene1\Circle.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\Circle.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\SnowMan.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\SnowMan.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\SnowPlane.frag">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
+    <None Include="Scenes\Scene1\SnowPlane.vert">
+      <Filter>Scenes\Scene1</Filter>
+    </None>
     <None Include="Scenes\Scene1\TextureCubeP.frag">
       <Filter>Scenes\Scene1</Filter>
     </None>
@@ -245,34 +281,10 @@
     <None Include="Scenes\Scene1\TextureSphereP.vert">
       <Filter>Scenes\Scene1</Filter>
     </None>
-    <None Include="Scenes\Scene1\SnowMan.frag">
-      <Filter>Scenes\Scene1</Filter>
-    </None>
-    <None Include="Scenes\Scene1\SnowMan.vert">
-      <Filter>Scenes\Scene1</Filter>
-    </None>
     <None Include="Scenes\Scene1\Tree.frag">
       <Filter>Scenes\Scene1</Filter>
     </None>
     <None Include="Scenes\Scene1\Tree.vert">
-      <Filter>Scenes\Scene1</Filter>
-    </None>
-    <None Include="Scenes\Scene0\TextureCircle.frag">
-      <Filter>Scenes\Scene0</Filter>
-    </None>
-    <None Include="Scenes\Scene0\TextureCircle.vert">
-      <Filter>Scenes\Scene0</Filter>
-    </None>
-    <None Include="Scenes\Scene1\Circle.frag">
-      <Filter>Scenes\Scene1</Filter>
-    </None>
-    <None Include="Scenes\Scene1\Circle.vert">
-      <Filter>Scenes\Scene1</Filter>
-    </None>
-    <None Include="Scenes\Scene1\SnowPlane.frag">
-      <Filter>Scenes\Scene1</Filter>
-    </None>
-    <None Include="Scenes\Scene1\SnowPlane.vert">
       <Filter>Scenes\Scene1</Filter>
     </None>
     <None Include="Scenes\Scene2\StackP.frag">
@@ -281,55 +293,97 @@
     <None Include="Scenes\Scene2\StackP.vert">
       <Filter>Scenes\Scene2</Filter>
     </None>
+    <None Include="Scenes\Scene3\BaseP.frag">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\BaseP.vert">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\CrateP.frag">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\CrateP.vert">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\HouseP.frag">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\HouseP.vert">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\PlaneP.frag">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene3\PlaneP.vert">
+      <Filter>Scenes\Scene3</Filter>
+    </None>
+    <None Include="Scenes\Scene4\BaseP.frag">
+      <Filter>Scenes\Scene4</Filter>
+    </None>
+    <None Include="Scenes\Scene4\BaseP.vert">
+      <Filter>Scenes\Scene4</Filter>
+    </None>
     <None Include="Scenes\Scene5\BaseShader.frag">
       <Filter>Scenes\Scene5</Filter>
     </None>
     <None Include="Scenes\Scene5\BaseShader.vert">
       <Filter>Scenes\Scene5</Filter>
     </None>
-    <None Include="Scenes\Common\Skybox.frag">
-      <Filter>Scenes\Common</Filter>
+    <None Include="Scenes\Scene5\LightMapping.frag">
+      <Filter>Scenes\Scene5</Filter>
     </None>
-    <None Include="Scenes\Common\Skybox.vert">
-      <Filter>Scenes\Common</Filter>
+    <None Include="Scenes\Scene5\LightMapping.vert">
+      <Filter>Scenes\Scene5</Filter>
+    </None>
+    <None Include="Scenes\Scene5\MaskTexture.frag">
+      <Filter>Scenes\Scene5</Filter>
+    </None>
+    <None Include="Scenes\Scene5\MaskTexture.vert">
+      <Filter>Scenes\Scene5</Filter>
+    </None>
+    <None Include="Scenes\Scene5\MultiTexture.frag">
+      <Filter>Scenes\Scene5</Filter>
+    </None>
+    <None Include="Scenes\Scene5\MultiTexture.vert">
+      <Filter>Scenes\Scene5</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
-      <UniqueIdentifier>{d91d2136-5c55-4691-a3f4-c26236a964ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes">
-      <UniqueIdentifier>{c9422ba8-1e60-40ff-b542-8c40eb9bde84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\Scene0">
-      <UniqueIdentifier>{e2fa19c6-f416-44b0-9247-b37f68c24a27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\Common">
-      <UniqueIdentifier>{f031ac74-4dbc-4646-87f0-ab62eb99590c}</UniqueIdentifier>
+      <UniqueIdentifier>{48e7e1a0-bc21-4b67-b2d4-2abe90da9708}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\imgui">
-      <UniqueIdentifier>{d796f740-1865-4510-b03f-c1be1bd519e6}</UniqueIdentifier>
+      <UniqueIdentifier>{d5b7d922-3c0e-409b-a147-aaa6e76bb467}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\stb_image">
-      <UniqueIdentifier>{f265e2ac-3cc4-40d4-9abb-47c708d4901d}</UniqueIdentifier>
+      <UniqueIdentifier>{041f0ac9-fd57-4d72-950e-af1a16102d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{c3ce7fda-f86a-4d8c-8bde-620cd2d1f341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Common">
+      <UniqueIdentifier>{dd810cf1-63ea-43bb-b30b-cdb6ee752f0e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes\Scene1">
-      <UniqueIdentifier>{04938085-2a61-4e91-9ca4-c6a9b942435a}</UniqueIdentifier>
+      <UniqueIdentifier>{60815540-f341-4f32-8057-31006c34e106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene0">
+      <UniqueIdentifier>{bcc13ade-9076-42f8-a2d7-d4484512fbeb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes\Scene2">
-      <UniqueIdentifier>{2b4ef3a4-d059-4695-b428-689dbac908ba}</UniqueIdentifier>
+      <UniqueIdentifier>{6bb21540-9f05-405b-ab7b-d677cd7b8586}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes\Scene3">
-      <UniqueIdentifier>{3ac28bfc-869a-4b9a-9b95-5531c894e810}</UniqueIdentifier>
+      <UniqueIdentifier>{282c2e65-670a-4122-9e36-38e0caf6f7d1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes\Scene4">
-      <UniqueIdentifier>{672d7e36-ef1e-4751-96c7-bfef5d9eba39}</UniqueIdentifier>
+      <UniqueIdentifier>{ba34ac45-12dd-4b59-a24d-bd3b517a8108}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes\Scene5">
-      <UniqueIdentifier>{f8380467-00e7-4a9e-bbbd-890b34cd60d1}</UniqueIdentifier>
+      <UniqueIdentifier>{391d079a-64d5-45c6-b62a-0371994c2946}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes\Scene6">
-      <UniqueIdentifier>{0c879292-3b4c-4235-9e03-56a82414ad23}</UniqueIdentifier>
+      <UniqueIdentifier>{1823ad29-0ba5-4e56-ad98-e4a4bc502b92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

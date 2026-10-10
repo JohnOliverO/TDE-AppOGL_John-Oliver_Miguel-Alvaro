@@ -25,6 +25,11 @@ Scene3::Scene3()
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
 
+	pShader->LoadShader("BaseP", "Scenes/Scene3/BaseP.vert", "Scenes/Scene3/BaseP.frag");
+
+	pShader->LoadShader("PlaneP", "Scenes/Scene3/PlaneP.vert", "Scenes/Scene3/PlaneP.frag");
+	pShader->LoadShader("CrateP", "Scenes/Scene3/CrateP.vert", "Scenes/Scene3/CrateP.frag");
+	pShader->LoadShader("HouseP", "Scenes/Scene3/HouseP.vert", "Scenes/Scene3/HouseP.frag");
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -32,13 +37,27 @@ Scene3::Scene3()
 
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
-	//pTextures = new CTextures();
-	
+	pTextures = new CTextures();
+	pTextures->LoadTextureMipMap(0, "Scenes/Textures/CasaAtlas.jpg");
+	pTextures->LoadTextureMipMap(1, "Scenes/Textures/grama.bmp");
+	pTextures->LoadTextureMipMap(2, "Scenes/Textures/CRATE.BMP");
+
+	pPlane.generatePlane(100.0f, 100.0f);
+	pPlane.setupBuffers();
+
+	pBox.generateCube(2.0f);
+	pBox.setupBuffers();
+
+	pHouse.generatePlane(8.0f, 8.0f);
+	pHouse.setupBuffers();
 
 }
 
 Scene3::~Scene3()
 {
+	pPlane.cleanup();
+	pBox.cleanup();
+	pHouse.cleanup();
 
 	if (pCamera)
 	{
@@ -96,6 +115,7 @@ void Scene3::DrawScene(float deltaTime)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
 	// Draw the 3D grid
 	pShader->Use("Grid");
 	pShader->SetMat4("uProj", projection);
@@ -110,28 +130,70 @@ void Scene3::DrawScene(float deltaTime)
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
 	pGridAxis->DrawAxis();
-
+	*/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	glDisable(GL_CULL_FACE);
 
+	pShader->Use("HouseP");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
 
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(0);
+	pShader->SetInt("Texture0", 0);
 
+	DrawHouse(glm::vec3(-8.0f, 0.001f, -16.0f));
 
+	pShader->SetMat4("model", model);
 
+	glEnable(GL_CULL_FACE);
 
+	pShader->Use("CrateP");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
 
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(4.0f, 1.0f, 0.0f));
 
+	pShader->SetMat4("model", model);
 
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(2);
+	pShader->SetInt("Texture0", 0);
 
+	pBox.render();
 
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+	pShader->SetMat4("model", model);
 
+	pBox.render();
 
+	model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.5f, 3.0f, 1.5f));
 
+	pShader->SetMat4("model", model);
 
+	pBox.render();
 
+	pShader->Use("PlaneP");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0f);
+
+	pShader->SetMat4("model", model);
+
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(1);
+	pShader->SetInt("Texture0", 0);
+
+	pPlane.render();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (FIM)
@@ -192,3 +254,26 @@ void Scene3::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 	}
 }
 
+void Scene3::DrawHouse(glm::vec3 position, float rotationAngle, glm::vec3 scale)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, position);
+	model = glm::rotate(model, rotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, scale);
+
+	// Chão
+	model = glm::scale(model, glm::vec3(0.5f, 1.0f, 0.5f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetInt("TextureType", 2);
+	pHouse.render();
+
+	model = glm::scale(model, glm::vec3(2.0f, 1.0f, 2.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 4.0f, 8.0f));
+	model = glm::rotate(model, 1.5708f, glm::vec3(-1.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetInt("TextureType", 0);
+	pHouse.render();
+}

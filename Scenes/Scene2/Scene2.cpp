@@ -4,6 +4,8 @@
 
 Scene2::Scene2()
 {
+	glEnable(GL_CULL_FACE);
+
 	// Cria a câmera
 	pCamera = NULL;
 	pCamera = new CCamera(glm::vec3(0.0f, 3.0f, 10.0f));
@@ -213,9 +215,6 @@ void Scene2::DrawScene(float deltaTime)
 		}
 	}
 
-
-
-
 	// Renderiza a pilha de cubos
 	pShader->Use("StackP");
 	pShader->SetMat4("projection", projection);
@@ -227,15 +226,6 @@ void Scene2::DrawScene(float deltaTime)
 	DrawStackOfCubes(stackInfo3);
 	DrawStackOfCubes(stackInfo4);
 	
-
-
-
-
-
-
-
-
-
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (FIM)

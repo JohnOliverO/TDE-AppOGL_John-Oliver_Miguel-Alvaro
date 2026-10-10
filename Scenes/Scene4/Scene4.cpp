@@ -3,6 +3,8 @@
 
 Scene4::Scene4()
 {
+	glEnable(GL_CULL_FACE);
+
 	// Cria a câmera
 	pCamera = NULL;
 	pCamera = new CCamera(glm::vec3(0.0f, 3.0f, 10.0f));

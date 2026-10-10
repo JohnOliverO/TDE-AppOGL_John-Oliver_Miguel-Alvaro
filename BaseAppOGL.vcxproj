@@ -93,6 +93,8 @@
     <None Include="Scenes\Scene0\TextureCube.vert" />
     <None Include="Scenes\Scene0\TexturePlane.frag" />
     <None Include="Scenes\Scene0\TexturePlane.vert" />
+    <None Include="Scenes\Scene0\TextureSquarePyramid.frag" />
+    <None Include="Scenes\Scene0\TextureSquarePyramid.vert" />
     <None Include="Scenes\Scene0\TextureTriangle.frag" />
     <None Include="Scenes\Scene0\TextureTriangle.vert" />
     <None Include="Scenes\Scene1\Circle.frag" />
@@ -109,8 +111,24 @@
     <None Include="Scenes\Scene1\Tree.vert" />
     <None Include="Scenes\Scene2\StackP.frag" />
     <None Include="Scenes\Scene2\StackP.vert" />
+    <None Include="Scenes\Scene3\BaseP.frag" />
+    <None Include="Scenes\Scene3\BaseP.vert" />
+    <None Include="Scenes\Scene3\CrateP.frag" />
+    <None Include="Scenes\Scene3\CrateP.vert" />
+    <None Include="Scenes\Scene3\HouseP.frag" />
+    <None Include="Scenes\Scene3\HouseP.vert" />
+    <None Include="Scenes\Scene3\PlaneP.frag" />
+    <None Include="Scenes\Scene3\PlaneP.vert" />
+    <None Include="Scenes\Scene4\BaseP.frag" />
+    <None Include="Scenes\Scene4\BaseP.vert" />
     <None Include="Scenes\Scene5\BaseShader.frag" />
     <None Include="Scenes\Scene5\BaseShader.vert" />
+    <None Include="Scenes\Scene5\LightMapping.frag" />
+    <None Include="Scenes\Scene5\LightMapping.vert" />
+    <None Include="Scenes\Scene5\MaskTexture.frag" />
+    <None Include="Scenes\Scene5\MaskTexture.vert" />
+    <None Include="Scenes\Scene5\MultiTexture.frag" />
+    <None Include="Scenes\Scene5\MultiTexture.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

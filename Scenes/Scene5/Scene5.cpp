@@ -3,6 +3,8 @@
 
 Scene5::Scene5()
 {
+	glEnable(GL_CULL_FACE);
+
 	// Cria a câmera
 	pCamera = NULL;
 	pCamera = new CCamera(glm::vec3(0.0f, 3.0f, 10.0f));
@@ -26,6 +28,9 @@ Scene5::Scene5()
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
 	pShader->LoadShader("BaseShader", "Scenes/Scene5/BaseShader.vert", "Scenes/Scene5/BaseShader.frag");
 
+	pShader->LoadShader("MultiTexture","Scenes/Scene5/MultiTexture.vert", "Scenes/Scene5/MultiTexture.frag");
+	pShader->LoadShader("LightMapping", "Scenes/Scene5/LightMapping.vert", "Scenes/Scene5/LightMapping.frag");
+	pShader->LoadShader("MaskTexture", "Scenes/Scene5/MaskTexture.vert", "Scenes/Scene5/MaskTexture.frag");
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -34,13 +39,14 @@ Scene5::Scene5()
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
 	pTextures = new CTextures();
-	pTextures->LoadTextureMipMap(0, "Scenes/Textures/B1.jpg");
-	pTextures->LoadTextureMipMap(1, "Scenes/Textures/Blood.bmp");
-	pTextures->LoadTextureMipMap(2, "Scenes/Textures/grass.bmp");
-	pTextures->LoadTextureMipMap(3, "Scenes/Textures/Mask.bmp");
-	pTextures->LoadTextureMipMap(4, "Scenes/Textures/mud.bmp");
-	pTextures->LoadTextureMipMap(5, "Scenes/Textures/lightmap.bmp");
-	pTextures->LoadTextureMipMap(6, "Scenes/Textures/water.bmp");
+	pTextures->LoadTextureMipMap(0, "Scenes/Textures/brick.bmp");
+	pTextures->LoadTextureMipMap(1, "Scenes/Textures/b1.jpg");
+	pTextures->LoadTextureMipMap(2, "Scenes/Textures/water.bmp");
+	pTextures->LoadTextureMipMap(3, "Scenes/Textures/Blood.bmp");
+	pTextures->LoadTextureMipMap(4, "Scenes/Textures/grass.bmp");
+	pTextures->LoadTextureMipMap(5, "Scenes/Textures/mask.bmp");
+	pTextures->LoadTextureMipMap(6, "Scenes/Textures/mud.bmp");
+	pTextures->LoadTextureMipMap(7, "Scenes/Textures/lightmap.bmp");
 	
 	// Cria as primitivas
 	wall.generatePlane(10.0f, 5.0f);
@@ -131,6 +137,83 @@ void Scene5::DrawScene(float deltaTime)
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Exemplo de Multi-Textura (DECAL)
+	pShader->Use("MultiTexture");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	// Configura a textura para a camada 0
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(4);
+	pShader->SetInt("Texture0", 0);
+
+	// Configura a textura para a camada 1
+	glActiveTexture(GL_TEXTURE1);
+	pTextures->ApplyTexture(3);
+	pShader->SetInt("Texture1", 1);
+
+	// Desenha o chão
+	ground.render();
+	////////////////////////////////////////////////////////////////
+
+	// Exemplo de Multi-Textura (LIGHTMAP)
+	pShader->Use("LightMapping");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+	model = glm::translate(model, glm::vec3(0.0f, 5.0f, -5.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
+	pShader->SetMat4("model", model);
+
+	// Configura a textura para a camada 0
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(0);
+	pShader->SetInt("Texture0", 0);
+
+	// Configura a textura para a camada 1
+	glActiveTexture(GL_TEXTURE1);
+	pTextures->ApplyTexture(7);
+	pShader->SetInt("Texture1", 1);
+
+	// Passa o timer
+	pShader->SetFloat("uTime", glfwGetTime());
+
+	// Desenha o chão
+	ground.render();
+
+	///////////////////////////////////////////////////////////
+	// Exemplo de Multi-Textura (MASK)
+	pShader->Use("MaskTexture");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
+	pShader->SetMat4("model", model);
+
+	// Configura a textura para a camada 0 (Grass)
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(4);
+	pShader->SetInt("Texture0", 0);
+
+	// Configura a textura para a camada 1 (Mask)
+	glActiveTexture(GL_TEXTURE1);
+	pTextures->ApplyTexture(5);
+	pShader->SetInt("Texture1", 1);
+
+	// Configura a textura para a camada 2 (Mud)
+	glActiveTexture(GL_TEXTURE2);
+	pTextures->ApplyTexture(6);
+	pShader->SetInt("Texture2", 2);
+
+	// Desenha o chão
+	ground.render();
+
 	// Desenha o Chão
 	pShader->Use("BaseShader");
 	pShader->SetMat4("projection", projection);
@@ -144,12 +227,12 @@ void Scene5::DrawScene(float deltaTime)
 	// Configura as camadas de textura
 	// Camada 0 
 	glActiveTexture(GL_TEXTURE0);
-	pTextures->ApplyTexture(6);
+	pTextures->ApplyTexture(2);
 	pShader->SetInt("Texture0", 0);
 
 	// Camada 1 
 	glActiveTexture(GL_TEXTURE1);
-	pTextures->ApplyTexture(6);
+	pTextures->ApplyTexture(2);
 	pShader->SetInt("Texture1", 1);
 
 	/* Camada 0
@@ -162,19 +245,6 @@ void Scene5::DrawScene(float deltaTime)
 
 	// Desenha o chão
 	ground.render();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (FIM)
@@ -194,7 +264,6 @@ void Scene5::DrawScene(float deltaTime)
 	pText->RenderText(std::format("FPS: {0:.0f}\tDeltatime: {1:.2f}ms\tTimer: {2:.2f}s", pTimer->GetFPS(), pTimer->GetDeltaTime(), pTimer->GetTime() / 1000), 5.0f, 10.0f, 0.3f);
 	glEnable(GL_DEPTH_TEST);
 }
-
 
 void Scene5::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 {

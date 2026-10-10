@@ -3,6 +3,8 @@
 
 Scene1::Scene1()
 {
+	glEnable(GL_CULL_FACE);
+
 	// Cria a câmera
 	pCamera = NULL;
 	pCamera = new CCamera(glm::vec3(0.0f, 3.0f, 10.0f));
@@ -24,6 +26,7 @@ Scene1::Scene1()
 	pShader->LoadShader("Grid", "Scenes/Common/grid.vert", "Scenes/Common/grid.frag");
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
+
 	pShader->LoadShader("TextureCubeP", "Scenes/Scene1/TextureCubeP.vert", "Scenes/Scene1/TextureCubeP.frag");
 	pShader->LoadShader("TextureSphereP", "Scenes/Scene1/TextureSphereP.vert", "Scenes/Scene1/TextureSphereP.frag");
 	pShader->LoadShader("SnowPlane", "Scenes/Scene1/SnowPlane.vert", "Scenes/Scene1/SnowPlane.frag");
