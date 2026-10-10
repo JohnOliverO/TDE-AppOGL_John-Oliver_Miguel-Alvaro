@@ -26,8 +26,8 @@ Scene5::Scene5()
 	pShader->LoadShader("Grid", "Scenes/Common/grid.vert", "Scenes/Common/grid.frag");
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
-	pShader->LoadShader("BaseShader", "Scenes/Scene5/BaseShader.vert", "Scenes/Scene5/BaseShader.frag");
 
+	pShader->LoadShader("Water", "Scenes/Scene5/Water.vert", "Scenes/Scene5/Water.frag");
 	pShader->LoadShader("MultiTexture","Scenes/Scene5/MultiTexture.vert", "Scenes/Scene5/MultiTexture.frag");
 	pShader->LoadShader("LightMapping", "Scenes/Scene5/LightMapping.vert", "Scenes/Scene5/LightMapping.frag");
 	pShader->LoadShader("MaskTexture", "Scenes/Scene5/MaskTexture.vert", "Scenes/Scene5/MaskTexture.frag");
@@ -49,7 +49,7 @@ Scene5::Scene5()
 	pTextures->LoadTextureMipMap(7, "Scenes/Textures/lightmap.bmp");
 	
 	// Cria as primitivas
-	wall.generatePlane(10.0f, 5.0f);
+	wall.generatePlane(50.0f, 10.0f);
 	wall.setupBuffers();
 
 	ground.generatePlane(50.0f, 50.0f);
@@ -118,7 +118,8 @@ void Scene5::DrawScene(float deltaTime)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/* Draw the 3D grid
+	/*
+	Draw the 3D grid
 	pShader->Use("Grid");
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
@@ -166,7 +167,7 @@ void Scene5::DrawScene(float deltaTime)
 	pShader->SetMat4("view", view);
 
 	model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(0.0f, 5.0f, -5.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 25.0f, -50.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
 	pShader->SetMat4("model", model);
 
@@ -186,6 +187,12 @@ void Scene5::DrawScene(float deltaTime)
 	// Desenha o chão
 	ground.render();
 
+	model = glm::mat4(1.0);
+	model = glm::translate(model, glm::vec3(0.0f, 5.0f, -25.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
+	pShader->SetMat4("model", model);
+
+	wall.render();
 	///////////////////////////////////////////////////////////
 	// Exemplo de Multi-Textura (MASK)
 	pShader->Use("MaskTexture");
@@ -193,7 +200,7 @@ void Scene5::DrawScene(float deltaTime)
 	pShader->SetMat4("view", view);
 
 	model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
+	model = glm::translate(model, glm::vec3(50.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 
 	// Configura a textura para a camada 0 (Grass)
@@ -215,12 +222,12 @@ void Scene5::DrawScene(float deltaTime)
 	ground.render();
 
 	// Desenha o Chão
-	pShader->Use("BaseShader");
+	pShader->Use("Water");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
 	model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(-50.0f, 0.0f, 0.0f));
 
 	pShader->SetMat4("model", model);
 
@@ -235,11 +242,6 @@ void Scene5::DrawScene(float deltaTime)
 	pTextures->ApplyTexture(2);
 	pShader->SetInt("Texture1", 1);
 
-	/* Camada 0
-	glActiveTexture(GL_TEXTURE2);
-	pTextures->ApplyTexture(4);
-	pShader->SetInt("Texture2", 2);
-	*/
 	// Passa o timer para animar a textura da camada 1
 	pShader->SetFloat("fTime", glfwGetTime());
 

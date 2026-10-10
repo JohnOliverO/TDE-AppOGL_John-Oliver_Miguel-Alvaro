@@ -323,10 +323,10 @@
     <None Include="Scenes\Scene4\BaseP.vert">
       <Filter>Scenes\Scene4</Filter>
     </None>
-    <None Include="Scenes\Scene5\BaseShader.frag">
+    <None Include="Scenes\Scene5\Water.frag">
       <Filter>Scenes\Scene5</Filter>
     </None>
-    <None Include="Scenes\Scene5\BaseShader.vert">
+    <None Include="Scenes\Scene5\Water.vert">
       <Filter>Scenes\Scene5</Filter>
     </None>
     <None Include="Scenes\Scene5\LightMapping.frag">

@@ -121,8 +121,8 @@
     <None Include="Scenes\Scene3\PlaneP.vert" />
     <None Include="Scenes\Scene4\BaseP.frag" />
     <None Include="Scenes\Scene4\BaseP.vert" />
-    <None Include="Scenes\Scene5\BaseShader.frag" />
-    <None Include="Scenes\Scene5\BaseShader.vert" />
+    <None Include="Scenes\Scene5\Water.frag" />
+    <None Include="Scenes\Scene5\Water.vert" />
     <None Include="Scenes\Scene5\LightMapping.frag" />
     <None Include="Scenes\Scene5\LightMapping.vert" />
     <None Include="Scenes\Scene5\MaskTexture.frag" />
