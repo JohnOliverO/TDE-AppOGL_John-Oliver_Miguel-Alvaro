@@ -119,8 +119,8 @@
     <None Include="Scenes\Scene3\HouseP.vert" />
     <None Include="Scenes\Scene3\PlaneP.frag" />
     <None Include="Scenes\Scene3\PlaneP.vert" />
-    <None Include="Scenes\Scene4\BaseP.frag" />
-    <None Include="Scenes\Scene4\BaseP.vert" />
+    <None Include="Scenes\Scene4\PlaneShader.frag" />
+    <None Include="Scenes\Scene4\PlaneShader.vert" />
     <None Include="Scenes\Scene5\Water.frag" />
     <None Include="Scenes\Scene5\Water.vert" />
     <None Include="Scenes\Scene5\LightMapping.frag" />

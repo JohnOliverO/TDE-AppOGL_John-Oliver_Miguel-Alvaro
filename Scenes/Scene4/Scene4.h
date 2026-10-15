@@ -6,6 +6,7 @@
 #include "Engine/CTextures.h"
 #include "Engine/CTimer.h"
 #include "Engine/CText.h"
+#include "Engine/CPrimitives.h"
 
 
 
@@ -18,6 +19,9 @@ class Scene4 : public CSceneBase
 		virtual void DrawScene(float deltaTime);
 		virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
+		int HouseLoader(std::string filename);
+		void DrawHouse(int vertexCount, glm::vec3 position = glm::vec3(0.0f), float rotationAngle = 0.0f, glm::vec3 scale = glm::vec3(1.0f));
+		void DestroyHouse();
 
 	private:
 
@@ -39,5 +43,10 @@ class Scene4 : public CSceneBase
 		// Texto
 		CText* pText;
 
+		GLuint HouseVAO, HouseVBO;
+
+		int HouseVertexCount;
+
+		CPrimitives pPlane;
 };
 

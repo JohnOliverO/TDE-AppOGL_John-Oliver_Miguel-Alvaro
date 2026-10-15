@@ -48,8 +48,13 @@ Scene3::Scene3()
 	pBox.generateCube(2.0f);
 	pBox.setupBuffers();
 
-	pHouse.generatePlane(8.0f, 8.0f);
-	pHouse.setupBuffers();
+	pHouse.push_back(CPrimitives());
+	pHouse.back().generatePlane(8.0f, 8.0f);
+	pHouse.back().setupBuffers();
+
+	pHouse.push_back(CPrimitives());
+	pHouse.back().generatePyramid(8.0f, 8.0f);
+	pHouse.back().setupBuffers();
 
 }
 
@@ -57,7 +62,10 @@ Scene3::~Scene3()
 {
 	pPlane.cleanup();
 	pBox.cleanup();
-	pHouse.cleanup();
+	for (auto& house : pHouse)
+	{
+		house.cleanup();
+	}	
 
 	if (pCamera)
 	{
@@ -145,12 +153,11 @@ void Scene3::DrawScene(float deltaTime)
 	pTextures->ApplyTexture(0);
 	pShader->SetInt("Texture0", 0);
 
-	DrawHouse(glm::vec3(-8.0f, 0.001f, -16.0f));
-
-	pShader->SetMat4("model", model);
+	DrawHouse(glm::vec3(-8.0f, 0.0001f, -16.0f));
 
 	glEnable(GL_CULL_FACE);
 
+	// Desenha as caixas
 	pShader->Use("CrateP");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
@@ -181,12 +188,12 @@ void Scene3::DrawScene(float deltaTime)
 
 	pBox.render();
 
+	// Desenha o plano
 	pShader->Use("PlaneP");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
 
 	model = glm::mat4(1.0f);
-
 	pShader->SetMat4("model", model);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -263,17 +270,111 @@ void Scene3::DrawHouse(glm::vec3 position, float rotationAngle, glm::vec3 scale)
 	model = glm::scale(model, scale);
 
 	// Chão
-	model = glm::scale(model, glm::vec3(0.5f, 1.0f, 0.5f));
-	pShader->SetMat4("model", model);
+	glm::mat4 assistModel = glm::scale(model, glm::vec3(0.5f, 1.0f, 0.5f));
+	assistModel = glm::translate(assistModel, glm::vec3(-20.0f, 0.0f, 12.0f));
 
-	pShader->SetInt("TextureType", 2);
-	pHouse.render();
+	pShader->SetInt("TextureType", 2); // Parede
+	for (int i = 0; i <= 24; i = i + 8)
+	{
+		for (int j = 0; j <= 40; j = j + 8)
+		{
+			pShader->SetMat4("model", glm::translate(assistModel, glm::vec3(j, 0.0f, -i)));
+			pHouse.front().render();
+		}
+	}
 
-	model = glm::scale(model, glm::vec3(2.0f, 1.0f, 2.0f));
+	// Laje
+	pShader->SetInt("TextureType", 1); // Této
+	for (int i = 0; i <= 24; i = i + 8)
+	{
+		for (int j = 0; j <= 40; j = j + 8)
+		{
+			pShader->SetMat4("model", glm::translate(assistModel, glm::vec3(j, 8.0f, -i)));
+			pHouse.front().render();
+		}
+	}
+
+	// Telhado
+	assistModel = glm::translate(model, glm::vec3(0.0f, 9.9344f, 4.64952f));
+	assistModel = glm::rotate(assistModel, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	assistModel = glm::scale(assistModel, glm::vec3(3.25f, 1.0f, 1.3422f));
+	pShader->SetMat4("model", assistModel);
+
+	pHouse.front().render();
+
+	assistModel = glm::translate(model, glm::vec3(0.0f, 9.9344f, -4.64952f));
+	assistModel = glm::rotate(assistModel, glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+	assistModel = glm::scale(assistModel, glm::vec3(3.25f, 1.0f, 1.3422f));
+	pShader->SetMat4("model", assistModel);
+
+	pHouse.front().render();
+
+	assistModel = glm::translate(model, glm::vec3(12.0f, 8.0f, 0.0f));
+	assistModel = glm::scale(assistModel, glm::vec3(0.0f, 0.57735f, 2.0f));
+	pShader->SetMat4("model", assistModel);
+
+	pHouse.back().render();
+
+	assistModel = glm::translate(model, glm::vec3(-12.0f, 8.0f, 0.0f));
+	assistModel = glm::scale(assistModel, glm::vec3(0.0f, 0.57735f, 2.0f));
+	pShader->SetMat4("model", assistModel);
+
+	pHouse.back().render();
+
+	// Parede
 	model = glm::translate(model, glm::vec3(0.0f, 4.0f, 8.0f));
 	model = glm::rotate(model, 1.5708f, glm::vec3(-1.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 
-	pShader->SetInt("TextureType", 0);
-	pHouse.render();
+	pShader->SetInt("TextureType", 0); // Porta
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(8.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetInt("TextureType", 2); // Parede
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(0.0f, 16.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(-8.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(-8.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(0.0f, -16.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetInt("TextureType", 3); // Janela
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(-4.0f, 4.0f, 0.0f));
+	model = glm::rotate(model, 1.5708f, glm::vec3(0.0f, 0.0f, -1.0f));
+	pShader->SetMat4("model", model);
+
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(0.0f, 24.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pShader->SetInt("TextureType", 2); // Parede
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(-8.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pHouse.front().render();
+
+	model = glm::translate(model, glm::vec3(0.0f, -24.0f, 0.0f));
+	pShader->SetMat4("model", model);
+
+	pHouse.front().render();
 }

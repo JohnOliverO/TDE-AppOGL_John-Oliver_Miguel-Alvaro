@@ -317,12 +317,6 @@
     <None Include="Scenes\Scene3\PlaneP.vert">
       <Filter>Scenes\Scene3</Filter>
     </None>
-    <None Include="Scenes\Scene4\BaseP.frag">
-      <Filter>Scenes\Scene4</Filter>
-    </None>
-    <None Include="Scenes\Scene4\BaseP.vert">
-      <Filter>Scenes\Scene4</Filter>
-    </None>
     <None Include="Scenes\Scene5\Water.frag">
       <Filter>Scenes\Scene5</Filter>
     </None>
@@ -346,6 +340,12 @@
     </None>
     <None Include="Scenes\Scene5\MultiTexture.vert">
       <Filter>Scenes\Scene5</Filter>
+    </None>
+    <None Include="Scenes\Scene4\PlaneShader.frag">
+      <Filter>Scenes\Scene4</Filter>
+    </None>
+    <None Include="Scenes\Scene4\PlaneShader.vert">
+      <Filter>Scenes\Scene4</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

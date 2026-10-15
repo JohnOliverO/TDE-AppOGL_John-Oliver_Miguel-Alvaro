@@ -1,4 +1,5 @@
 ﻿#include "Scene4.h"
+#include <algorithm>
 
 
 Scene4::Scene4()
@@ -27,6 +28,8 @@ Scene4::Scene4()
 	pShader->LoadShader("Axis", "Scenes/Common/axis.vert", "Scenes/Common/axis.frag");
 	pShader->LoadShader("Text2D", "Scenes/Common/Text2D.vert", "Scenes/Common/Text2D.frag");
 
+	pShader->LoadShader("CasaShader", "Scenes/Assets/Casa/CasaShader.vert", "Scenes/Assets/Casa/CasaShader.frag");
+	pShader->LoadShader("PlaneShader", "Scenes/Scene4/PlaneShader.vert", "Scenes/Scene4/PlaneShader.frag");
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -34,13 +37,22 @@ Scene4::Scene4()
 
 	// Cria o gerenciador de texturas
 	pTextures = NULL;
-	//pTextures = new CTextures();
+	pTextures = new CTextures();
+	pTextures->LoadTextureMipMap(0, "Scenes/Assets/Casa/CasaTex.jpg");
+	pTextures->LoadTextureMipMap(1, "Scenes/Textures/grass.BMP");
 	
+	HouseVertexCount = HouseLoader("Scenes/Assets/Casa/Casa.txt");
+
+	pPlane.generatePlane(100.0f, 100.0f);
+	pPlane.setupBuffers();
 
 }
 
 Scene4::~Scene4()
 {
+	DestroyHouse();
+
+	pPlane.cleanup();
 
 	if (pCamera)
 	{
@@ -98,7 +110,7 @@ void Scene4::DrawScene(float deltaTime)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Draw the 3D grid
+	/* Draw the 3D grid
 	pShader->Use("Grid");
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
@@ -112,28 +124,38 @@ void Scene4::DrawScene(float deltaTime)
 	pShader->SetMat4("uProj", projection);
 	pShader->SetMat4("uView", view);
 	pGridAxis->DrawAxis();
-
+	*/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	glDisable(GL_CULL_FACE); // Desabilita o culling para que possamos ver o interior da casa
 
+	pShader->Use("CasaShader"); // Habilitar o shader para o objeto
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
 
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(0);
+	pShader->SetInt("Texture0", 0);
 
+	DrawHouse(HouseVertexCount);
 
+	glEnable(GL_CULL_FACE); // Reabilita o culling para os próximos objetos
 
+	pShader->Use("PlaneShader"); // Habilitar o shader para o objeto
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
 
+	glm::mat4 modelPlane = glm::mat4(1.0f);
 
+	pShader->SetMat4("model", modelPlane);
 
+	glActiveTexture(GL_TEXTURE0);
+	pTextures->ApplyTexture(1);
+	pShader->SetInt("Texture0", 0);
 
-
-
-
-
-
-
-
-
+	pPlane.render();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (FIM)
@@ -194,3 +216,70 @@ void Scene4::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 	}
 }
 
+int Scene4::HouseLoader(std::string filename)
+{
+	std::ifstream file(filename);
+
+	if(!file.is_open())
+	{
+		std::cout << "Error: Could not open file " << filename << std::endl;
+		return 0;
+	}
+
+	std::vector<float> vertices;
+	std::string line;
+
+	float vertex;
+	while(std::getline(file, line))
+	{
+		// Substitui todas as vírgulas por espaços para não quebrar o "stringstream"
+		std::replace(line.begin(), line.end(), ',', ' ');
+
+		std::stringstream ss(line);
+		while(ss >> vertex)
+		{
+			vertices.push_back(vertex);
+		}
+	}
+
+	glGenVertexArrays(1, &HouseVAO);
+
+	glGenBuffers(1, &HouseVBO);
+
+	glBindVertexArray(HouseVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, HouseVBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+
+	int stride = 5 * sizeof(float);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+
+	file.close();
+
+	return vertices.size() / 5; // Return the number of vertices (each vertex has 5 floats: 3 for position, 2 for texture coordinates)
+}
+
+void Scene4::DrawHouse(int vertexCount, glm::vec3 position, float rotationAngle, glm::vec3 scale)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, position);
+	model = glm::rotate(model, rotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, scale);
+	pShader->SetMat4("model", model);
+	glBindVertexArray(HouseVAO);
+	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	glBindVertexArray(0);
+}
+
+void Scene4::DestroyHouse()
+{
+	glDeleteVertexArrays(1, &HouseVAO);
+	glDeleteBuffers(1, &HouseVBO);
+}

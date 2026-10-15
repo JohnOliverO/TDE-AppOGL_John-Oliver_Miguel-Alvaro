@@ -41,7 +41,9 @@ class Scene3 : public CSceneBase
 		// Texto
 		CText* pText;
 
-		CPrimitives pPlane, pBox, pHouse;
+		CPrimitives pPlane, pBox;
+
+		std::vector<CPrimitives> pHouse;
 
 };
 
