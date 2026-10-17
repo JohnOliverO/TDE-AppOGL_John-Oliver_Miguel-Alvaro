@@ -43,6 +43,7 @@
     <ClInclude Include="Scenes\Scene4\Scene4.h" />
     <ClInclude Include="Scenes\Scene5\Scene5.h" />
     <ClInclude Include="Scenes\Scene6\Scene6.h" />
+    <ClInclude Include="Scenes\Scene7\Scene7.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\CGridAxis.cpp" />
@@ -71,6 +72,7 @@
     <ClCompile Include="Scenes\Scene4\Scene4.cpp" />
     <ClCompile Include="Scenes\Scene5\Scene5.cpp" />
     <ClCompile Include="Scenes\Scene6\Scene6.cpp" />
+    <ClCompile Include="Scenes\Scene7\Scene7.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scenes\Common\Assets.frag" />

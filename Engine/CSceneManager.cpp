@@ -11,7 +11,7 @@ CSceneManager::CSceneManager()
 
 	// Inicializa ponteiros das cenas	
 	// Cria a cena principal
-	uiCurrentScene = 6;
+	uiCurrentScene = 7;
 	iMenuCurrentScene = uiCurrentScene;
 	ChangeScene(uiCurrentScene);
 }
@@ -79,6 +79,8 @@ void CSceneManager::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 		ChangeScene(5);
 	if (input.IsKeyJustPressed(GLFW_KEY_6))
 		ChangeScene(6);
+	if (input.IsKeyJustPressed(GLFW_KEY_7))
+		ChangeScene(7);
 	
 	// Processa input da cena atual
 	Scene->ProcessSceneInput(window, deltaTime);
@@ -124,6 +126,9 @@ void CSceneManager::ChangeScene(unsigned int _uiCurrentScene)
 		break;
 	case 6:
 		this->Scene = new Scene6();
+		break;
+	case 7:
+		this->Scene = new Scene7();
 		break;
 	}
 }

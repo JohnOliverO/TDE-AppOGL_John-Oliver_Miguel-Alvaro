@@ -79,6 +79,9 @@
     <ClCompile Include="Scenes\Scene6\Scene6.cpp">
       <Filter>Scenes\Scene6</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\Scene7\Scene7.cpp">
+      <Filter>Scenes\Scene7</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CInputManager.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="Scenes\Scene6\Scene6.h">
       <Filter>Scenes\Scene6</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Scene7\Scene7.h">
+      <Filter>Scenes\Scene7</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -384,6 +390,9 @@
     </Filter>
     <Filter Include="Scenes\Scene6">
       <UniqueIdentifier>{1823ad29-0ba5-4e56-ad98-e4a4bc502b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Scene7">
+      <UniqueIdentifier>{0a8e1c1d-6993-4216-8286-17708afa40d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
