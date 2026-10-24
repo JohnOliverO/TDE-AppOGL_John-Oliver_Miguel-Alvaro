@@ -43,5 +43,11 @@ private:
 	// Terreno
 	CAsset* pTerrain;
 
+	// Cubo
+	CAsset* pCube;
+
+	// Piramide
+	CAsset* pPyramid;
+
 };
 

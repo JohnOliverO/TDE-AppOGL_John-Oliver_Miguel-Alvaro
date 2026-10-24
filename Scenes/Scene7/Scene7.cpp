@@ -39,6 +39,12 @@ Scene7::Scene7()
 	
 	pTerrain = NULL;
 	pTerrain = new CAsset("Scenes/Scene7/Scene7.obj");
+
+	pCube = NULL;
+	pCube = new CAsset("Scenes/Scene7/Cube.obj");
+
+	pPyramid = NULL; 
+	pPyramid = new CAsset("Scenes/Scene7/Pyramid.obj");
 }
 
 Scene7::~Scene7()
@@ -82,6 +88,18 @@ Scene7::~Scene7()
 	{
 		delete pText;
 		pText = NULL;
+	}
+
+	if (pCube)
+	{
+		delete pCube;
+		pCube = NULL;
+	}
+
+	if (pPyramid)
+	{
+		delete pPyramid;
+		pPyramid = NULL;
 	}
 
 
@@ -135,10 +153,19 @@ void Scene7::DrawScene(float deltaTime)
 
 	pTerrain->Draw(pShader->GetProgram("Asset"));
 
+	//Desenha o cubo
 
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pCube->Draw(pShader->GetProgram("Asset"));
 
+	//Desenha a piramide
 
-
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pPyramid->Draw(pShader->GetProgram("Asset"));
 
 
 
