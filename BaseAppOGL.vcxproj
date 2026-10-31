@@ -81,6 +81,8 @@
     <None Include="Scenes\Common\axis.vert" />
     <None Include="Scenes\Common\grid.frag" />
     <None Include="Scenes\Common\grid.vert" />
+    <None Include="Scenes\Common\Light.frag" />
+    <None Include="Scenes\Common\Light.vert" />
     <None Include="Scenes\Common\Skybox.frag" />
     <None Include="Scenes\Common\Skybox.vert" />
     <None Include="Scenes\Common\Text2D.frag" />

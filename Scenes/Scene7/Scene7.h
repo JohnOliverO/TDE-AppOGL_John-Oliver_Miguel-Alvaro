@@ -7,6 +7,7 @@
 #include "Engine/CTimer.h"
 #include "Engine/CText.h"
 #include "Engine/CAsset.h"
+#include "Engine/CPrimitives.h"
 
 
 
@@ -19,6 +20,7 @@ public:
 		virtual void DrawScene(float deltaTime);
         virtual void ProcessSceneInput(GLFWwindow* window, float deltaTime);
 
+		void ShowGUI();
 
 private:
 
@@ -49,5 +51,23 @@ private:
 	// Piramide
 	CAsset* pPyramid;
 
+	// Casa
+	CAsset* pHouse;
+
+	// Quantidade de reflexão ambiente dos objetos
+	float ambientStrength;
+
+	// Ativa a GUI
+	bool bActiveGUI;
+
+	// Posição da fonte de luz
+	glm::vec3 lightPos;
+
+	// Lâmpada
+	CPrimitives pLamp;
+	float fSpeed;
+
+	float Shininess;
+	glm::vec3 LightColor;
 };
 

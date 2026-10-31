@@ -27,6 +27,9 @@ Scene7::Scene7()
 
 	pShader->LoadShader("Skybox", "Scenes/Common/Skybox.vert", "Scenes/Common/Skybox.frag");
 	pShader->LoadShader("Asset", "Scenes/Common/Assets.vert", "Scenes/Common/Assets.frag");
+	pShader->LoadShader("Light", "Scenes/Common/Light.vert", "Scenes/Common/Light.frag");
+
+	pShader->LoadShader("Primitives", "Scenes/Common/Primitives.vert", "Scenes/Common/Primitives.frag");
 
 
 	// Cria o gerenciador de grid e axis
@@ -45,10 +48,42 @@ Scene7::Scene7()
 
 	pPyramid = NULL; 
 	pPyramid = new CAsset("Scenes/Scene7/Pyramid.obj");
+
+	pHouse = NULL;
+	pHouse = new CAsset("Scenes/Scene7/casa.obj");
+
+	ambientStrength = 0.1f;
+
+	// Inicia com a GUI desativada
+	bool bActiveGUI;
+
+	// Posição da fonte de luz (Point Light)
+	lightPos = glm::vec3(0.0f, 10.0f, 20.0f);
+
+	// Cria lâmpada (apenas para observação)
+	pLamp.generateSphere(0.3f);
+	pLamp.setupBuffers();
+
+	// Velocidade de deslocamento da lâmpada
+	fSpeed = 10.0f;
+
+	// Intensidade do reflexo especular
+	Shininess = 32.0f;
+
+	// Cor da luz
+	LightColor = glm::vec3(1.0, 1.0, 1.0);
 }
 
 Scene7::~Scene7()
 {
+	//Destroi Lâmpada
+	pLamp.cleanup();
+
+	if (pHouse) {
+		delete pHouse;
+		pHouse = NULL;
+	}
+
 	if (pTerrain) {
 		delete pTerrain;
 		pTerrain = NULL;
@@ -140,36 +175,56 @@ void Scene7::DrawScene(float deltaTime)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (INÍCIO)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//Desenha a cena
-
-	pShader->Use("Asset");
+	// Desenha a cena
+	// Desenha a lâmpada
+	pShader->Use("Primitives");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
+
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, lightPos);
+	pShader->SetMat4("model", model);
+
+	pLamp.render();
+	
+	// Objetos com interação com luz
+	pShader->Use("Light");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+	pShader->SetFloat("AmbientStrength", ambientStrength);
+	pShader->SetVec3("LightPos", lightPos);
+	pShader->SetVec3("ViewPos", pCamera->Position);
+	pShader->SetVec3("LightColor", LightColor);
+	pShader->SetFloat("Shininess", Shininess);
 
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 
-	pTerrain->Draw(pShader->GetProgram("Asset"));
+	pTerrain->Draw(pShader->GetProgram("Light"));
 
-	//Desenha o cubo
-
+	// Desenha o cubo
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
-	pCube->Draw(pShader->GetProgram("Asset"));
+	pCube->Draw(pShader->GetProgram("Light"));
 
-	//Desenha a piramide
+	// Desenha a casa
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pHouse->Draw(pShader->GetProgram("Light"));
 
+	// Objetos sem interação com luz
+	pShader->Use("Asset");
+	pShader->SetMat4("projection", projection);
+	pShader->SetMat4("view", view);
+
+	// Desenha a piramide
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 	pPyramid->Draw(pShader->GetProgram("Asset"));
-
-
-
-
 
 
 
@@ -201,38 +256,79 @@ void Scene7::ProcessSceneInput(GLFWwindow* window, float deltaTime)
 {
 	InputManager& input = InputManager::GetInstance();
 
-	// Camera movement
-	if (input.IsKeyPressed(GLFW_KEY_W))
-		pCamera->ProcessKeyboard(FORWARD, deltaTime);
-	if (input.IsKeyPressed(GLFW_KEY_S))
-		pCamera->ProcessKeyboard(BACKWARD, deltaTime);
-	if (input.IsKeyPressed(GLFW_KEY_A))
-		pCamera->ProcessKeyboard(LEFT, deltaTime);
-	if (input.IsKeyPressed(GLFW_KEY_D))
-		pCamera->ProcessKeyboard(RIGHT, deltaTime);
-	if (input.IsKeyPressed(GLFW_KEY_E))
-		pCamera->ProcessKeyboard(UP, deltaTime);
-	if (input.IsKeyPressed(GLFW_KEY_Q))
-		pCamera->ProcessKeyboard(DOWN, deltaTime);
-
-	// Increase/decrease movement speed
-	if (input.IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
-		pCamera->MovementSpeed = SPEED_MULTIPLIER;
-	else
-		pCamera->MovementSpeed = SPEED;
-
-	// Process mouse movement
-	glm::vec2 mouseDelta = input.GetMouseDelta();
-	if (mouseDelta.x != 0.0f || mouseDelta.y != 0.0f)
+	if (input.IsKeyJustPressed(GLFW_KEY_ENTER))
 	{
-		pCamera->ProcessMouseMovement(mouseDelta.x, mouseDelta.y);
+		bActiveGUI = !bActiveGUI;
+		input.SetCursorMode(bActiveGUI ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+
+		std::cout << "GUI mode: '" << bActiveGUI << "'" << std::endl;
 	}
 
-	// Process scroll
-	float scrollOffset = input.GetScrollOffset();
-	if (scrollOffset != 0.0f)
+	if (bActiveGUI == false)
 	{
-		pCamera->ProcessMouseScroll(scrollOffset);
+		// Camera movement
+		if (input.IsKeyPressed(GLFW_KEY_W))
+			pCamera->ProcessKeyboard(FORWARD, deltaTime);
+		if (input.IsKeyPressed(GLFW_KEY_S))
+			pCamera->ProcessKeyboard(BACKWARD, deltaTime);
+		if (input.IsKeyPressed(GLFW_KEY_A))
+			pCamera->ProcessKeyboard(LEFT, deltaTime);
+		if (input.IsKeyPressed(GLFW_KEY_D))
+			pCamera->ProcessKeyboard(RIGHT, deltaTime);
+		if (input.IsKeyPressed(GLFW_KEY_E))
+			pCamera->ProcessKeyboard(UP, deltaTime);
+		if (input.IsKeyPressed(GLFW_KEY_Q))
+			pCamera->ProcessKeyboard(DOWN, deltaTime);
+
+		// Teclas de controle interativo de posição da luz
+		if (input.IsKeyPressed(GLFW_KEY_UP))
+			lightPos.z -= fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_DOWN))
+			lightPos.z += fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_LEFT))
+			lightPos.x -= fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_RIGHT))
+			lightPos.x += fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_PAGE_DOWN))
+			lightPos.y -= fSpeed * deltaTime;
+		if (input.IsKeyPressed(GLFW_KEY_PAGE_UP))
+			lightPos.y += fSpeed * deltaTime;
+
+		// Increase/decrease movement speed
+		if (input.IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
+			pCamera->MovementSpeed = SPEED_MULTIPLIER;
+		else
+			pCamera->MovementSpeed = SPEED;
+
+		// Process mouse movement
+		glm::vec2 mouseDelta = input.GetMouseDelta();
+		if (mouseDelta.x != 0.0f || mouseDelta.y != 0.0f)
+		{
+			pCamera->ProcessMouseMovement(mouseDelta.x, mouseDelta.y);
+		}
+
+		// Process scroll
+		float scrollOffset = input.GetScrollOffset();
+		if (scrollOffset != 0.0f)
+		{
+			pCamera->ProcessMouseScroll(scrollOffset);
+		}
+	}
+	else
+	{
+		ShowGUI(); // Show Graphics User Interface
 	}
 }
 
+void Scene7::ShowGUI()
+{
+	ImGuiColorEditFlags flags = ImGuiColorEditFlags_Float;
+
+	ImGui::Begin("Light Options:");
+
+	ImGui::SliderFloat("Ambient Strenght", &ambientStrength, 0.0f, 1.0f, "%.2f");
+	ImGui::SliderFloat("Shininess", &Shininess, 0.1f, 254.0f, "%.2f");
+	ImGui::ColorEdit4("Light Color", (float*)&LightColor, flags);
+
+	ImGui::End();
+}
