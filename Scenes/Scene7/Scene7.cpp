@@ -28,6 +28,7 @@ Scene7::Scene7()
 	pShader->LoadShader("Skybox", "Scenes/Common/Skybox.vert", "Scenes/Common/Skybox.frag");
 	pShader->LoadShader("Asset", "Scenes/Common/Assets.vert", "Scenes/Common/Assets.frag");
 	pShader->LoadShader("Light", "Scenes/Common/Light.vert", "Scenes/Common/Light.frag");
+	pShader->LoadShader("Blend", "Scenes/Common/Blend.vert", "Scenes/Common/Blend.frag");
 
 	pShader->LoadShader("Primitives", "Scenes/Common/Primitives.vert", "Scenes/Common/Primitives.frag");
 
@@ -52,6 +53,9 @@ Scene7::Scene7()
 	pHouse = NULL;
 	pHouse = new CAsset("Scenes/Scene7/casa.obj");
 
+	pGrass1 = NULL;
+	pGrass1 = new CAsset("Scenes/Scene7/Grama1.obj");
+
 	ambientStrength = 0.1f;
 
 	// Inicia com a GUI desativada
@@ -72,12 +76,21 @@ Scene7::Scene7()
 
 	// Cor da luz
 	LightColor = glm::vec3(1.0, 1.0, 1.0);
+
+	// Cor do assert
+	assetColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
 }
 
 Scene7::~Scene7()
 {
 	//Destroi Lâmpada
 	pLamp.cleanup();
+
+	if (pGrass1) {
+		delete pGrass1;
+		pGrass1 = NULL;
+	}
 
 	if (pHouse) {
 		delete pHouse;
@@ -215,22 +228,38 @@ void Scene7::DrawScene(float deltaTime)
 	pShader->SetMat4("model", model);
 	pHouse->Draw(pShader->GetProgram("Light"));
 
+	/////////////////////////////////////////////////////
+	//////////////// TRANSPARÊNCIA //////////////////////
+	/////////////////////////////////////////////////////
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glDisable(GL_CULL_FACE);
+
 	// Objetos sem interação com luz
-	pShader->Use("Asset");
+	pShader->Use("Blend");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
+
+	// Passa a cor do asset + canal alpha
+	pShader->SetVec4("assetColor", assetColor);
 
 	// Desenha a piramide
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
-	pPyramid->Draw(pShader->GetProgram("Asset"));
+	pPyramid->Draw(pShader->GetProgram("Blend"));
 
+	// Desenha a grama
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pGrass1->Draw(pShader->GetProgram("Blend"));
 
+	glDisable(GL_BLEND);
 
-
-
-
+	glEnable(GL_CULL_FACE);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (FIM)
@@ -329,6 +358,7 @@ void Scene7::ShowGUI()
 	ImGui::SliderFloat("Ambient Strenght", &ambientStrength, 0.0f, 1.0f, "%.2f");
 	ImGui::SliderFloat("Shininess", &Shininess, 0.1f, 254.0f, "%.2f");
 	ImGui::ColorEdit4("Light Color", (float*)&LightColor, flags);
-
+	ImGui::NewLine();
+	ImGui::ColorEdit4("Asset Color", (float*)&assetColor, flags);
 	ImGui::End();
 }

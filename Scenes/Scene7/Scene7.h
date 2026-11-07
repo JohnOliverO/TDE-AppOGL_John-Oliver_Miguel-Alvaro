@@ -67,7 +67,16 @@ private:
 	CPrimitives pLamp;
 	float fSpeed;
 
+	// Brilho do reflexo especular
 	float Shininess;
+
+	// Cor da luz
 	glm::vec3 LightColor;
+
+	// Cor do asset
+	glm::vec4 assetColor;
+
+	// Casa
+	CAsset* pGrass1;
 };
 

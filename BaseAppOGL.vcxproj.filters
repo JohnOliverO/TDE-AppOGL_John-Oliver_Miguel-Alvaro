@@ -359,6 +359,12 @@
     <None Include="Scenes\Common\Light.vert">
       <Filter>Scenes\Common</Filter>
     </None>
+    <None Include="Scenes\Common\Blend.frag">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\Blend.vert">
+      <Filter>Scenes\Common</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

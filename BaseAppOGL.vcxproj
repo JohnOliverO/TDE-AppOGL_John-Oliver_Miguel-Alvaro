@@ -79,6 +79,8 @@
     <None Include="Scenes\Common\Assets.vert" />
     <None Include="Scenes\Common\axis.frag" />
     <None Include="Scenes\Common\axis.vert" />
+    <None Include="Scenes\Common\Blend.frag" />
+    <None Include="Scenes\Common\Blend.vert" />
     <None Include="Scenes\Common\grid.frag" />
     <None Include="Scenes\Common\grid.vert" />
     <None Include="Scenes\Common\Light.frag" />
