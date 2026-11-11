@@ -29,9 +29,10 @@ Scene7::Scene7()
 	pShader->LoadShader("Asset", "Scenes/Common/Assets.vert", "Scenes/Common/Assets.frag");
 	pShader->LoadShader("Light", "Scenes/Common/Light.vert", "Scenes/Common/Light.frag");
 	pShader->LoadShader("Blend", "Scenes/Common/Blend.vert", "Scenes/Common/Blend.frag");
+	pShader->LoadShader("Fog", "Scenes/Common/Fog.vert", "Scenes/Common/Fog.frag");
+	pShader->LoadShader("ColorLightFog", "Scenes/Common/ColorLightFog.vert", "Scenes/Common/ColorLightFog.frag");
 
 	pShader->LoadShader("Primitives", "Scenes/Common/Primitives.vert", "Scenes/Common/Primitives.frag");
-
 
 	// Cria o gerenciador de grid e axis
 	pGridAxis = NULL;
@@ -79,6 +80,13 @@ Scene7::Scene7()
 
 	// Cor do assert
 	assetColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	FogColor = glm::vec4(0.5, 0.5, 0.5, 1.0);
+	FogDensity = 0.03;
+	FogMode = 0;
+	FogStart = 0.0;
+	FogEnd = 100.0;
+	FogEnable = true;
 
 }
 
@@ -158,8 +166,10 @@ void Scene7::DrawScene(float deltaTime)
 	// Update timer (must be called at start of frame)
 	pTimer->Update();
 
+	glm::vec4 clearColor = FogEnable ? FogColor : glm::vec4(0.1f, 0.1f, 0.15f, 1.0f);
+
 	// Clear the color and depth buffers
-	glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
+	glClearColor(clearColor.r , clearColor.g , clearColor.b , clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Create transformations 
@@ -199,39 +209,101 @@ void Scene7::DrawScene(float deltaTime)
 	pShader->SetMat4("model", model);
 
 	pLamp.render();
-	
-	// Objetos com interação com luz
-	pShader->Use("Light");
+
+	// Objetos com interação com Neblina
+	pShader->Use("ColorLightFog");
 	pShader->SetMat4("projection", projection);
 	pShader->SetMat4("view", view);
+
+	pShader->SetVec4("FogColor", FogColor);
+	pShader->SetFloat("FogDensity", FogDensity);
+	pShader->SetInt("FogMode", FogMode);
+	pShader->SetFloat("FogStart", FogStart);
+	pShader->SetFloat("FogEnd", FogEnd);
+	pShader->SetVec3("CameraPos", pCamera->Position);
+	pShader->SetBool("FogEnable", FogEnable);
+
 	pShader->SetFloat("AmbientStrength", ambientStrength);
 	pShader->SetVec3("LightPos", lightPos);
 	pShader->SetVec3("ViewPos", pCamera->Position);
 	pShader->SetVec3("LightColor", LightColor);
 	pShader->SetFloat("Shininess", Shininess);
 
+	/*
+	std::string shaderToUse = FogEnable ? "Fog" : "Light";
+
+	if (FogEnable == true)
+	{
+		// Objetos com interação com Neblina
+		pShader->Use("Fog");
+		pShader->SetMat4("projection", projection);
+		pShader->SetMat4("view", view);
+
+		pShader->SetVec4("FogColor", FogColor);
+		pShader->SetFloat("FogDensity", FogDensity);
+		pShader->SetInt("FogMode", FogMode);
+		pShader->SetFloat("FogStart", FogStart);
+		pShader->SetFloat("FogEnd", FogEnd);
+		pShader->SetVec3("CameraPos", pCamera->Position);
+		pShader->SetBool("FogEnable", FogEnable);
+	}
+	else
+	{
+		// Objetos com interação com luz
+		pShader->Use("Light");
+		pShader->SetMat4("projection", projection);
+		pShader->SetMat4("view", view);
+
+		pShader->SetFloat("AmbientStrength", ambientStrength);
+		pShader->SetVec3("LightPos", lightPos);
+		pShader->SetVec3("ViewPos", pCamera->Position);
+		pShader->SetVec3("LightColor", LightColor);
+		pShader->SetFloat("Shininess", Shininess);
+	}
+	*/
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 
-	pTerrain->Draw(pShader->GetProgram("Light"));
+	pTerrain->Draw(pShader->GetProgram("ColorLightFog"));
 
 	// Desenha o cubo
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
-	pCube->Draw(pShader->GetProgram("Light"));
+	pCube->Draw(pShader->GetProgram("ColorLightFog"));
 
 	// Desenha a casa
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
-	pHouse->Draw(pShader->GetProgram("Light"));
+	pHouse->Draw(pShader->GetProgram("ColorLightFog"));
 
 	/////////////////////////////////////////////////////
 	//////////////// TRANSPARÊNCIA //////////////////////
 	/////////////////////////////////////////////////////
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glDisable(GL_CULL_FACE);
+
+	// Desenha a piramide
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pPyramid->Draw(pShader->GetProgram("ColorLightFog"));
+
+	// Desenha a grama
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pGrass1->Draw(pShader->GetProgram("ColorLightFog"));
+
+	glDisable(GL_BLEND);
+
+	glEnable(GL_CULL_FACE);
+	/*
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -260,7 +332,7 @@ void Scene7::DrawScene(float deltaTime)
 	glDisable(GL_BLEND);
 
 	glEnable(GL_CULL_FACE);
-
+	*/
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                               DESENHA OS OBJETOS DA CENA (FIM)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -360,5 +432,17 @@ void Scene7::ShowGUI()
 	ImGui::ColorEdit4("Light Color", (float*)&LightColor, flags);
 	ImGui::NewLine();
 	ImGui::ColorEdit4("Asset Color", (float*)&assetColor, flags);
+	ImGui::End();
+
+	ImGui::Begin("Fog Options:");
+	ImGui::Text("Fog Mode:");
+	ImGui::RadioButton("Linear", &FogMode, 0); ImGui::SameLine();
+	ImGui::RadioButton("Exponential", &FogMode, 1); ImGui::SameLine();
+	ImGui::RadioButton("Quadratic", &FogMode, 2); ImGui::SameLine();
+	ImGui::ColorEdit4("Fog Color", (float*)&FogColor, flags);
+	ImGui::SliderFloat("Fog Density", &FogDensity, 0.0f, 1.0f, "%.2f");
+	ImGui::SliderFloat("Fog Start", &FogStart, 0.0f, 1.0f, "%.2f");
+	ImGui::SliderFloat("Fog End", &FogEnd, 0.0f, 1.0f, "%.2f");
+	ImGui::Checkbox("Fog Enable", &FogEnable);
 	ImGui::End();
 }

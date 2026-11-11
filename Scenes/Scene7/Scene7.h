@@ -78,5 +78,13 @@ private:
 
 	// Casa
 	CAsset* pGrass1;
+
+	// Fog parameters
+	glm::vec4 FogColor;
+	float FogDensity;
+	int FogMode;
+	float FogStart;
+	float FogEnd;
+	bool FogEnable;
 };
 
