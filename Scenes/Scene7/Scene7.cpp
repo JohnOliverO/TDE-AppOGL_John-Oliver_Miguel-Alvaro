@@ -43,7 +43,10 @@ Scene7::Scene7()
 	//pTextures = new CTextures();
 	
 	pTerrain = NULL;
-	pTerrain = new CAsset("Scenes/Scene7/Scene7.obj");
+	pTerrain = new CAsset("Scenes/Scene7/Terrain.obj");
+
+	pBoxes = NULL;
+	pBoxes = new CAsset("Scenes/Scene7/Boxes.obj");
 
 	pCube = NULL;
 	pCube = new CAsset("Scenes/Scene7/Cube.obj");
@@ -108,6 +111,11 @@ Scene7::~Scene7()
 	if (pTerrain) {
 		delete pTerrain;
 		pTerrain = NULL;
+	}
+
+	if (pBoxes) {
+		delete pBoxes;
+		pBoxes = NULL;
 	}
 
 	if (pCamera)
@@ -261,6 +269,7 @@ void Scene7::DrawScene(float deltaTime)
 		pShader->SetFloat("Shininess", Shininess);
 	}
 	*/
+	// Desenha o terreno
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
@@ -269,15 +278,21 @@ void Scene7::DrawScene(float deltaTime)
 
 	// Desenha o cubo
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(-20.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(20.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 	pCube->Draw(pShader->GetProgram("ColorLightFog"));
 
 	// Desenha a casa
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(-16.0f, 0.0f, 0.0f));
 	pShader->SetMat4("model", model);
 	pHouse->Draw(pShader->GetProgram("ColorLightFog"));
+
+	// Desenha as caixas
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	pShader->SetMat4("model", model);
+	pBoxes->Draw(pShader->GetProgram("ColorLightFog"));
 
 	/////////////////////////////////////////////////////
 	//////////////// TRANSPARÊNCIA //////////////////////
@@ -290,13 +305,13 @@ void Scene7::DrawScene(float deltaTime)
 
 	// Desenha a piramide
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(5.0f, 0.0f, 5.0f));
 	pShader->SetMat4("model", model);
 	pPyramid->Draw(pShader->GetProgram("ColorLightFog"));
 
 	// Desenha a grama
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
 	pShader->SetMat4("model", model);
 	pGrass1->Draw(pShader->GetProgram("ColorLightFog"));
 
@@ -441,8 +456,8 @@ void Scene7::ShowGUI()
 	ImGui::RadioButton("Quadratic", &FogMode, 2); ImGui::SameLine();
 	ImGui::ColorEdit4("Fog Color", (float*)&FogColor, flags);
 	ImGui::SliderFloat("Fog Density", &FogDensity, 0.0f, 1.0f, "%.2f");
-	ImGui::SliderFloat("Fog Start", &FogStart, 0.0f, 1.0f, "%.2f");
-	ImGui::SliderFloat("Fog End", &FogEnd, 0.0f, 1.0f, "%.2f");
+	ImGui::SliderFloat("Fog Start", &FogStart, 0.0f, 1000.0f, "%.2f");
+	ImGui::SliderFloat("Fog End", &FogEnd, 0.0f, 1000.0f, "%.2f");
 	ImGui::Checkbox("Fog Enable", &FogEnable);
 	ImGui::End();
 }

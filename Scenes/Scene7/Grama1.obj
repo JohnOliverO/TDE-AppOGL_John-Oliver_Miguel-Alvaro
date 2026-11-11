@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 06.11.2026 20:40:23
+# File Created: 11.11.2026 19:30:20
 
 mtllib Grama1.mtl
 
@@ -7,13 +7,13 @@ mtllib Grama1.mtl
 # object Plane001
 #
 
-v  -6.83 3.10 -0.00
-v  -6.83 0.07 -0.00
-v  6.83 3.10 -0.00
-v  6.83 0.07 -0.00
+v  0.00 1.00 0.50
+v  0.00 0.00 0.50
+v  0.00 1.00 -0.50
+v  -0.00 0.00 -0.50
 # 4 vertices
 
-vn 0.00 -0.00 1.00
+vn 1.00 -0.00 -0.00
 # 1 vertex normals
 
 vt 0.00 1.00 0.00
@@ -24,7 +24,7 @@ vt 1.00 0.00 0.00
 
 o Plane001
 g Plane001
-usemtl Material__25
+usemtl Material__50
 s 1
 f 1/1/1 2/2/1 3/3/1 
 f 4/4/1 3/3/1 2/2/1 
@@ -34,199 +34,10 @@ f 4/4/1 3/3/1 2/2/1
 # object Plane002
 #
 
-v  -0.00 3.10 7.43
-v  -0.00 0.07 7.43
-v  -0.00 3.10 -7.43
-v  -0.00 0.07 -7.43
-# 4 vertices
-
-vn 1.00 -0.00 -0.00
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane002
-g Plane002
-usemtl Material__25
-s 1
-f 5/5/2 6/6/2 7/7/2 
-f 8/8/2 7/7/2 6/6/2 
-# 2 faces
-
-#
-# object Plane003
-#
-
-v  -4.63 3.39 13.24
-v  -4.63 -0.22 13.24
-v  4.63 3.39 18.25
-v  4.63 -0.22 18.25
-# 4 vertices
-
-vn -0.29 -0.00 0.96
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane003
-g Plane003
-usemtl Material__25
-s 1
-f 9/9/3 10/10/3 11/11/3 
-f 12/12/3 11/11/3 10/10/3 
-# 2 faces
-
-#
-# object Plane004
-#
-
-v  -1.88 3.39 21.91
-v  -1.88 -0.22 21.91
-v  1.88 3.39 9.59
-v  1.88 -0.22 9.59
-# 4 vertices
-
-vn 0.88 -0.00 0.48
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane004
-g Plane004
-usemtl Material__25
-s 1
-f 13/13/4 14/14/4 15/15/4 
-f 16/16/4 15/15/4 14/14/4 
-# 2 faces
-
-#
-# object Plane005
-#
-
-v  -5.52 3.10 12.17
-v  -5.52 0.07 12.17
-v  2.66 3.10 6.42
-v  2.66 0.07 6.42
-# 4 vertices
-
-vn 0.57 -0.00 0.82
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane005
-g Plane005
-usemtl Material__25
-s 1
-f 17/17/5 18/18/5 19/19/5 
-f 20/20/5 19/19/5 18/18/5 
-# 2 faces
-
-#
-# object Plane006
-#
-
-v  1.45 3.10 13.39
-v  1.45 0.07 13.39
-v  -4.30 3.10 5.20
-v  -4.30 0.07 5.20
-# 4 vertices
-
-vn 0.82 -0.00 -0.57
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane006
-g Plane006
-usemtl Material__25
-s 1
-f 21/21/6 22/22/6 23/23/6 
-f 24/24/6 23/23/6 22/22/6 
-# 2 faces
-
-#
-# object Plane007
-#
-
-v  -10.19 3.75 7.65
-v  -10.19 0.07 7.65
-v  -2.01 3.75 1.90
-v  -2.01 0.07 1.90
-# 4 vertices
-
-vn 0.57 -0.00 0.82
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane007
-g Plane007
-usemtl Material__25
-s 1
-f 25/25/7 26/26/7 27/27/7 
-f 28/28/7 27/27/7 26/26/7 
-# 2 faces
-
-#
-# object Plane008
-#
-
-v  -3.22 3.75 8.87
-v  -3.22 0.07 8.87
-v  -8.97 3.75 0.69
-v  -8.97 0.07 0.69
-# 4 vertices
-
-vn 0.82 -0.00 -0.57
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane008
-g Plane008
-usemtl Material__25
-s 1
-f 29/29/8 30/30/8 31/31/8 
-f 32/32/8 31/31/8 30/30/8 
-# 2 faces
-
-#
-# object Plane009
-#
-
-v  -13.41 3.52 12.94
-v  -13.41 -0.35 12.94
-v  -3.41 3.52 12.94
-v  -3.41 -0.35 12.94
+v  -0.50 1.00 0.00
+v  -0.50 0.00 -0.00
+v  0.50 1.00 0.00
+v  0.50 0.00 -0.00
 # 4 vertices
 
 vn 0.00 -0.00 1.00
@@ -238,38 +49,11 @@ vt 1.00 1.00 0.00
 vt 1.00 0.00 0.00
 # 4 texture coords
 
-o Plane009
-g Plane009
-usemtl Material__25
+o Plane002
+g Plane002
+usemtl Material__50
 s 1
-f 33/33/9 34/34/9 35/35/9 
-f 36/36/9 35/35/9 34/34/9 
-# 2 faces
-
-#
-# object Plane010
-#
-
-v  -8.41 3.52 20.73
-v  -8.41 -0.35 20.73
-v  -8.41 3.52 5.16
-v  -8.41 -0.35 5.16
-# 4 vertices
-
-vn 1.00 -0.00 -0.00
-# 1 vertex normals
-
-vt 0.00 1.00 0.00
-vt 0.00 0.00 0.00
-vt 1.00 1.00 0.00
-vt 1.00 0.00 0.00
-# 4 texture coords
-
-o Plane010
-g Plane010
-usemtl Material__25
-s 1
-f 37/37/10 38/38/10 39/39/10 
-f 40/40/10 39/39/10 38/38/10 
+f 5/5/2 6/6/2 7/7/2 
+f 8/8/2 7/7/2 6/6/2 
 # 2 faces
 

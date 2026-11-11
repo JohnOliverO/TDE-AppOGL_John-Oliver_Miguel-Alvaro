@@ -45,6 +45,9 @@ private:
 	// Terreno
 	CAsset* pTerrain;
 
+	// Caixas
+	CAsset* pBoxes;
+
 	// Cubo
 	CAsset* pCube;
 
