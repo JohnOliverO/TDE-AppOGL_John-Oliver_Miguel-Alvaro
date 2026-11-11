@@ -365,6 +365,18 @@
     <None Include="Scenes\Common\Blend.vert">
       <Filter>Scenes\Common</Filter>
     </None>
+    <None Include="Scenes\Common\Fog.frag">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\Fog.vert">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\ColorLightFog.frag">
+      <Filter>Scenes\Common</Filter>
+    </None>
+    <None Include="Scenes\Common\ColorLightFog.vert">
+      <Filter>Scenes\Common</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

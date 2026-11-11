@@ -81,6 +81,10 @@
     <None Include="Scenes\Common\axis.vert" />
     <None Include="Scenes\Common\Blend.frag" />
     <None Include="Scenes\Common\Blend.vert" />
+    <None Include="Scenes\Common\ColorLightFog.frag" />
+    <None Include="Scenes\Common\ColorLightFog.vert" />
+    <None Include="Scenes\Common\Fog.frag" />
+    <None Include="Scenes\Common\Fog.vert" />
     <None Include="Scenes\Common\grid.frag" />
     <None Include="Scenes\Common\grid.vert" />
     <None Include="Scenes\Common\Light.frag" />

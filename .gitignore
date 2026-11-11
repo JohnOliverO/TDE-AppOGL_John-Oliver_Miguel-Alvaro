@@ -75,7 +75,11 @@ StyleCopReport.xml
 *_h.h
 *.ilk
 *.meta
-*.obj
+# Ignorar .obj apenas nas pastas de build intermediárias
+bin-int/
+Debug/
+Release/
+x64/
 *.iobj
 *.pch
 *.pdb
